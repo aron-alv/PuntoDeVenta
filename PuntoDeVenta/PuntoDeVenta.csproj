@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Operaciones">
+      <HintPath>..\..\Operaciones\Operaciones\bin\Debug\Operaciones.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,8 +55,87 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormClientes.Designer.cs">
+      <DependentUpon>FormClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGenerarReportesdeClientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGenerarReportesdeClientes.Designer.cs">
+      <DependentUpon>FormGenerarReportesdeClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormGenerarReportesDeProveedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGenerarReportesDeProveedores.Designer.cs">
+      <DependentUpon>FormGenerarReportesDeProveedores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormInventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormInventario.Designer.cs">
+      <DependentUpon>FormInventario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPrincipal.Designer.cs">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProductos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProductos.Designer.cs">
+      <DependentUpon>FormProductos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProductosYstock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProductosYstock.Designer.cs">
+      <DependentUpon>FormProductosYstock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormProveedores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProveedores.Designer.cs">
+      <DependentUpon>FormProveedores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReporteInventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReporteInventario.Designer.cs">
+      <DependentUpon>FormReporteInventario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReporteSaldos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReporteSaldos.Designer.cs">
+      <DependentUpon>FormReporteSaldos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormReporteVentas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormReporteVentas.Designer.cs">
+      <DependentUpon>FormReporteVentas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormVentas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormVentas.Designer.cs">
+      <DependentUpon>FormVentas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OperacionesBD.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPrincipal.resx">
+      <DependentUpon>FormPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
