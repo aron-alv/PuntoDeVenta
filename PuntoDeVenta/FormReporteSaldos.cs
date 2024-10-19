@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Operaciones;
-using Telerik.Charting;
+
 
 namespace ABARROTES
 {
