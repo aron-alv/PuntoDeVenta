@@ -83,6 +83,7 @@ namespace ABARROTES
             comboBoxProductos.TabIndex = 1;
             txtCantidad.TabIndex = 2;
             tablaFolios.Visible = false;
+            comboBoxClientes.Focus();
         }
 
         private void BtnAgregarATabla_Click(object sender, EventArgs e)
@@ -140,7 +141,7 @@ namespace ABARROTES
                     subtotal += Convert.ToDecimal(r.Cells[4].Value);
                 }
             }
-            decimal iva = subtotal * 0.16m; // IVA
+            decimal iva = subtotal * 0.16m;
             decimal total = subtotal + iva;
 
             // actualizar los valores en los TextBoxes

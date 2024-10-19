@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,18 +57,21 @@
             this.TOTAL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID_Proveedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvProductos = new System.Windows.Forms.DataGridView();
-            this.btnAgregarProductoATabla = new System.Windows.Forms.Button();
-            this.textBoxSubtotal = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.ID_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nombreProducto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SubTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnAgregarProductoATabla = new System.Windows.Forms.Button();
+            this.textBoxSubtotal = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.SubMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.eliminarProductoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).BeginInit();
             this.panel1.SuspendLayout();
+            this.SubMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -336,6 +340,43 @@
             this.dgvProductos.TabIndex = 37;
             this.dgvProductos.Visible = false;
             this.dgvProductos.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellValueChanged);
+            this.dgvProductos.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvProductos_MouseClick);
+            // 
+            // ID_Producto
+            // 
+            this.ID_Producto.HeaderText = "ID producto";
+            this.ID_Producto.MinimumWidth = 6;
+            this.ID_Producto.Name = "ID_Producto";
+            this.ID_Producto.Visible = false;
+            this.ID_Producto.Width = 105;
+            // 
+            // nombreProducto
+            // 
+            this.nombreProducto.HeaderText = "nombre";
+            this.nombreProducto.MinimumWidth = 6;
+            this.nombreProducto.Name = "nombreProducto";
+            this.nombreProducto.Width = 82;
+            // 
+            // Cantidad
+            // 
+            this.Cantidad.HeaderText = "Cantidad";
+            this.Cantidad.MinimumWidth = 6;
+            this.Cantidad.Name = "Cantidad";
+            this.Cantidad.Width = 90;
+            // 
+            // Precio
+            // 
+            this.Precio.HeaderText = "Precio";
+            this.Precio.MinimumWidth = 6;
+            this.Precio.Name = "Precio";
+            this.Precio.Width = 75;
+            // 
+            // SubTotal
+            // 
+            this.SubTotal.HeaderText = "SubTotal";
+            this.SubTotal.MinimumWidth = 6;
+            this.SubTotal.Name = "SubTotal";
+            this.SubTotal.Width = 91;
             // 
             // btnAgregarProductoATabla
             // 
@@ -381,41 +422,20 @@
             this.panel1.TabIndex = 41;
             this.panel1.Visible = false;
             // 
-            // ID_Producto
+            // SubMenu
             // 
-            this.ID_Producto.HeaderText = "ID producto";
-            this.ID_Producto.MinimumWidth = 6;
-            this.ID_Producto.Name = "ID_Producto";
-            this.ID_Producto.Visible = false;
-            this.ID_Producto.Width = 105;
+            this.SubMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.SubMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eliminarProductoToolStripMenuItem});
+            this.SubMenu.Name = "SubMenu";
+            this.SubMenu.Size = new System.Drawing.Size(197, 28);
             // 
-            // nombreProducto
+            // eliminarProductoToolStripMenuItem
             // 
-            this.nombreProducto.HeaderText = "nombre";
-            this.nombreProducto.MinimumWidth = 6;
-            this.nombreProducto.Name = "nombreProducto";
-            this.nombreProducto.Width = 82;
-            // 
-            // Cantidad
-            // 
-            this.Cantidad.HeaderText = "Cantidad";
-            this.Cantidad.MinimumWidth = 6;
-            this.Cantidad.Name = "Cantidad";
-            this.Cantidad.Width = 90;
-            // 
-            // Precio
-            // 
-            this.Precio.HeaderText = "Precio";
-            this.Precio.MinimumWidth = 6;
-            this.Precio.Name = "Precio";
-            this.Precio.Width = 75;
-            // 
-            // SubTotal
-            // 
-            this.SubTotal.HeaderText = "SubTotal";
-            this.SubTotal.MinimumWidth = 6;
-            this.SubTotal.Name = "SubTotal";
-            this.SubTotal.Width = 91;
+            this.eliminarProductoToolStripMenuItem.Name = "eliminarProductoToolStripMenuItem";
+            this.eliminarProductoToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.eliminarProductoToolStripMenuItem.Text = "Eliminar Producto";
+            this.eliminarProductoToolStripMenuItem.Click += new System.EventHandler(this.eliminarProductoToolStripMenuItem_Click);
             // 
             // FormInventario
             // 
@@ -448,6 +468,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.SubMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,5 +511,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
         private System.Windows.Forms.DataGridViewTextBoxColumn SubTotal;
+        private System.Windows.Forms.ContextMenuStrip SubMenu;
+        private System.Windows.Forms.ToolStripMenuItem eliminarProductoToolStripMenuItem;
     }
 }

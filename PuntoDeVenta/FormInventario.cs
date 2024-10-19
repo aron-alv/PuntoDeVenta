@@ -67,6 +67,7 @@ namespace ABARROTES
             // Cargar el inventario en la tabla
             Conexion.BuscarInventarioEnTabla(tablaInventario);
             comboBoxProveedores.SelectedIndex = -1;
+            comboBoxProveedores.Focus();
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -75,6 +76,7 @@ namespace ABARROTES
                 btnAgregarProductoATabla_Click(this, new EventArgs());
                 dgvProductos.Visible = true;
                 panel1.Visible = true;
+                comboBoxProductos.Focus();
                 return true; 
             }
           
@@ -267,6 +269,26 @@ namespace ABARROTES
                 row.Cells[4].Value = importe;
 
                 UpdateTotals();
+            }
+        }
+
+        private void eliminarProductoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(dgvProductos.SelectedRows.Count > 0)
+            {
+                dgvProductos.Rows.Remove(dgvProductos.SelectedRows[0]);
+                UpdateTotals();
+            }
+        }
+
+        private void dgvProductos_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (dgvProductos.SelectedRows.Count > 0)
+                {
+                   dgvProductos.ContextMenuStrip = SubMenu;
+                }
             }
         }
     }
