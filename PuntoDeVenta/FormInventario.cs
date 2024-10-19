@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Operaciones;
@@ -90,17 +91,6 @@ namespace ABARROTES
                 DateTime fechaRegistro = dtpFechaRegistro.Value;
                 string observaciones = txtObservaciones.Text;
 
-                int cantidadEntrante = int.Parse(txtCantidadEntrante.Text);
-                decimal costoUnitario = decimal.Parse(textBoxPrecio.Text);
-
-                decimal importe = cantidadEntrante * costoUnitario;
-                decimal iva = importe * 0.16m;
-                decimal total = importe + iva;
-
-              
-                txtIVA.Text = iva.ToString("F2"); 
-                txtTotal.Text = total.ToString("F2"); 
-
                 int? selectedValue = comboBoxProveedores.SelectedValue as int?;
                 if (selectedValue == null)
                 {
@@ -109,6 +99,37 @@ namespace ABARROTES
                 }
                 int idProveedor = selectedValue.Value;
 
+                decimal importe = 0;
+                decimal iva = 0;
+                decimal total = 0;
+
+                List<Tuple<int, decimal, decimal>> productos = new List<Tuple<int, decimal, decimal>>();
+
+                foreach (DataGridViewRow row in dgvProductos.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    int idProducto = Convert.ToInt32(row.Cells["ID_Producto"].Value);
+                    if (decimal.TryParse(row.Cells["Cantidad"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal cantidad) &&
+                        decimal.TryParse(row.Cells["Precio"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal precio))
+                    {
+                        decimal subtotal = cantidad * precio;
+                        productos.Add(new Tuple<int, decimal, decimal>(idProducto, cantidad, precio));
+                        importe += subtotal;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cantidad o Precio no tienen un formato válido.");
+                        return;
+                    }
+                }
+
+                iva = importe * 0.16m; // IVA después de calcular importe total
+                total = importe + iva;
+
+                txtIVA.Text = iva.ToString("F2");
+                txtTotal.Text = total.ToString("F2");
+
                 int idInventario = Conexion.AgregarInventario(fechaRegistro, observaciones, importe, iva, total, idProveedor);
 
                 if (idInventario > 0)
@@ -116,18 +137,7 @@ namespace ABARROTES
                     MessageBox.Show("Inventario registrado con éxito.");
                     Conexion.BuscarInventarioEnTabla(tablaInventario);
 
-                    var selectedProduct = comboBoxProductos.SelectedItem as KeyValuePair<int, string>?;
-                    if (selectedProduct == null)
-                    {
-                        MessageBox.Show("Por favor, seleccione un producto.");
-                        return;
-                    }
-
-                    int idProducto = selectedProduct.Value.Key; 
-
-                    decimal subtotal = cantidadEntrante * costoUnitario; 
-
-                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, idProducto, cantidadEntrante, costoUnitario, subtotal);
+                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); // No envíes el total aquí
 
                     if (resultadoDetalle)
                     {
@@ -136,19 +146,20 @@ namespace ABARROTES
                     }
                     else
                     {
-                        
+                        MessageBox.Show("Error al agregar el detalle del inventario.");
                     }
                 }
                 else
                 {
-                    
+                    MessageBox.Show("Error al registrar el inventario.");
                 }
             }
             catch (Exception ex)
             {
-               
+                MessageBox.Show($"Error: {ex.Message}");
             }
         }
+
         public void limpiarCampos()
         {
             txtCantidadEntrante.Text = "";
@@ -185,6 +196,46 @@ namespace ABARROTES
             }
 
         }
+
+        private void btnAgregarProductoATabla_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
+                var idProducto = productoSeleccionado.Key;
+                var cantidad = txtCantidadEntrante.Text;
+                var precio = textBoxPrecio.Text;
+
+                // Validar que los campos no estén vacíos
+                if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                {
+                    MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
+                    return;
+                }
+
+                // Validar que la cantidad y el precio sean valores numéricos
+                if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
+                {
+                    MessageBox.Show("Por favor, ingrese valores numéricos válidos para la cantidad y el precio.");
+                    return;
+                }
+
+                // Calcular el subtotal
+                decimal subtotal = cantidadDecimal * precioDecimal;
+
+                // Agregar el producto al DataGridView
+                dgvProductos.Rows.Add(idProducto, cantidadDecimal, precioDecimal);
+
+                // Limpiar los campos de entrada
+                txtCantidadEntrante.Clear();
+                textBoxPrecio.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al agregar el producto a la tabla: {ex.Message}");
+            }
+        }
+
 
     }
 }

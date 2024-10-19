@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dtpFechaRegistro = new System.Windows.Forms.DateTimePicker();
             this.comboBoxProveedores = new System.Windows.Forms.ComboBox();
@@ -56,7 +57,13 @@
             this.IVA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TOTAL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID_Proveedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvProductos = new System.Windows.Forms.DataGridView();
+            this.btnAgregarProductoATabla = new System.Windows.Forms.Button();
+            this.ID_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -269,7 +276,7 @@
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             this.tablaInventario.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.tablaInventario.RowTemplate.Height = 24;
-            this.tablaInventario.Size = new System.Drawing.Size(1166, 274);
+            this.tablaInventario.Size = new System.Drawing.Size(1166, 326);
             this.tablaInventario.TabIndex = 36;
             // 
             // ID_Inventario
@@ -320,12 +327,67 @@
             this.ID_Proveedor.MinimumWidth = 6;
             this.ID_Proveedor.Name = "ID_Proveedor";
             // 
+            // dgvProductos
+            // 
+            this.dgvProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvProductos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvProductos.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            this.dgvProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProductos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID_Producto,
+            this.Cantidad,
+            this.Precio});
+            this.dgvProductos.Location = new System.Drawing.Point(599, 471);
+            this.dgvProductos.Name = "dgvProductos";
+            this.dgvProductos.RowHeadersWidth = 51;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            this.dgvProductos.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvProductos.RowTemplate.Height = 24;
+            this.dgvProductos.Size = new System.Drawing.Size(1166, 326);
+            this.dgvProductos.TabIndex = 37;
+            // 
+            // btnAgregarProductoATabla
+            // 
+            this.btnAgregarProductoATabla.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAgregarProductoATabla.Location = new System.Drawing.Point(466, 556);
+            this.btnAgregarProductoATabla.Name = "btnAgregarProductoATabla";
+            this.btnAgregarProductoATabla.Size = new System.Drawing.Size(173, 50);
+            this.btnAgregarProductoATabla.TabIndex = 38;
+            this.btnAgregarProductoATabla.Text = "agregar a tabla";
+            this.btnAgregarProductoATabla.UseVisualStyleBackColor = true;
+            this.btnAgregarProductoATabla.Click += new System.EventHandler(this.btnAgregarProductoATabla_Click);
+            // 
+            // ID_Producto
+            // 
+            this.ID_Producto.HeaderText = "ID producto";
+            this.ID_Producto.MinimumWidth = 6;
+            this.ID_Producto.Name = "ID_Producto";
+            this.ID_Producto.Width = 105;
+            // 
+            // Cantidad
+            // 
+            this.Cantidad.HeaderText = "Cantidad";
+            this.Cantidad.MinimumWidth = 6;
+            this.Cantidad.Name = "Cantidad";
+            this.Cantidad.Width = 90;
+            // 
+            // Precio
+            // 
+            this.Precio.HeaderText = "Precio";
+            this.Precio.MinimumWidth = 6;
+            this.Precio.Name = "Precio";
+            this.Precio.Width = 75;
+            // 
             // FormInventario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
             this.ClientSize = new System.Drawing.Size(1855, 860);
+            this.Controls.Add(this.btnAgregarProductoATabla);
+            this.Controls.Add(this.dgvProductos);
             this.Controls.Add(this.tablaInventario);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
@@ -351,6 +413,7 @@
             this.Text = "FormInventario";
             this.Load += new System.EventHandler(this.FormInventario_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,5 +448,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn IVA;
         private System.Windows.Forms.DataGridViewTextBoxColumn TOTAL;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Proveedor;
+        private System.Windows.Forms.DataGridView dgvProductos;
+        private System.Windows.Forms.Button btnAgregarProductoATabla;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID_Producto;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
     }
 }
