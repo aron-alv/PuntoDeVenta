@@ -45,7 +45,7 @@
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(188, 34);
             this.txtUsuario.TabIndex = 0;
-            this.txtUsuario.Text = "USUARIO";
+            this.txtUsuario.Text = "sa";
             this.txtUsuario.Enter += new System.EventHandler(this.txtUsuario_Enter);
             this.txtUsuario.Leave += new System.EventHandler(this.txtUsuario_Leave);
             // 
@@ -58,7 +58,7 @@
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.Size = new System.Drawing.Size(188, 34);
             this.txtContraseña.TabIndex = 1;
-            this.txtContraseña.Text = "CONTRASEÑA";
+            this.txtContraseña.Text = "12345678";
             this.txtContraseña.TextChanged += new System.EventHandler(this.txtContraseña_TextChanged);
             this.txtContraseña.Enter += new System.EventHandler(this.txtContraseña_Enter);
             this.txtContraseña.Leave += new System.EventHandler(this.txtContraseña_Leave);

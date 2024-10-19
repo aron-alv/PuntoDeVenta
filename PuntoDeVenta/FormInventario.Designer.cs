@@ -35,10 +35,8 @@
             this.comboBoxProveedores = new System.Windows.Forms.ComboBox();
             this.btnRegistrarInventario = new System.Windows.Forms.Button();
             this.txtObservaciones = new System.Windows.Forms.TextBox();
-            this.txtImporte = new System.Windows.Forms.TextBox();
             this.txtTotal = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.txtIVA = new System.Windows.Forms.TextBox();
@@ -59,11 +57,17 @@
             this.ID_Proveedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvProductos = new System.Windows.Forms.DataGridView();
             this.btnAgregarProductoATabla = new System.Windows.Forms.Button();
+            this.textBoxSubtotal = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.ID_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nombreProducto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SubTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -101,7 +105,7 @@
             // btnRegistrarInventario
             // 
             this.btnRegistrarInventario.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRegistrarInventario.Location = new System.Drawing.Point(269, 747);
+            this.btnRegistrarInventario.Location = new System.Drawing.Point(269, 574);
             this.btnRegistrarInventario.Name = "btnRegistrarInventario";
             this.btnRegistrarInventario.Size = new System.Drawing.Size(173, 50);
             this.btnRegistrarInventario.TabIndex = 9;
@@ -118,22 +122,13 @@
             this.txtObservaciones.Size = new System.Drawing.Size(210, 87);
             this.txtObservaciones.TabIndex = 15;
             // 
-            // txtImporte
-            // 
-            this.txtImporte.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtImporte.Location = new System.Drawing.Point(250, 556);
-            this.txtImporte.Name = "txtImporte";
-            this.txtImporte.ReadOnly = true;
-            this.txtImporte.Size = new System.Drawing.Size(210, 33);
-            this.txtImporte.TabIndex = 19;
-            // 
             // txtTotal
             // 
             this.txtTotal.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotal.Location = new System.Drawing.Point(250, 682);
+            this.txtTotal.Location = new System.Drawing.Point(203, 173);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(210, 33);
+            this.txtTotal.Size = new System.Drawing.Size(117, 33);
             this.txtTotal.TabIndex = 20;
             // 
             // label3
@@ -145,16 +140,6 @@
             this.label3.Size = new System.Drawing.Size(159, 26);
             this.label3.TabIndex = 24;
             this.label3.Text = "Observaciones";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(130, 559);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(90, 26);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "Importe";
             // 
             // label5
             // 
@@ -170,7 +155,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(158, 682);
+            this.label7.Location = new System.Drawing.Point(113, 180);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(62, 26);
             this.label7.TabIndex = 28;
@@ -179,17 +164,17 @@
             // txtIVA
             // 
             this.txtIVA.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIVA.Location = new System.Drawing.Point(250, 621);
+            this.txtIVA.Location = new System.Drawing.Point(203, 102);
             this.txtIVA.Name = "txtIVA";
             this.txtIVA.ReadOnly = true;
-            this.txtIVA.Size = new System.Drawing.Size(210, 33);
+            this.txtIVA.Size = new System.Drawing.Size(117, 33);
             this.txtIVA.TabIndex = 29;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(179, 628);
+            this.label6.Location = new System.Drawing.Point(134, 105);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(41, 26);
             this.label6.TabIndex = 27;
@@ -335,9 +320,11 @@
             this.dgvProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProductos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID_Producto,
+            this.nombreProducto,
             this.Cantidad,
-            this.Precio});
-            this.dgvProductos.Location = new System.Drawing.Point(599, 471);
+            this.Precio,
+            this.SubTotal});
+            this.dgvProductos.Location = new System.Drawing.Point(558, 135);
             this.dgvProductos.Name = "dgvProductos";
             this.dgvProductos.RowHeadersWidth = 51;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
@@ -345,13 +332,15 @@
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
             this.dgvProductos.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvProductos.RowTemplate.Height = 24;
-            this.dgvProductos.Size = new System.Drawing.Size(1166, 326);
+            this.dgvProductos.Size = new System.Drawing.Size(1166, 327);
             this.dgvProductos.TabIndex = 37;
+            this.dgvProductos.Visible = false;
+            this.dgvProductos.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellValueChanged);
             // 
             // btnAgregarProductoATabla
             // 
             this.btnAgregarProductoATabla.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarProductoATabla.Location = new System.Drawing.Point(466, 556);
+            this.btnAgregarProductoATabla.Location = new System.Drawing.Point(269, 699);
             this.btnAgregarProductoATabla.Name = "btnAgregarProductoATabla";
             this.btnAgregarProductoATabla.Size = new System.Drawing.Size(173, 50);
             this.btnAgregarProductoATabla.TabIndex = 38;
@@ -359,12 +348,53 @@
             this.btnAgregarProductoATabla.UseVisualStyleBackColor = true;
             this.btnAgregarProductoATabla.Click += new System.EventHandler(this.btnAgregarProductoATabla_Click);
             // 
+            // textBoxSubtotal
+            // 
+            this.textBoxSubtotal.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSubtotal.Location = new System.Drawing.Point(203, 31);
+            this.textBoxSubtotal.Name = "textBoxSubtotal";
+            this.textBoxSubtotal.ReadOnly = true;
+            this.textBoxSubtotal.Size = new System.Drawing.Size(117, 33);
+            this.textBoxSubtotal.TabIndex = 39;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(87, 38);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(95, 26);
+            this.label2.TabIndex = 40;
+            this.label2.Text = "Subtotal";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.txtIVA);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.txtTotal);
+            this.panel1.Controls.Add(this.textBoxSubtotal);
+            this.panel1.Controls.Add(this.label6);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Location = new System.Drawing.Point(763, 502);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(380, 247);
+            this.panel1.TabIndex = 41;
+            this.panel1.Visible = false;
+            // 
             // ID_Producto
             // 
             this.ID_Producto.HeaderText = "ID producto";
             this.ID_Producto.MinimumWidth = 6;
             this.ID_Producto.Name = "ID_Producto";
+            this.ID_Producto.Visible = false;
             this.ID_Producto.Width = 105;
+            // 
+            // nombreProducto
+            // 
+            this.nombreProducto.HeaderText = "nombre";
+            this.nombreProducto.MinimumWidth = 6;
+            this.nombreProducto.Name = "nombreProducto";
+            this.nombreProducto.Width = 82;
             // 
             // Cantidad
             // 
@@ -380,12 +410,20 @@
             this.Precio.Name = "Precio";
             this.Precio.Width = 75;
             // 
+            // SubTotal
+            // 
+            this.SubTotal.HeaderText = "SubTotal";
+            this.SubTotal.MinimumWidth = 6;
+            this.SubTotal.Name = "SubTotal";
+            this.SubTotal.Width = 91;
+            // 
             // FormInventario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
             this.ClientSize = new System.Drawing.Size(1855, 860);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnAgregarProductoATabla);
             this.Controls.Add(this.dgvProductos);
             this.Controls.Add(this.tablaInventario);
@@ -395,14 +433,8 @@
             this.Controls.Add(this.txtCantidadEntrante);
             this.Controls.Add(this.comboBoxProductos);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.txtIVA);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtTotal);
-            this.Controls.Add(this.txtImporte);
             this.Controls.Add(this.txtObservaciones);
             this.Controls.Add(this.btnRegistrarInventario);
             this.Controls.Add(this.comboBoxProveedores);
@@ -414,6 +446,8 @@
             this.Load += new System.EventHandler(this.FormInventario_Load);
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -426,10 +460,8 @@
         private System.Windows.Forms.ComboBox comboBoxProveedores;
         private System.Windows.Forms.Button btnRegistrarInventario;
         private System.Windows.Forms.TextBox txtObservaciones;
-        private System.Windows.Forms.TextBox txtImporte;
         private System.Windows.Forms.TextBox txtTotal;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtIVA;
@@ -450,8 +482,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Proveedor;
         private System.Windows.Forms.DataGridView dgvProductos;
         private System.Windows.Forms.Button btnAgregarProductoATabla;
+        private System.Windows.Forms.TextBox textBoxSubtotal;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Producto;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombreProducto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cantidad;
         private System.Windows.Forms.DataGridViewTextBoxColumn Precio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SubTotal;
     }
 }

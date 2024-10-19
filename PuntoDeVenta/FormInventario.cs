@@ -17,8 +17,8 @@ namespace ABARROTES
         {
             InitializeComponent();
             this.Conexion = Conexion;
-            txtCantidadEntrante.TextChanged += new EventHandler(CalculateTotals);
-            textBoxPrecio.TextChanged += new EventHandler(CalculateTotals);
+         
+            
         }
 
         private void FormInventario_Load(object sender, System.EventArgs e)
@@ -68,22 +68,19 @@ namespace ABARROTES
             Conexion.BuscarInventarioEnTabla(tablaInventario);
             comboBoxProveedores.SelectedIndex = -1;
         }
-
-        private void CalculateTotals(object sender, EventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (int.TryParse(txtCantidadEntrante.Text, out int cantidadEntrante) && decimal.TryParse(textBoxPrecio.Text, out decimal costoUnitario))
+            if (keyData == Keys.Enter && this.ActiveControl == txtCantidadEntrante)
             {
-                decimal importe = cantidadEntrante * costoUnitario; // Calcular Importe
-                decimal iva = importe * 0.16m; // Calcular IVA
-                decimal total = importe + iva; // Calcular Total
-
-                // Actualizar los valores calculados en los TextBoxes
-                txtIVA.Text = iva.ToString("F2");
-                txtTotal.Text = total.ToString("F2");
-                txtImporte.Text = importe.ToString("F2");
+                btnAgregarProductoATabla_Click(this, new EventArgs());
+                dgvProductos.Visible = true;
+                panel1.Visible = true;
+                return true; 
             }
+          
+            return base.ProcessCmdKey(ref msg, keyData);
         }
-
+    
         private void btnRegistrarInventario_Click(object sender, EventArgs e)
         {
             try
@@ -100,8 +97,8 @@ namespace ABARROTES
                 int idProveedor = selectedValue.Value;
 
                 decimal importe = 0;
-                decimal iva = 0;
-                decimal total = 0;
+                decimal iva = decimal.Parse(txtIVA.Text, System.Globalization.NumberStyles.Currency);
+                decimal total = decimal.Parse(txtTotal.Text, System.Globalization.NumberStyles.Currency);
 
                 List<Tuple<int, decimal, decimal>> productos = new List<Tuple<int, decimal, decimal>>();
 
@@ -124,11 +121,9 @@ namespace ABARROTES
                     }
                 }
 
-                iva = importe * 0.16m; // IVA después de calcular importe total
-                total = importe + iva;
+          
 
-                txtIVA.Text = iva.ToString("F2");
-                txtTotal.Text = total.ToString("F2");
+
 
                 int idInventario = Conexion.AgregarInventario(fechaRegistro, observaciones, importe, iva, total, idProveedor);
 
@@ -142,6 +137,9 @@ namespace ABARROTES
                     if (resultadoDetalle)
                     {
                         MessageBox.Show("Detalle de inventario agregado con éxito.");
+                        dgvProductos.Visible = false;
+                        panel1.Visible = false;
+                        comboBoxProveedores.Enabled = true;
                         limpiarCampos();
                     }
                     else
@@ -164,7 +162,7 @@ namespace ABARROTES
         {
             txtCantidadEntrante.Text = "";
             textBoxPrecio.Text = "";
-            txtImporte.Text = "";
+            
             txtIVA.Text = "";
             txtTotal.Text = "";
             txtObservaciones.Text = "";
@@ -203,6 +201,7 @@ namespace ABARROTES
             {
                 var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
                 var idProducto = productoSeleccionado.Key;
+                var nombreProducto = productoSeleccionado.Value;
                 var cantidad = txtCantidadEntrante.Text;
                 var precio = textBoxPrecio.Text;
 
@@ -221,14 +220,16 @@ namespace ABARROTES
                 }
 
                 // Calcular el subtotal
-                decimal subtotal = cantidadDecimal * precioDecimal;
+                decimal SubTotal = cantidadDecimal * precioDecimal;
 
                 // Agregar el producto al DataGridView
-                dgvProductos.Rows.Add(idProducto, cantidadDecimal, precioDecimal);
+                dgvProductos.Rows.Add(idProducto, nombreProducto,cantidadDecimal, precioDecimal, SubTotal);
 
                 // Limpiar los campos de entrada
                 txtCantidadEntrante.Clear();
                 textBoxPrecio.Clear();
+                UpdateTotals();
+                comboBoxProveedores.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -236,6 +237,37 @@ namespace ABARROTES
             }
         }
 
+        private void UpdateTotals()
+        {
+            decimal subtotal = 0;
+            foreach (DataGridViewRow r in dgvProductos.Rows)
+            {
+                if (r.Cells[4].Value != null)
+                {
+                    subtotal += Convert.ToDecimal(r.Cells[4].Value);
+                }
+            }
+            decimal iva = subtotal * 0.16m; // IVA
+            decimal total = subtotal + iva;
 
+            // actualizar los valores en los TextBoxes
+            textBoxSubtotal.Text = subtotal.ToString("C");
+            txtIVA.Text = iva.ToString("C");
+            txtTotal.Text = total.ToString("C");
+        }
+
+        private void dgvProductos_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && e.RowIndex < dgvProductos.Rows.Count)
+            {
+                var row = dgvProductos.Rows[e.RowIndex];
+                decimal cantidad = Convert.ToDecimal(row.Cells[2].Value);
+                decimal precio = Convert.ToDecimal(row.Cells[3].Value);
+                decimal importe = cantidad * precio;
+                row.Cells[4].Value = importe;
+
+                UpdateTotals();
+            }
+        }
     }
 }
