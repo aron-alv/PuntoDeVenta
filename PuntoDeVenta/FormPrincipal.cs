@@ -1,4 +1,5 @@
-﻿using Operaciones;
+﻿
+using PuntoDeVenta;
 using System;
 using System.Windows.Forms;
 namespace ABARROTES
@@ -6,7 +7,7 @@ namespace ABARROTES
     public partial class FormPrincipal : Form
     {
 
-        private OperacionesBD Conexion;
+        private OperacionesBD Conexion = new OperacionesBD();
         public FormPrincipal(OperacionesBD conexion)
         {
             InitializeComponent();

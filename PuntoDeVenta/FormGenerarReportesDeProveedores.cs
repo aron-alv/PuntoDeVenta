@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PuntoDeVenta;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Operaciones;
+
 namespace ABARROTES
 {
     public partial class FormGenerarReportesDeProveedores : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         public FormGenerarReportesDeProveedores(OperacionesBD conexion)
         {
             InitializeComponent();

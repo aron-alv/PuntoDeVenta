@@ -1,16 +1,17 @@
-﻿using System;
+﻿using PuntoDeVenta;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Operaciones;
+
 
 
 namespace ABARROTES
 {
     public partial class FormInventario : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         private List<Tuple<int, string, decimal>> productos;
 
         public FormInventario(OperacionesBD Conexion)

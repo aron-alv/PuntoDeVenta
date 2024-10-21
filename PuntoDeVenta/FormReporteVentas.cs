@@ -1,13 +1,14 @@
 ﻿using System.Data;
 using System;
 using System.Windows.Forms;
-using Operaciones;
+
 using System.Collections.Generic;
+using PuntoDeVenta;
 namespace ABARROTES
 {
     public partial class FormReporteVentas : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         public FormReporteVentas(OperacionesBD conexion)
         {
             InitializeComponent();

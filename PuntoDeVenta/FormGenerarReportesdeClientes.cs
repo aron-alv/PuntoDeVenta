@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Operaciones;
+
+using PuntoDeVenta;
 
 namespace ABARROTES
 {
     public partial class FormGenerarReportesdeClientes : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         public FormGenerarReportesdeClientes(OperacionesBD conexion)
         {
             InitializeComponent();

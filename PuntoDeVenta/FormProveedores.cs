@@ -1,4 +1,5 @@
-﻿using Operaciones;
+﻿
+using PuntoDeVenta;
 using System.Windows.Forms;
 namespace ABARROTES
 {
