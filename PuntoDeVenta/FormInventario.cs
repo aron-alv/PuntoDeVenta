@@ -135,11 +135,11 @@ namespace ABARROTES
                     MessageBox.Show("Inventario registrado con éxito.");
                     Conexion.BuscarInventarioEnTabla(tablaInventario);
 
-                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); // No envíes el total aquí
+                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); 
 
                     if (resultadoDetalle)
                     {
-                        MessageBox.Show("Detalle de inventario agregado con éxito.");
+                        dgvProductos.Rows.Clear();
                         dgvProductos.Visible = false;
                         panel1.Visible = false;
                         comboBoxProveedores.Enabled = true;
@@ -279,6 +279,12 @@ namespace ABARROTES
             {
                 dgvProductos.Rows.Remove(dgvProductos.SelectedRows[0]);
                 UpdateTotals();
+            }
+            if (dgvProductos.Rows.Count == 0)
+            {
+                comboBoxProveedores.Enabled = true;
+                dgvProductos.Visible = false;
+                panel1.Visible = false;
             }
         }
 

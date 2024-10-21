@@ -46,7 +46,7 @@ namespace ABARROTES
             AbrirFormHija(new FormReporteSaldos(Conexion));
         }
 
-        //Metodo para abrir formularios dentro del panel
+        
         private void AbrirFormHija(object formHija)
         {
             if (this.PanelContenedor.Controls.Count > 0)
@@ -92,12 +92,7 @@ namespace ABARROTES
             AbrirFormHija(new FormClientes(Conexion));
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
-
-     
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -122,6 +117,12 @@ namespace ABARROTES
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+         
+            Application.Exit();
         }
     }
 }
