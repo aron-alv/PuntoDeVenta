@@ -1,4 +1,5 @@
-﻿using Operaciones;
+﻿
+using PuntoDeVenta;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;

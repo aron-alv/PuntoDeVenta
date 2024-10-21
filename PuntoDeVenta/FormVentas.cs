@@ -1,4 +1,5 @@
-﻿using Operaciones;
+﻿
+using PuntoDeVenta;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +10,7 @@ namespace ABARROTES
 {
     public partial class FormVentas : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         private List<Tuple<int, string, decimal>> productos;
         public FormVentas(OperacionesBD conexion)
         {

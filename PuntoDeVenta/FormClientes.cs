@@ -1,11 +1,12 @@
-﻿using Operaciones;
+﻿
+using PuntoDeVenta;
 using System;
 using System.Windows.Forms;
 namespace ABARROTES
 {
     public partial class FormClientes : Form
     {
-        OperacionesBD Conexion = new OperacionesBD();
+        private OperacionesBD Conexion = new OperacionesBD();
         public FormClientes(OperacionesBD conexion)
         {
             InitializeComponent();
