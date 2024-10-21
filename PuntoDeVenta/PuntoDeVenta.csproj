@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Operaciones, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+   <Reference Include="Operaciones">
       <HintPath>..\..\Operaciones\Operaciones\bin\Debug\Operaciones.dll</HintPath>
     </Reference>
     <Reference Include="System" />
