@@ -883,8 +883,9 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error eliminando el cliente: {ex.Message}");
-                return false;
+               
+                throw new Exception($"Error al eliminar al cliente: {ex.Message}");
+               
             }
             finally
             {

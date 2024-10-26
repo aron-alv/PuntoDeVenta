@@ -429,7 +429,6 @@
             this.tablaFolios.Size = new System.Drawing.Size(1323, 280);
             this.tablaFolios.TabIndex = 27;
             this.tablaFolios.Visible = false;
-            this.tablaFolios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablaFolios_CellContentClick);
             // 
             // dataGridViewTextBoxColumn1
             // 

@@ -75,8 +75,7 @@ namespace ABARROTES
             if (keyData == Keys.Enter && this.ActiveControl == txtCantidadEntrante)
             {
                 btnAgregarProductoATabla_Click(this, new EventArgs());
-                dgvProductos.Visible = true;
-                panel1.Visible = true;
+                
                 comboBoxProductos.Focus();
                 return true; 
             }
@@ -200,44 +199,56 @@ namespace ABARROTES
 
         private void btnAgregarProductoATabla_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxProductos.SelectedItem == null || comboBoxProveedores.SelectedItem == null)
             {
-                var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
-                var idProducto = productoSeleccionado.Key;
-                var nombreProducto = productoSeleccionado.Value;
-                var cantidad = txtCantidadEntrante.Text;
-                var precio = textBoxPrecio.Text;
-
-                // Validar que los campos no estén vacíos
-                if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                MessageBox.Show("Por favor, seleccione un producto y el proveedor.");
+                return;
+            }
+            else
+            {
+                try
                 {
-                    MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
-                    return;
+
+                    var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
+                    var idProducto = productoSeleccionado.Key;
+                    var nombreProducto = productoSeleccionado.Value;
+                    var cantidad = txtCantidadEntrante.Text;
+                    var precio = textBoxPrecio.Text;
+
+                    // Validar que los campos no estén vacíos
+                    if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                    {
+                        MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
+                        return;
+                    }
+
+
+                    if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
+                    {
+                        MessageBox.Show("Por favor, ingrese valores numéricos vAlidos para la cantidad y el precio.");
+                        return;
+                    }
+
+
+                    decimal SubTotal = cantidadDecimal * precioDecimal;
+
+                    // Agregar el producto al DataGridView
+                    dgvProductos.Rows.Add(idProducto, nombreProducto, cantidadDecimal, precioDecimal, SubTotal);
+                    dgvProductos.Visible = true;
+                    panel1.Visible = true;
+
+                    txtCantidadEntrante.Clear();
+                    textBoxPrecio.Clear();
+                    UpdateTotals();
+                    comboBoxProveedores.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al agregar el producto a la tabla: {ex.Message}");
                 }
 
-                // Validar que la cantidad y el precio sean valores numéricos
-                if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
-                {
-                    MessageBox.Show("Por favor, ingrese valores numéricos válidos para la cantidad y el precio.");
-                    return;
-                }
-
-                // Calcular el subtotal
-                decimal SubTotal = cantidadDecimal * precioDecimal;
-
-                // Agregar el producto al DataGridView
-                dgvProductos.Rows.Add(idProducto, nombreProducto,cantidadDecimal, precioDecimal, SubTotal);
-
-                // Limpiar los campos de entrada
-                txtCantidadEntrante.Clear();
-                textBoxPrecio.Clear();
-                UpdateTotals();
-                comboBoxProveedores.Enabled = false;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al agregar el producto a la tabla: {ex.Message}");
-            }
+           
         }
 
         private void UpdateTotals()
@@ -250,10 +261,10 @@ namespace ABARROTES
                     subtotal += Convert.ToDecimal(r.Cells[4].Value);
                 }
             }
-            decimal iva = subtotal * 0.16m; // IVA
+            decimal iva = subtotal * 0.16m; 
             decimal total = subtotal + iva;
 
-            // actualizar los valores en los TextBoxes
+       
             textBoxSubtotal.Text = subtotal.ToString("C");
             txtIVA.Text = iva.ToString("C");
             txtTotal.Text = total.ToString("C");

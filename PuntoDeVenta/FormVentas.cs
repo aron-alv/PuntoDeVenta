@@ -29,8 +29,8 @@ namespace ABARROTES
             {
                 
                 comboBoxClientes.DataSource = new BindingSource(clientes, null);
-                comboBoxClientes.DisplayMember = "Value"; // Mostrar los nombres 
-                comboBoxClientes.ValueMember = "Key"; //  el ID del cliente 
+                comboBoxClientes.DisplayMember = "Value"; 
+                comboBoxClientes.ValueMember = "Key"; 
             }
             else
             {
@@ -43,7 +43,7 @@ namespace ABARROTES
             {
                 BuscarIDVenta_Click(this, new EventArgs());
 
-                return true; // Indica que la tecla ha sido manejada
+                return true; 
             }
             if (keyData == Keys.F5)
             {
@@ -260,10 +260,7 @@ namespace ABARROTES
             }
         }
 
-        private void tablaFolios_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+       
     }
 
 }
