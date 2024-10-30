@@ -37,12 +37,12 @@
             this.IDProveedor = new System.Windows.Forms.ComboBox();
             this.txtBuscarProducto = new System.Windows.Forms.TextBox();
             this.TablaProductos = new System.Windows.Forms.DataGridView();
-            this.BtnEliminarProducto = new System.Windows.Forms.Button();
             this.txtID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtPrecio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtDescripcion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtProveedor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnEliminarProducto = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.TablaProductos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,7 +66,7 @@
             this.IDProducto.Location = new System.Drawing.Point(100, 131);
             this.IDProducto.Multiline = true;
             this.IDProducto.Name = "IDProducto";
-            this.IDProducto.Size = new System.Drawing.Size(221, 34);
+            this.IDProducto.Size = new System.Drawing.Size(221, 61);
             this.IDProducto.TabIndex = 1;
             this.IDProducto.Text = "ID";
             this.IDProducto.Click += new System.EventHandler(this.IDProducto_Click);
@@ -78,10 +78,10 @@
             this.NombreProducto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NombreProducto.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NombreProducto.ForeColor = System.Drawing.Color.White;
-            this.NombreProducto.Location = new System.Drawing.Point(100, 208);
+            this.NombreProducto.Location = new System.Drawing.Point(100, 238);
             this.NombreProducto.Multiline = true;
             this.NombreProducto.Name = "NombreProducto";
-            this.NombreProducto.Size = new System.Drawing.Size(221, 34);
+            this.NombreProducto.Size = new System.Drawing.Size(221, 61);
             this.NombreProducto.TabIndex = 2;
             this.NombreProducto.Text = "NOMBRE";
             this.NombreProducto.Enter += new System.EventHandler(this.NombreProducto_Enter);
@@ -93,10 +93,10 @@
             this.DescripcionProducto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DescripcionProducto.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DescripcionProducto.ForeColor = System.Drawing.Color.White;
-            this.DescripcionProducto.Location = new System.Drawing.Point(100, 362);
+            this.DescripcionProducto.Location = new System.Drawing.Point(100, 441);
             this.DescripcionProducto.Multiline = true;
             this.DescripcionProducto.Name = "DescripcionProducto";
-            this.DescripcionProducto.Size = new System.Drawing.Size(221, 34);
+            this.DescripcionProducto.Size = new System.Drawing.Size(221, 98);
             this.DescripcionProducto.TabIndex = 4;
             this.DescripcionProducto.Text = "DESCRIPCION";
             this.DescripcionProducto.Enter += new System.EventHandler(this.DescripcionProducto_Enter);
@@ -108,10 +108,10 @@
             this.PrecioProducto.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PrecioProducto.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.PrecioProducto.ForeColor = System.Drawing.Color.White;
-            this.PrecioProducto.Location = new System.Drawing.Point(100, 285);
+            this.PrecioProducto.Location = new System.Drawing.Point(100, 349);
             this.PrecioProducto.Multiline = true;
             this.PrecioProducto.Name = "PrecioProducto";
-            this.PrecioProducto.Size = new System.Drawing.Size(221, 34);
+            this.PrecioProducto.Size = new System.Drawing.Size(221, 61);
             this.PrecioProducto.TabIndex = 3;
             this.PrecioProducto.Text = "PRECIO";
             this.PrecioProducto.Enter += new System.EventHandler(this.PrecioProducto_Enter);
@@ -122,11 +122,11 @@
             this.BtnAgregarProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.BtnAgregarProducto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnAgregarProducto.ForeColor = System.Drawing.Color.White;
-            this.BtnAgregarProducto.Location = new System.Drawing.Point(115, 615);
+            this.BtnAgregarProducto.Location = new System.Drawing.Point(113, 647);
             this.BtnAgregarProducto.Name = "BtnAgregarProducto";
             this.BtnAgregarProducto.Size = new System.Drawing.Size(180, 84);
             this.BtnAgregarProducto.TabIndex = 6;
-            this.BtnAgregarProducto.Text = "     AGREGAR            O       PRODUCTO";
+            this.BtnAgregarProducto.Text = "     AGREGAR            O       MODIFICAR";
             this.BtnAgregarProducto.UseVisualStyleBackColor = false;
             this.BtnAgregarProducto.Click += new System.EventHandler(this.BtnAgregarProducto_Click);
             // 
@@ -136,7 +136,7 @@
             this.IDProveedor.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IDProveedor.ForeColor = System.Drawing.Color.White;
             this.IDProveedor.FormattingEnabled = true;
-            this.IDProveedor.Location = new System.Drawing.Point(100, 520);
+            this.IDProveedor.Location = new System.Drawing.Point(100, 566);
             this.IDProveedor.Name = "IDProveedor";
             this.IDProveedor.Size = new System.Drawing.Size(230, 35);
             this.IDProveedor.TabIndex = 7;
@@ -180,19 +180,6 @@
             this.TablaProductos.TabIndex = 21;
             this.TablaProductos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TablaProductos_CellClick);
             // 
-            // BtnEliminarProducto
-            // 
-            this.BtnEliminarProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.BtnEliminarProducto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnEliminarProducto.ForeColor = System.Drawing.Color.White;
-            this.BtnEliminarProducto.Location = new System.Drawing.Point(527, 631);
-            this.BtnEliminarProducto.Name = "BtnEliminarProducto";
-            this.BtnEliminarProducto.Size = new System.Drawing.Size(221, 68);
-            this.BtnEliminarProducto.TabIndex = 20;
-            this.BtnEliminarProducto.Text = "ELIMINAR";
-            this.BtnEliminarProducto.UseVisualStyleBackColor = false;
-            this.BtnEliminarProducto.Click += new System.EventHandler(this.BtnEliminarProducto_Click);
-            // 
             // txtID
             // 
             this.txtID.HeaderText = "ID";
@@ -228,6 +215,19 @@
             this.txtProveedor.MinimumWidth = 6;
             this.txtProveedor.Name = "txtProveedor";
             this.txtProveedor.ReadOnly = true;
+            // 
+            // BtnEliminarProducto
+            // 
+            this.BtnEliminarProducto.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.BtnEliminarProducto.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnEliminarProducto.ForeColor = System.Drawing.Color.White;
+            this.BtnEliminarProducto.Location = new System.Drawing.Point(458, 623);
+            this.BtnEliminarProducto.Name = "BtnEliminarProducto";
+            this.BtnEliminarProducto.Size = new System.Drawing.Size(221, 68);
+            this.BtnEliminarProducto.TabIndex = 20;
+            this.BtnEliminarProducto.Text = "ELIMINAR";
+            this.BtnEliminarProducto.UseVisualStyleBackColor = false;
+            this.BtnEliminarProducto.Click += new System.EventHandler(this.BtnEliminarProducto_Click);
             // 
             // FormProductos
             // 

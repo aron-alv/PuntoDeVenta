@@ -485,10 +485,10 @@
             // ID_Cliente
             // 
             this.ID_Cliente.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ID_Cliente.HeaderText = "ID CLIENTE";
+            this.ID_Cliente.HeaderText = "CLIENTE";
             this.ID_Cliente.MinimumWidth = 6;
             this.ID_Cliente.Name = "ID_Cliente";
-            this.ID_Cliente.Width = 153;
+            this.ID_Cliente.Width = 139;
             // 
             // FormVentas
             // 

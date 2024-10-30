@@ -1,5 +1,7 @@
 ﻿
 using PuntoDeVenta;
+using System;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 namespace ABARROTES
 {
@@ -90,17 +92,28 @@ namespace ABARROTES
                 string nombre = NombreProveedor.Text;
                 string telefono = NumTelefono.Text;
                 string direccion = DireccionProveedor.Text;
-                if (Conexion.ModificarProveedor(id, nombre, telefono, direccion))
+                try
                 {
-                    MessageBox.Show("Proveedor modificado correctamente");
-                    Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
-                    LimpiarCampos();
+                    if (Conexion.ModificarProveedor(id, nombre, telefono, direccion))
+                    {
+                        MessageBox.Show("Proveedor modificado correctamente");
+                        Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al modificar proveedor");
+                    }
                 }
-                else
+
+
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error al modificar proveedor");
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        
+        
             else
             {
                 if (IDProveedor.Text == "ID" || NombreProveedor.Text == "NOMBRE" || NumTelefono.Text == "TELEFONO" || DireccionProveedor.Text == "DIRECCION")
@@ -112,18 +125,24 @@ namespace ABARROTES
                 string nombre = NombreProveedor.Text;
                 string telefono = NumTelefono.Text;
                 string direccion = DireccionProveedor.Text;
-                if (Conexion.AgregarProveedor(id, nombre, telefono, direccion))
+                try
                 {
-                    MessageBox.Show("Proveedor agregado correctamente");
-                    Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
-                    LimpiarCampos();
+                    if (Conexion.AgregarProveedor(id, nombre, telefono, direccion))
+                    {
+                        MessageBox.Show("Proveedor agregado correctamente");
+                        Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al agregar proveedor");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error al agregar proveedor");
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
 
 
 
@@ -144,16 +163,21 @@ namespace ABARROTES
                 return;
             }
             int id = int.Parse(TablaProveedores.SelectedRows[0].Cells[0].Value.ToString());
-            if (Conexion.EliminarProveedor(id))
+            try
             {
-                MessageBox.Show("Proveedor eliminado correctamente");
-                Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
-                LimpiarCampos();
+                if (Conexion.EliminarProveedor(id))
+                {
+                    MessageBox.Show("Proveedor eliminado correctamente");
+                    Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
+                    LimpiarCampos();
+                }
+               
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al eliminar proveedor");
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
         }
 
         private void TablaProveedores_CellClick(object sender, DataGridViewCellEventArgs e)

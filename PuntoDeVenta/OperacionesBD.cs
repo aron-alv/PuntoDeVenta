@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using System.Data;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Collections;
 namespace PuntoDeVenta
 {
     public class OperacionesBD
@@ -51,6 +52,10 @@ namespace PuntoDeVenta
             {
                 string query = "INSERT INTO Producto (ID_Producto, Nombre, Precio, Descripcion, ID_Proveedor) " +
                     "VALUES (@ID_Producto, @Nombre, @Precio, @Descripcion, @ID_Proveedor)";
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -65,9 +70,9 @@ namespace PuntoDeVenta
                     return rowsAffected > 0;
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                throw new Exception($"Error al agregar el Producto: {ex.Message}");
             }
         }
         public bool EliminarProducto(int ID_Producto)
@@ -114,8 +119,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error eliminando el producto: {ex.Message}");
-                return false;
+                throw new Exception($"Error al eliminar producto: {ex.Message}");
             }
             finally
             {
@@ -153,8 +157,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error modificando el producto: {ex.Message}");
-                return false;
+                throw new Exception($"Error al modificar el Producto: {ex.Message}");
             }
             finally
             {
@@ -435,7 +438,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error buscando productos por nombre y cantidad: {ex.Message}");
+              
                 return false;
             }
             finally
@@ -482,9 +485,9 @@ namespace PuntoDeVenta
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                return false;
+                throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
         }
         public Dictionary<int, string> ObtenerProveedores()
@@ -610,8 +613,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error eliminando el proveedor: {ex.Message}");
-                return false;
+                throw new Exception($"Error al eliminar el Proveedor: {ex.Message}");
             }
             finally
             {
@@ -691,11 +693,10 @@ namespace PuntoDeVenta
                     return rowsAffected > 0;
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
 
-                Console.WriteLine($"Error modificando el proveedor: {ex.Message}");
-                return false;
+                throw new Exception($"Error al modificar el Proveedor: {ex.Message}");
             }
             finally
             {
@@ -759,7 +760,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al obtener el siguiente ID de cliente: " + ex.Message);
+              
                 return -1;
             }
         }
@@ -1215,7 +1216,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al obtener el próximo ID de venta: " + ex.Message);
+              
             }
             finally
             {
@@ -1233,12 +1234,17 @@ namespace PuntoDeVenta
             tablaFolios.Rows.Clear();
             try
             {
-                string query = "SELECT * FROM Venta WHERE ID_Venta = @ID_Venta";
-
                 if (connection.State == ConnectionState.Closed)
                 {
                     connection.Open();
                 }
+
+                // Consulta SQL con JOIN para obtener el nombre del cliente
+                string query = @"
+            SELECT v.ID_Venta, v.Fecha, v.Importe, v.IVA, v.Total, v.Metodo_Pago, c.Nombre AS Nombre_Cliente
+            FROM Venta v
+            JOIN Cliente c ON v.ID_Cliente = c.ID_Cliente
+            WHERE v.ID_Venta = @ID_Venta";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -1248,7 +1254,15 @@ namespace PuntoDeVenta
                     {
                         while (reader.Read())
                         {
-                            tablaFolios.Rows.Add(reader["ID_Venta"], reader["Fecha"], reader["Importe"], reader["IVA"], reader["Total"], reader["Metodo_Pago"], reader["ID_Cliente"]);
+                            tablaFolios.Rows.Add(
+                                reader["ID_Venta"],
+                                reader["Fecha"],
+                                reader["Importe"],
+                                reader["IVA"],
+                                reader["Total"],
+                                reader["Metodo_Pago"],
+                                reader["Nombre_Cliente"] 
+                            );
                         }
                     }
                 }
@@ -1257,8 +1271,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-                Console.WriteLine($"Error buscando la venta: {ex.Message}");
-                return false;
+                throw new Exception($"Error al buscar la venta: {ex.Message}");
             }
             finally
             {
@@ -1268,6 +1281,8 @@ namespace PuntoDeVenta
                 }
             }
         }
+
+
 
 
 
@@ -1305,7 +1320,7 @@ namespace PuntoDeVenta
             catch (Exception ex)
             {
 
-                return -1;
+                throw new Exception($"Error al agregar el inventario: {ex.Message}");
             }
         }
 
@@ -1330,7 +1345,7 @@ namespace PuntoDeVenta
                             decimal Cantidad_Entrante = producto.Item2;
                             decimal Costo_Unitario = producto.Item3;
 
-                            decimal Subtotal = Cantidad_Entrante * Costo_Unitario; // Cálculo correcto del subtotal para cada producto
+                            decimal Subtotal = Cantidad_Entrante * Costo_Unitario; // Calculo correcto del subtotal para cada producto
 
                             // Verificar si el producto ya existe en la tabla Saldos
                             string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
