@@ -65,12 +65,8 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.TablaClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.TablaClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaClientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.txtID,
-            this.txtNombre,
-            this.txtTelefono,
-            this.txtDireccion});
-            this.TablaClientes.Location = new System.Drawing.Point(169, 119);
+            this.TablaClientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.txtID, this.txtNombre, this.txtTelefono, this.txtDireccion });
+            this.TablaClientes.Location = new System.Drawing.Point(162, 122);
             this.TablaClientes.MultiSelect = false;
             this.TablaClientes.Name = "TablaClientes";
             this.TablaClientes.ReadOnly = true;
@@ -127,7 +123,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.TablaClientes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

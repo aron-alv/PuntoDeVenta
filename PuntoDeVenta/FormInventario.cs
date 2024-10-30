@@ -24,7 +24,7 @@ namespace ABARROTES
 
         private void FormInventario_Load(object sender, System.EventArgs e)
         {
-            // Cargar proveedores en el ComboBox de Proveedores
+            // Cargar proveedores en el ComboBox 
             Dictionary<int, string> proveedores = Conexion.ObtenerProveedores();
             if (proveedores.Count > 0)
             {
@@ -34,10 +34,10 @@ namespace ABARROTES
             }
             else
             {
-                MessageBox.Show("No se encontraron proveedores.");
+               
             }
 
-            // Cargar productos en el ComboBox de Productos
+            // Cargar productos en el ComboBox 
             var productosIds = Conexion.ObtenerProductos().Keys.ToList(); // Obtener solo los IDs de productos
             productos = new List<Tuple<int, string, decimal>>(); // Lista de tuplas para almacenar los productos
 
@@ -75,8 +75,7 @@ namespace ABARROTES
             if (keyData == Keys.Enter && this.ActiveControl == txtCantidadEntrante)
             {
                 btnAgregarProductoATabla_Click(this, new EventArgs());
-                dgvProductos.Visible = true;
-                panel1.Visible = true;
+                
                 comboBoxProductos.Focus();
                 return true; 
             }
@@ -94,9 +93,10 @@ namespace ABARROTES
                 int? selectedValue = comboBoxProveedores.SelectedValue as int?;
                 if (selectedValue == null)
                 {
-                    MessageBox.Show("Por favor, seleccione un proveedor.");
+                  
                     return;
                 }
+                
                 int idProveedor = selectedValue.Value;
 
                 decimal importe = 0;
@@ -104,11 +104,17 @@ namespace ABARROTES
                 decimal total = decimal.Parse(txtTotal.Text, System.Globalization.NumberStyles.Currency);
 
                 List<Tuple<int, decimal, decimal>> productos = new List<Tuple<int, decimal, decimal>>();
-
+               
+                if(dgvProductos.Rows.Count == 0)
+                {
+                    MessageBox.Show("Por favor, agregue productos un producto.");
+                    return;
+                }
                 foreach (DataGridViewRow row in dgvProductos.Rows)
                 {
                     if (row.IsNewRow) continue;
 
+                    
                     int idProducto = Convert.ToInt32(row.Cells["ID_Producto"].Value);
                     if (decimal.TryParse(row.Cells["Cantidad"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal cantidad) &&
                         decimal.TryParse(row.Cells["Precio"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal precio))
@@ -119,7 +125,7 @@ namespace ABARROTES
                     }
                     else
                     {
-                        MessageBox.Show("Cantidad o Precio no tienen un formato válido.");
+                        
                         return;
                     }
                 }
@@ -134,12 +140,12 @@ namespace ABARROTES
                 {
                     MessageBox.Show("Inventario registrado con éxito.");
                     Conexion.BuscarInventarioEnTabla(tablaInventario);
-
-                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); // No envíes el total aquí
+                    comboBoxProveedores.SelectedIndex = -1;
+                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); 
 
                     if (resultadoDetalle)
                     {
-                        MessageBox.Show("Detalle de inventario agregado con éxito.");
+                        dgvProductos.Rows.Clear();
                         dgvProductos.Visible = false;
                         panel1.Visible = false;
                         comboBoxProveedores.Enabled = true;
@@ -157,7 +163,7 @@ namespace ABARROTES
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -200,44 +206,56 @@ namespace ABARROTES
 
         private void btnAgregarProductoATabla_Click(object sender, EventArgs e)
         {
-            try
+            if (comboBoxProductos.SelectedItem == null || comboBoxProveedores.SelectedItem == null)
             {
-                var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
-                var idProducto = productoSeleccionado.Key;
-                var nombreProducto = productoSeleccionado.Value;
-                var cantidad = txtCantidadEntrante.Text;
-                var precio = textBoxPrecio.Text;
-
-                // Validar que los campos no estén vacíos
-                if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                MessageBox.Show("Por favor, seleccione un producto y el proveedor.");
+                return;
+            }
+            else
+            {
+                try
                 {
-                    MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
-                    return;
+
+                    var productoSeleccionado = (KeyValuePair<int, string>)comboBoxProductos.SelectedItem;
+                    var idProducto = productoSeleccionado.Key;
+                    var nombreProducto = productoSeleccionado.Value;
+                    var cantidad = txtCantidadEntrante.Text;
+                    var precio = textBoxPrecio.Text;
+
+                    // Validar que los campos no estén vacíos
+                    if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                    {
+                        MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
+                        return;
+                    }
+
+
+                    if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
+                    {
+                        MessageBox.Show("Por favor, ingrese valores numéricos vAlidos para la cantidad y el precio.");
+                        return;
+                    }
+
+
+                    decimal SubTotal = cantidadDecimal * precioDecimal;
+
+                    // Agregar el producto al DataGridView
+                    dgvProductos.Rows.Add(idProducto, nombreProducto, cantidadDecimal, precioDecimal, SubTotal);
+                    dgvProductos.Visible = true;
+                    panel1.Visible = true;
+
+                    txtCantidadEntrante.Clear();
+                    textBoxPrecio.Clear();
+                    UpdateTotals();
+                    comboBoxProveedores.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al agregar el producto a la tabla: {ex.Message}");
                 }
 
-                // Validar que la cantidad y el precio sean valores numéricos
-                if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
-                {
-                    MessageBox.Show("Por favor, ingrese valores numéricos válidos para la cantidad y el precio.");
-                    return;
-                }
-
-                // Calcular el subtotal
-                decimal SubTotal = cantidadDecimal * precioDecimal;
-
-                // Agregar el producto al DataGridView
-                dgvProductos.Rows.Add(idProducto, nombreProducto,cantidadDecimal, precioDecimal, SubTotal);
-
-                // Limpiar los campos de entrada
-                txtCantidadEntrante.Clear();
-                textBoxPrecio.Clear();
-                UpdateTotals();
-                comboBoxProveedores.Enabled = false;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al agregar el producto a la tabla: {ex.Message}");
-            }
+           
         }
 
         private void UpdateTotals()
@@ -250,10 +268,10 @@ namespace ABARROTES
                     subtotal += Convert.ToDecimal(r.Cells[4].Value);
                 }
             }
-            decimal iva = subtotal * 0.16m; // IVA
+            decimal iva = subtotal * 0.16m; 
             decimal total = subtotal + iva;
 
-            // actualizar los valores en los TextBoxes
+       
             textBoxSubtotal.Text = subtotal.ToString("C");
             txtIVA.Text = iva.ToString("C");
             txtTotal.Text = total.ToString("C");
@@ -279,6 +297,13 @@ namespace ABARROTES
             {
                 dgvProductos.Rows.Remove(dgvProductos.SelectedRows[0]);
                 UpdateTotals();
+            }
+            if (dgvProductos.Rows.Count == 0)
+            {
+                comboBoxProveedores.Enabled = true;
+                dgvProductos.Visible = false;
+                panel1.Visible = false;
+                comboBoxProveedores.SelectedIndex = -1;
             }
         }
 

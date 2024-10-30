@@ -35,12 +35,12 @@
             this.NombreCliente = new System.Windows.Forms.TextBox();
             this.BtnAgregarCliente = new System.Windows.Forms.Button();
             this.TablaClientes = new System.Windows.Forms.DataGridView();
-            this.BtnEliminar = new System.Windows.Forms.Button();
-            this.txtBuscarCliebte = new System.Windows.Forms.TextBox();
             this.txtID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtTelefono = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtDireccion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnEliminar = new System.Windows.Forms.Button();
+            this.txtBuscarCliebte = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.TablaClientes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,13 +61,12 @@
             this.IDCliente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.IDCliente.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.IDCliente.ForeColor = System.Drawing.Color.White;
-            this.IDCliente.Location = new System.Drawing.Point(69, 103);
+            this.IDCliente.Location = new System.Drawing.Point(69, 127);
             this.IDCliente.Multiline = true;
             this.IDCliente.Name = "IDCliente";
-            this.IDCliente.Size = new System.Drawing.Size(221, 34);
+            this.IDCliente.Size = new System.Drawing.Size(221, 54);
             this.IDCliente.TabIndex = 13;
             this.IDCliente.Text = "ID";
-            
             // 
             // DireccionCliente
             // 
@@ -75,10 +74,10 @@
             this.DireccionCliente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DireccionCliente.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DireccionCliente.ForeColor = System.Drawing.Color.White;
-            this.DireccionCliente.Location = new System.Drawing.Point(69, 318);
+            this.DireccionCliente.Location = new System.Drawing.Point(69, 422);
             this.DireccionCliente.Multiline = true;
             this.DireccionCliente.Name = "DireccionCliente";
-            this.DireccionCliente.Size = new System.Drawing.Size(221, 34);
+            this.DireccionCliente.Size = new System.Drawing.Size(221, 54);
             this.DireccionCliente.TabIndex = 12;
             this.DireccionCliente.Text = "DIRECCION";
             this.DireccionCliente.Enter += new System.EventHandler(this.DireccionCliente_Enter);
@@ -90,10 +89,10 @@
             this.NumTelefono.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NumTelefono.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NumTelefono.ForeColor = System.Drawing.Color.White;
-            this.NumTelefono.Location = new System.Drawing.Point(69, 241);
+            this.NumTelefono.Location = new System.Drawing.Point(69, 321);
             this.NumTelefono.Multiline = true;
             this.NumTelefono.Name = "NumTelefono";
-            this.NumTelefono.Size = new System.Drawing.Size(221, 34);
+            this.NumTelefono.Size = new System.Drawing.Size(221, 54);
             this.NumTelefono.TabIndex = 11;
             this.NumTelefono.Text = "TELEFONO";
             this.NumTelefono.Enter += new System.EventHandler(this.NumTelefono_Enter);
@@ -105,10 +104,10 @@
             this.NombreCliente.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NombreCliente.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NombreCliente.ForeColor = System.Drawing.Color.White;
-            this.NombreCliente.Location = new System.Drawing.Point(69, 164);
+            this.NombreCliente.Location = new System.Drawing.Point(69, 216);
             this.NombreCliente.Multiline = true;
             this.NombreCliente.Name = "NombreCliente";
-            this.NombreCliente.Size = new System.Drawing.Size(221, 34);
+            this.NombreCliente.Size = new System.Drawing.Size(221, 54);
             this.NombreCliente.TabIndex = 10;
             this.NombreCliente.Text = "NOMBRE";
             this.NombreCliente.Enter += new System.EventHandler(this.NombreCliente_Enter);
@@ -150,35 +149,6 @@
             this.TablaClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TablaClientes_CellClick);
             this.TablaClientes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TablaClientes_CellContentClick);
             // 
-            // BtnEliminar
-            // 
-            this.BtnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.BtnEliminar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnEliminar.ForeColor = System.Drawing.Color.White;
-            this.BtnEliminar.Location = new System.Drawing.Point(425, 561);
-            this.BtnEliminar.Name = "BtnEliminar";
-            this.BtnEliminar.Size = new System.Drawing.Size(221, 68);
-            this.BtnEliminar.TabIndex = 16;
-            this.BtnEliminar.Text = "ELIMINAR";
-            this.BtnEliminar.UseVisualStyleBackColor = false;
-            this.BtnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
-            // 
-            // txtBuscarCliebte
-            // 
-            this.txtBuscarCliebte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.txtBuscarCliebte.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBuscarCliebte.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarCliebte.ForeColor = System.Drawing.Color.White;
-            this.txtBuscarCliebte.Location = new System.Drawing.Point(627, 44);
-            this.txtBuscarCliebte.Multiline = true;
-            this.txtBuscarCliebte.Name = "txtBuscarCliebte";
-            this.txtBuscarCliebte.Size = new System.Drawing.Size(250, 46);
-            this.txtBuscarCliebte.TabIndex = 17;
-            this.txtBuscarCliebte.Text = "BUSCAR CLIENTE";
-            this.txtBuscarCliebte.TextChanged += new System.EventHandler(this.txtBuscarCliebte_TextChanged);
-            this.txtBuscarCliebte.Enter += new System.EventHandler(this.txtBuscarCliebte_Enter);
-            this.txtBuscarCliebte.Leave += new System.EventHandler(this.txtBuscarCliebte_Leave);
-            // 
             // txtID
             // 
             this.txtID.HeaderText = "ID";
@@ -206,6 +176,35 @@
             this.txtDireccion.MinimumWidth = 6;
             this.txtDireccion.Name = "txtDireccion";
             this.txtDireccion.ReadOnly = true;
+            // 
+            // BtnEliminar
+            // 
+            this.BtnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.BtnEliminar.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnEliminar.ForeColor = System.Drawing.Color.White;
+            this.BtnEliminar.Location = new System.Drawing.Point(376, 546);
+            this.BtnEliminar.Name = "BtnEliminar";
+            this.BtnEliminar.Size = new System.Drawing.Size(221, 80);
+            this.BtnEliminar.TabIndex = 16;
+            this.BtnEliminar.Text = "ELIMINAR";
+            this.BtnEliminar.UseVisualStyleBackColor = false;
+            this.BtnEliminar.Click += new System.EventHandler(this.BtnEliminar_Click);
+            // 
+            // txtBuscarCliebte
+            // 
+            this.txtBuscarCliebte.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.txtBuscarCliebte.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBuscarCliebte.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBuscarCliebte.ForeColor = System.Drawing.Color.White;
+            this.txtBuscarCliebte.Location = new System.Drawing.Point(627, 44);
+            this.txtBuscarCliebte.Multiline = true;
+            this.txtBuscarCliebte.Name = "txtBuscarCliebte";
+            this.txtBuscarCliebte.Size = new System.Drawing.Size(250, 46);
+            this.txtBuscarCliebte.TabIndex = 17;
+            this.txtBuscarCliebte.Text = "BUSCAR CLIENTE";
+            this.txtBuscarCliebte.TextChanged += new System.EventHandler(this.txtBuscarCliebte_TextChanged);
+            this.txtBuscarCliebte.Enter += new System.EventHandler(this.txtBuscarCliebte_Enter);
+            this.txtBuscarCliebte.Leave += new System.EventHandler(this.txtBuscarCliebte_Leave);
             // 
             // FormClientes
             // 

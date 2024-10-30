@@ -29,12 +29,12 @@ namespace ABARROTES
             {
                 
                 comboBoxClientes.DataSource = new BindingSource(clientes, null);
-                comboBoxClientes.DisplayMember = "Value"; // Mostrar los nombres 
-                comboBoxClientes.ValueMember = "Key"; //  el ID del cliente 
+                comboBoxClientes.DisplayMember = "Value"; 
+                comboBoxClientes.ValueMember = "Key"; 
             }
             else
             {
-                MessageBox.Show("No se encontraron clientes.");
+               
             }
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -43,7 +43,7 @@ namespace ABARROTES
             {
                 BuscarIDVenta_Click(this, new EventArgs());
 
-                return true; // Indica que la tecla ha sido manejada
+                return true; 
             }
             if (keyData == Keys.F5)
             {
@@ -54,7 +54,7 @@ namespace ABARROTES
             {
                 BtnAgregarATabla_Click(this, new EventArgs());
                 comboBoxProductos.Focus();
-                return true; // Indica que la tecla ha sido manejada
+                return true; 
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -249,21 +249,28 @@ namespace ABARROTES
         
         private void BuscarIDVenta_Click(object sender, EventArgs e)
         {
+            
             if (string.IsNullOrEmpty(txtIDVenta.Text))
             {
                 FormVentas_Load(this, new EventArgs());
             }
             else { 
             int idVenta = int.Parse(txtIDVenta.Text);
-            tablaFolios.Visible = true;
-            Conexion.BuscarIDVenta(idVenta, tablaFolios);
+           
+                try
+                {
+                    Conexion.BuscarIDVenta(idVenta, tablaFolios);
+                    tablaFolios.Visible = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
             }
         }
 
-        private void tablaFolios_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
+       
     }
 
 }

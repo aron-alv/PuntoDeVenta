@@ -429,7 +429,6 @@
             this.tablaFolios.Size = new System.Drawing.Size(1323, 280);
             this.tablaFolios.TabIndex = 27;
             this.tablaFolios.Visible = false;
-            this.tablaFolios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablaFolios_CellContentClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -486,10 +485,10 @@
             // ID_Cliente
             // 
             this.ID_Cliente.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ID_Cliente.HeaderText = "ID CLIENTE";
+            this.ID_Cliente.HeaderText = "CLIENTE";
             this.ID_Cliente.MinimumWidth = 6;
             this.ID_Cliente.Name = "ID_Cliente";
-            this.ID_Cliente.Width = 153;
+            this.ID_Cliente.Width = 139;
             // 
             // FormVentas
             // 

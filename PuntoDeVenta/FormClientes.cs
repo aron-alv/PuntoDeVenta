@@ -97,7 +97,7 @@ namespace ABARROTES
             int siguienteID = Conexion.ObtenerSiguienteIDCliente();
             if (siguienteID != -1)
             {
-                IDCliente.Text = siguienteID.ToString(); // Asegúrate de que txtIDCliente es el nombre de tu TextBox
+                IDCliente.Text = siguienteID.ToString(); 
             }
         }
 
@@ -136,7 +136,7 @@ namespace ABARROTES
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error: {ex.Message}");
+                MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             TablaClientes.ClearSelection();
         }

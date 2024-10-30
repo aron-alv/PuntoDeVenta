@@ -26,7 +26,7 @@ namespace ABARROTES
             }
             else
             {
-                MessageBox.Show("No se encontraron proveedores.");
+               
             }
 
             Conexion.BuscarProductosEnTabla(TablaProductos);
@@ -128,16 +128,22 @@ namespace ABARROTES
                 }
                 int idProveedor = selectedValue.Value;
 
-
-                if (Conexion.ModificarProducto(id, nombre, precio, descripcion, idProveedor))
+                try
                 {
-                    MessageBox.Show("Producto modificado correctamente");
-                    Conexion.BuscarProductosEnTabla(TablaProductos);
-                    LimpiarCampos();
+                    if (Conexion.ModificarProducto(id, nombre, precio, descripcion, idProveedor))
+                    {
+                        MessageBox.Show("Producto modificado correctamente");
+                        Conexion.BuscarProductosEnTabla(TablaProductos);
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al modificar producto");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error al modificar producto");
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
@@ -158,7 +164,8 @@ namespace ABARROTES
                     return;
                 }
                 int idProveedor = selectedValue.Value;
-              
+              try
+                { 
                 if (Conexion.AgregarProducto(id, nombre, precio, descripcion, idProveedor))
                 {
                     MessageBox.Show("Producto agregado correctamente");
@@ -167,6 +174,11 @@ namespace ABARROTES
                 else
                 {
                     MessageBox.Show("Error al agregar producto");
+                }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
            
@@ -186,16 +198,23 @@ namespace ABARROTES
         {
             if(TablaProductos.SelectedRows.Count > 0)
             {
-                int id = Convert.ToInt32(TablaProductos.SelectedRows[0].Cells[0].Value);
-                if (Conexion.EliminarProducto(id))
+                try
                 {
-                    MessageBox.Show("Producto eliminado correctamente");
-                    Conexion.BuscarProductosEnTabla(TablaProductos);
-                    LimpiarCampos();
+                    int id = Convert.ToInt32(TablaProductos.SelectedRows[0].Cells[0].Value);
+                    if (Conexion.EliminarProducto(id))
+                    {
+                        MessageBox.Show("Producto eliminado correctamente");
+                        Conexion.BuscarProductosEnTabla(TablaProductos);
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al eliminar producto");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error al eliminar producto");
+                    MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
