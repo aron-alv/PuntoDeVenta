@@ -32,80 +32,7 @@ namespace ABARROTES
             Conexion.BuscarProductosEnTabla(TablaProductos);
         }
 
-        private void IDProducto_Click(object sender, EventArgs e)
-        {
-            if (IDProducto.Text == "ID")
-            {
-                IDProducto.Text = "";
-            }
-        }
-
-        private void IDProducto_Leave(object sender, EventArgs e)
-        {
-            if (IDProducto.Text == "")
-            {
-                IDProducto.Text = "ID";
-            }
-        }
-
-        private void NombreProducto_Enter(object sender, EventArgs e)
-        {
-            if (NombreProducto.Text == "NOMBRE")
-            {
-                NombreProducto.Text = "";
-            }
-        }
-
-        private void NombreProducto_Leave(object sender, EventArgs e)
-        {
-            if (NombreProducto.Text == "")
-            {
-                NombreProducto.Text = "NOMBRE";
-            }
-        }
-
-        private void PrecioProducto_Enter(object sender, EventArgs e)
-        {
-            if (PrecioProducto.Text == "PRECIO")
-            {
-                PrecioProducto.Text = "";
-            }
-
-        }
-
-        private void PrecioProducto_Leave(object sender, EventArgs e)
-        {
-            if (PrecioProducto.Text == "")
-            {
-                PrecioProducto.Text = "PRECIO";
-            }
-        }
-
-        private void DescripcionProducto_Enter(object sender, EventArgs e)
-        {
-            if (DescripcionProducto.Text == "DESCRIPCION")
-            {
-                DescripcionProducto.Text = "";
-            }
-        }
-
-        private void DescripcionProducto_Leave(object sender, EventArgs e)
-        {
-            if (DescripcionProducto.Text == "")
-            {
-                DescripcionProducto.Text = "DESCRIPCION";
-            }
-        }
-
-
-
-        private void IDProveedor_Leave(object sender, EventArgs e)
-        {
-            if (IDProveedor.Text == "")
-            {
-                IDProveedor.Text = "ID PROVEEDOR";
-            }
-        }
+      
 
         private void BtnAgregarProducto_Click(object sender, EventArgs e)
         {
@@ -116,6 +43,7 @@ namespace ABARROTES
                     MessageBox.Show("Favor de llenar todos los campos");
                     return;
                 }
+                
                 int id = Convert.ToInt32(IDProducto.Text);
                 string nombre = NombreProducto.Text;
                 double precio = Convert.ToDouble(PrecioProducto.Text);
@@ -135,6 +63,7 @@ namespace ABARROTES
                         MessageBox.Show("Producto modificado correctamente");
                         Conexion.BuscarProductosEnTabla(TablaProductos);
                         LimpiarCampos();
+                        TablaProductos.ClearSelection();
                     }
                     else
                     {
@@ -170,6 +99,7 @@ namespace ABARROTES
                     {
                         MessageBox.Show("Producto agregado correctamente");
                         Conexion.BuscarProductosEnTabla(TablaProductos);
+                        LimpiarCampos();
                     }
                     else
                     {
@@ -238,11 +168,11 @@ namespace ABARROTES
         public void LimpiarCampos()
         {
             IDProducto.ReadOnly = false;
-            IDProducto.Text = "ID";
-            NombreProducto.Text = "NOMBRE";
-            PrecioProducto.Text = "PRECIO";
-            DescripcionProducto.Text = "DESCRIPCION";
-            IDProveedor.Text = "ID PROVEEDOR";
+            IDProducto.Text = "";
+            NombreProducto.Text = "";
+            PrecioProducto.Text = "";
+            DescripcionProducto.Text = "";
+            IDProveedor.Text = "";
 
         }
 
@@ -272,7 +202,10 @@ namespace ABARROTES
 
         private void FormProductos_Click(object sender, EventArgs e)
         {
-            LimpiarCampos();
+            if(TablaProductos.SelectedRows.Count > 0)
+            {
+                LimpiarCampos();
+            }
             TablaProductos.ClearSelection();
         }
 

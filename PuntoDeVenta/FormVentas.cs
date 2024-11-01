@@ -109,7 +109,20 @@ namespace ABARROTES
                 decimal precio = producto.Item3;
                 decimal cantidad = decimal.Parse(txtCantidad.Text);
                 decimal importe = precio * cantidad;
-
+                //si el producto ya esta en la tabla, solo se actualiza la cantidad
+                foreach (DataGridViewRow row in dataGridViewProductos.Rows)
+                {
+                    if (Convert.ToInt32(row.Cells[0].Value) == productId)
+                    {
+                        decimal cantidadActual = Convert.ToDecimal(row.Cells[2].Value);
+                        decimal precioActual = Convert.ToDecimal(row.Cells[3].Value);
+                        decimal importeActual = cantidadActual * precioActual;
+                        cantidad += cantidadActual;
+                        importe = importeActual + importe;
+                        dataGridViewProductos.Rows.Remove(row);
+                        break;
+                    }
+                }
                 dataGridViewProductos.Rows.Add(productId, nombre, cantidad, precio, importe);
             }
             UpdateTotals();

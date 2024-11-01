@@ -13,70 +13,7 @@ namespace ABARROTES
             Conexion = conexion;
         }
 
-        private void IDProveedor_Enter(object sender, System.EventArgs e)
-        {
-            if (IDProveedor.Text == "ID")
-            {
-                IDProveedor.Text = "";
-            }
-        }
-
-        private void IDProveedor_Leave(object sender, System.EventArgs e)
-        {
-            if (IDProveedor.Text == "")
-            {
-                IDProveedor.Text = "ID";
-            }
-        }
-
-        private void NombreProducto_Enter(object sender, System.EventArgs e)
-        {
-            if (NombreProveedor.Text == "NOMBRE")
-            {
-                NombreProveedor.Text = "";
-            }
-        }
-
-        private void NombreProducto_Leave(object sender, System.EventArgs e)
-        {
-            if (NombreProveedor.Text == "")
-            {
-                NombreProveedor.Text = "NOMBRE";
-            }
-        }
-
-        private void NumTelefono_Enter(object sender, System.EventArgs e)
-        {
-            if (NumTelefono.Text == "TELEFONO")
-            {
-                NumTelefono.Text = "";
-            }
-        }
-
-        private void NumTelefono_Leave(object sender, System.EventArgs e)
-        {
-            if (NumTelefono.Text == "")
-            {
-                NumTelefono.Text = "TELEFONO";
-            }
-        }
-
-        private void DireccionProveedor_Enter(object sender, System.EventArgs e)
-        {
-            if (DireccionProveedor.Text == "DIRECCION")
-            {
-                DireccionProveedor.Text = "";
-            }
-        }
-
-        private void DireccionProveedor_Leave(object sender, System.EventArgs e)
-        {
-            if (DireccionProveedor.Text == "")
-            {
-                DireccionProveedor.Text = "DIRECCION";
-            }
-        }
-
+    
         private void BtnAgregarProducto_Click(object sender, System.EventArgs e)
         {
             if (TablaProveedores.SelectedRows.Count > 0)
@@ -195,16 +132,21 @@ namespace ABARROTES
         public void LimpiarCampos()
         {
             IDProveedor.ReadOnly = false;
-            IDProveedor.Text = "ID";
-            NombreProveedor.Text = "NOMBRE";
-            NumTelefono.Text = "TELEFONO";
-            DireccionProveedor.Text = "DIRECCION";
+            IDProveedor.Text = "";
+            NombreProveedor.Text = "";
+            NumTelefono.Text = "";
+            DireccionProveedor.Text = "";
         }
 
         private void FormProveedores_Click(object sender, System.EventArgs e)
         {
-            LimpiarCampos();
-            Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
+
+            if (TablaProveedores.SelectedRows.Count > 0)
+            {
+                LimpiarCampos();
+               
+            }
+
             TablaProveedores.ClearSelection();
 
         }

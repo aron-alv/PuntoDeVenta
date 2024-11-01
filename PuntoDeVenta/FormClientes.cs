@@ -1,6 +1,7 @@
 ﻿
 using PuntoDeVenta;
 using System;
+using System.Data.SqlTypes;
 using System.Windows.Forms;
 namespace ABARROTES
 {
@@ -17,65 +18,6 @@ namespace ABARROTES
 
 
 
-        private void NombreCliente_Enter(object sender, System.EventArgs e)
-        {
-            if (NombreCliente.Text == "NOMBRE")
-            {
-                NombreCliente.Text = "";
-            }
-        }
-
-        private void NombreCliente_Leave(object sender, System.EventArgs e)
-        {
-            if (NombreCliente.Text == "")
-            {
-                NombreCliente.Text = "NOMBRE";
-            }
-        }
-
-        private void NumTelefono_Enter(object sender, System.EventArgs e)
-        {
-            if (NumTelefono.Text == "TELEFONO")
-            {
-                NumTelefono.Text = "";
-            }
-        }
-
-        private void NumTelefono_Leave(object sender, System.EventArgs e)
-        {
-            if (NumTelefono.Text == "")
-            {
-                NumTelefono.Text = "TELEFONO";
-            }
-        }
-
-        private void DireccionCliente_Enter(object sender, System.EventArgs e)
-        {
-            if (DireccionCliente.Text == "DIRECCION")
-            {
-                DireccionCliente.Text = "";
-            }
-        }
-
-        private void DireccionCliente_Leave(object sender, System.EventArgs e)
-        {
-            if (DireccionCliente.Text == "")
-            {
-                DireccionCliente.Text = "DIRECCION";
-            }
-        }
-
-
-        private void txtBuscarCliebte_Enter(object sender, System.EventArgs e)
-        {
-
-            if (txtBuscarCliebte.Text == "BUSCAR CLIENTE")
-            {
-                TablaClientes.ClearSelection();
-                txtBuscarCliebte.Text = "";
-
-            }
-        }
 
         private void txtBuscarCliebte_Leave(object sender, System.EventArgs e)
         {
@@ -163,17 +105,23 @@ namespace ABARROTES
         }
         public void LimpiarTextbox()
         {
-            IDCliente.Text = "ID";
-            NombreCliente.Text = "NOMBRE";
-            NumTelefono.Text = "TELEFONO";
-            DireccionCliente.Text = "DIRECCION";
+            int SiguienteID = Conexion.ObtenerSiguienteIDCliente();
+            IDCliente.Text = $"{SiguienteID}";
+            NombreCliente.Text = "";
+            NumTelefono.Text = "";
+            DireccionCliente.Text = "";
 
 
         }
         private void FormClientes_Click(object sender, EventArgs e)
         {
+            if (TablaClientes.SelectedRows.Count > 0)
+            {
+                LimpiarTextbox();
+
+            }
             TablaClientes.ClearSelection();
-            LimpiarTextbox();
+           
         }
 
         private void BtnAgregarCliente_Click(object sender, EventArgs e)
