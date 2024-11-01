@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Forms;
 using System.Data;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Collections;
+using System.Data.SqlClient;
+using System.Text;
+using System.Windows.Forms;
 namespace PuntoDeVenta
 {
+
+
     public class OperacionesBD
     {
         private SqlConnection connection;
@@ -29,19 +26,10 @@ namespace PuntoDeVenta
             {
                 return false;
             }
+
         }
-        public bool CerrarConexion()
-        {
-            try
-            {
-                connection.Close();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+
+
         //////                                                      /////////////
         //////ss                     PRODUCTOS                      /////////////
         //////s                                                      /
@@ -70,7 +58,7 @@ namespace PuntoDeVenta
                     return rowsAffected > 0;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Error al agregar el Producto: {ex.Message}");
             }
@@ -438,7 +426,7 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-              
+
                 return false;
             }
             finally
@@ -485,7 +473,7 @@ namespace PuntoDeVenta
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
@@ -760,7 +748,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-              
+
                 return -1;
             }
         }
@@ -884,9 +872,9 @@ namespace PuntoDeVenta
             }
             catch (SqlException ex)
             {
-               
+
                 throw new Exception($"Error al eliminar al cliente: {ex.Message}");
-               
+
             }
             finally
             {
@@ -1216,7 +1204,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-              
+
             }
             finally
             {
@@ -1261,7 +1249,7 @@ namespace PuntoDeVenta
                                 reader["IVA"],
                                 reader["Total"],
                                 reader["Metodo_Pago"],
-                                reader["Nombre_Cliente"] 
+                                reader["Nombre_Cliente"]
                             );
                         }
                     }
@@ -1601,5 +1589,6 @@ namespace PuntoDeVenta
                 return false;
             }
         }
+
     }
 }

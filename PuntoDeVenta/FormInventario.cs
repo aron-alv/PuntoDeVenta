@@ -18,8 +18,8 @@ namespace ABARROTES
         {
             InitializeComponent();
             this.Conexion = Conexion;
-         
-            
+
+
         }
 
         private void FormInventario_Load(object sender, System.EventArgs e)
@@ -29,36 +29,36 @@ namespace ABARROTES
             if (proveedores.Count > 0)
             {
                 comboBoxProveedores.DataSource = new BindingSource(proveedores, null);
-                comboBoxProveedores.DisplayMember = "Value"; 
-                comboBoxProveedores.ValueMember = "Key";    
+                comboBoxProveedores.DisplayMember = "Value";
+                comboBoxProveedores.ValueMember = "Key";
             }
             else
             {
-               
+
             }
 
             // Cargar productos en el ComboBox 
             var productosIds = Conexion.ObtenerProductos().Keys.ToList(); // Obtener solo los IDs de productos
             productos = new List<Tuple<int, string, decimal>>(); // Lista de tuplas para almacenar los productos
 
-           
+
             foreach (var id in productosIds)
             {
-               
+
                 if (Conexion.ObtenerProductoDetalle(id, out string nombre, out double precio))
                 {
                     productos.Add(new Tuple<int, string, decimal>(id, nombre, (decimal)precio));
                 }
             }
 
-           
+
             Dictionary<int, string> productosDiccionario = productos.ToDictionary(p => p.Item1, p => p.Item2);
 
             if (productosDiccionario.Count > 0)
             {
                 comboBoxProductos.DataSource = new BindingSource(productosDiccionario, null);
-                comboBoxProductos.DisplayMember = "Value"; 
-                comboBoxProductos.ValueMember = "Key";   
+                comboBoxProductos.DisplayMember = "Value";
+                comboBoxProductos.ValueMember = "Key";
             }
             else
             {
@@ -75,14 +75,14 @@ namespace ABARROTES
             if (keyData == Keys.Enter && this.ActiveControl == txtCantidadEntrante)
             {
                 btnAgregarProductoATabla_Click(this, new EventArgs());
-                
+
                 comboBoxProductos.Focus();
-                return true; 
+                return true;
             }
-          
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
-    
+
         private void btnRegistrarInventario_Click(object sender, EventArgs e)
         {
             try
@@ -93,10 +93,10 @@ namespace ABARROTES
                 int? selectedValue = comboBoxProveedores.SelectedValue as int?;
                 if (selectedValue == null)
                 {
-                  
+
                     return;
                 }
-                
+
                 int idProveedor = selectedValue.Value;
 
                 decimal importe = 0;
@@ -104,8 +104,8 @@ namespace ABARROTES
                 decimal total = decimal.Parse(txtTotal.Text, System.Globalization.NumberStyles.Currency);
 
                 List<Tuple<int, decimal, decimal>> productos = new List<Tuple<int, decimal, decimal>>();
-               
-                if(dgvProductos.Rows.Count == 0)
+
+                if (dgvProductos.Rows.Count == 0)
                 {
                     MessageBox.Show("Por favor, agregue productos un producto.");
                     return;
@@ -114,7 +114,7 @@ namespace ABARROTES
                 {
                     if (row.IsNewRow) continue;
 
-                    
+
                     int idProducto = Convert.ToInt32(row.Cells["ID_Producto"].Value);
                     if (decimal.TryParse(row.Cells["Cantidad"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal cantidad) &&
                         decimal.TryParse(row.Cells["Precio"].Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal precio))
@@ -125,12 +125,12 @@ namespace ABARROTES
                     }
                     else
                     {
-                        
+
                         return;
                     }
                 }
 
-          
+
 
 
 
@@ -141,7 +141,7 @@ namespace ABARROTES
                     MessageBox.Show("Inventario registrado con éxito.");
                     Conexion.BuscarInventarioEnTabla(tablaInventario);
                     comboBoxProveedores.SelectedIndex = -1;
-                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos); 
+                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos);
 
                     if (resultadoDetalle)
                     {
@@ -171,7 +171,7 @@ namespace ABARROTES
         {
             txtCantidadEntrante.Text = "";
             textBoxPrecio.Text = "";
-            
+
             txtIVA.Text = "";
             txtTotal.Text = "";
             txtObservaciones.Text = "";
@@ -179,13 +179,13 @@ namespace ABARROTES
 
         private void comboBoxProveedores_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
             if (comboBoxProveedores.SelectedItem != null)
             {
-               
+
                 int idProveedor = ((KeyValuePair<int, string>)comboBoxProveedores.SelectedItem).Key;
 
-               
+
                 Conexion.CargarProductosPorProveedor(idProveedor, comboBoxProductos);
             }
         }
@@ -199,7 +199,7 @@ namespace ABARROTES
             }
             else
             {
-                
+
             }
 
         }
@@ -255,7 +255,7 @@ namespace ABARROTES
                 }
 
             }
-           
+
         }
 
         private void UpdateTotals()
@@ -268,10 +268,10 @@ namespace ABARROTES
                     subtotal += Convert.ToDecimal(r.Cells[4].Value);
                 }
             }
-            decimal iva = subtotal * 0.16m; 
+            decimal iva = subtotal * 0.16m;
             decimal total = subtotal + iva;
 
-       
+
             textBoxSubtotal.Text = subtotal.ToString("C");
             txtIVA.Text = iva.ToString("C");
             txtTotal.Text = total.ToString("C");
@@ -293,7 +293,7 @@ namespace ABARROTES
 
         private void eliminarProductoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(dgvProductos.SelectedRows.Count > 0)
+            if (dgvProductos.SelectedRows.Count > 0)
             {
                 dgvProductos.Rows.Remove(dgvProductos.SelectedRows[0]);
                 UpdateTotals();
@@ -313,7 +313,7 @@ namespace ABARROTES
             {
                 if (dgvProductos.SelectedRows.Count > 0)
                 {
-                   dgvProductos.ContextMenuStrip = SubMenu;
+                    dgvProductos.ContextMenuStrip = SubMenu;
                 }
             }
         }

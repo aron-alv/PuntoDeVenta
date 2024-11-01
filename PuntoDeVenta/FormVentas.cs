@@ -17,33 +17,33 @@ namespace ABARROTES
             InitializeComponent();
             Conexion = conexion;
             this.KeyPreview = true;
-           
+
         }
         private void CargarClientes()
         {
             // funciON PARA  ObtenerClientes 
             Dictionary<int, string> clientes = Conexion.ObtenerClientes();
 
-           
+
             if (clientes.Count > 0)
             {
-                
+
                 comboBoxClientes.DataSource = new BindingSource(clientes, null);
-                comboBoxClientes.DisplayMember = "Value"; 
-                comboBoxClientes.ValueMember = "Key"; 
+                comboBoxClientes.DisplayMember = "Value";
+                comboBoxClientes.ValueMember = "Key";
             }
             else
             {
-               
+
             }
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Enter && this.ActiveControl==txtIDVenta)
+            if (keyData == Keys.Enter && this.ActiveControl == txtIDVenta)
             {
                 BuscarIDVenta_Click(this, new EventArgs());
 
-                return true; 
+                return true;
             }
             if (keyData == Keys.F5)
             {
@@ -54,7 +54,7 @@ namespace ABARROTES
             {
                 BtnAgregarATabla_Click(this, new EventArgs());
                 comboBoxProductos.Focus();
-                return true; 
+                return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -94,7 +94,7 @@ namespace ABARROTES
                 MessageBox.Show("Seleccione un producto.");
                 return;
             }
-            if(string.IsNullOrEmpty(txtCantidad.Text))
+            if (string.IsNullOrEmpty(txtCantidad.Text))
             {
                 MessageBox.Show("Ingrese la cantidad del producto.");
                 return;
@@ -120,7 +120,7 @@ namespace ABARROTES
 
         private void dataGridViewProductos_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && e.RowIndex < dataGridViewProductos.Rows.Count) 
+            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && e.RowIndex < dataGridViewProductos.Rows.Count)
             {
                 var row = dataGridViewProductos.Rows[e.RowIndex];
                 decimal cantidad = Convert.ToDecimal(row.Cells[2].Value);
@@ -159,7 +159,7 @@ namespace ABARROTES
                 MessageBox.Show("ingrese los Campos faltantes.");
                 return;
             }
-            
+
             decimal iva = decimal.Parse(textBoxIVA.Text, System.Globalization.NumberStyles.Currency);
             decimal total = decimal.Parse(textBoxTotal.Text, System.Globalization.NumberStyles.Currency);
             DateTime fecha = DateTime.Now;
@@ -173,8 +173,8 @@ namespace ABARROTES
             }
             int idCliente = (int)comboBoxClientes.SelectedValue;
 
-           
-           
+
+
 
             // Obtener los detalles de la venta desde la tabla
             List<Tuple<int, decimal, decimal>> detallesVenta = new List<Tuple<int, decimal, decimal>>();
@@ -208,7 +208,7 @@ namespace ABARROTES
             }
             catch (Exception ex)
             {
-                
+
                 MessageBox.Show($"Error al realizar la venta: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -223,7 +223,7 @@ namespace ABARROTES
 
         private void eLIMINARPRODUCTOToolStripMenuItem_Click(object sender, EventArgs e)
         {
-       
+
             if (dataGridViewProductos.SelectedRows.Count > 0)
             {
                 dataGridViewProductos.Rows.RemoveAt(dataGridViewProductos.SelectedRows[0].Index);
@@ -233,11 +233,11 @@ namespace ABARROTES
 
         private void dataGridViewProductos_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 if (dataGridViewProductos.SelectedRows.Count > 0)
                 {
-                  dataGridViewProductos.ContextMenuStrip = SubMenu;
+                    dataGridViewProductos.ContextMenuStrip = SubMenu;
                 }
             }
         }
@@ -246,17 +246,18 @@ namespace ABARROTES
         {
 
         }
-        
+
         private void BuscarIDVenta_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrEmpty(txtIDVenta.Text))
             {
                 FormVentas_Load(this, new EventArgs());
             }
-            else { 
-            int idVenta = int.Parse(txtIDVenta.Text);
-           
+            else
+            {
+                int idVenta = int.Parse(txtIDVenta.Text);
+
                 try
                 {
                     Conexion.BuscarIDVenta(idVenta, tablaFolios);
@@ -266,11 +267,11 @@ namespace ABARROTES
                 {
                     MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                
+
             }
         }
 
-       
+
     }
 
 }

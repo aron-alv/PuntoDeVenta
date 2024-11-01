@@ -1,6 +1,5 @@
 ﻿using PuntoDeVenta;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 
@@ -23,11 +22,8 @@ namespace ABARROTES
 
         }
 
-     
 
-        private void comboBoxProductos_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
+
     }
 }

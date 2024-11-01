@@ -1,7 +1,6 @@
 ﻿
 using PuntoDeVenta;
 using System;
-using System.Linq.Expressions;
 using System.Windows.Forms;
 namespace ABARROTES
 {
@@ -112,8 +111,8 @@ namespace ABARROTES
                     MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        
-        
+
+
             else
             {
                 if (IDProveedor.Text == "ID" || NombreProveedor.Text == "NOMBRE" || NumTelefono.Text == "TELEFONO" || DireccionProveedor.Text == "DIRECCION")
@@ -171,13 +170,13 @@ namespace ABARROTES
                     Conexion.ObtenerProveedoresEnTabla(TablaProveedores);
                     LimpiarCampos();
                 }
-               
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
 
         private void TablaProveedores_CellClick(object sender, DataGridViewCellEventArgs e)

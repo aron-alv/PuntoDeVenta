@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dtpFechaRegistro = new System.Windows.Forms.DateTimePicker();
             this.comboBoxProveedores = new System.Windows.Forms.ComboBox();
@@ -79,17 +79,20 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial Black", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(607, 60);
+            this.label1.Location = new System.Drawing.Point(369, 41);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(275, 46);
+            this.label1.Size = new System.Drawing.Size(226, 38);
             this.label1.TabIndex = 1;
             this.label1.Text = "INVENTARIOS";
             // 
             // dtpFechaRegistro
             // 
-            this.dtpFechaRegistro.Location = new System.Drawing.Point(1094, 60);
+            this.dtpFechaRegistro.Enabled = false;
+            this.dtpFechaRegistro.Location = new System.Drawing.Point(673, 41);
+            this.dtpFechaRegistro.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dtpFechaRegistro.Name = "dtpFechaRegistro";
-            this.dtpFechaRegistro.Size = new System.Drawing.Size(254, 22);
+            this.dtpFechaRegistro.Size = new System.Drawing.Size(234, 20);
             this.dtpFechaRegistro.TabIndex = 2;
             // 
             // comboBoxProveedores
@@ -100,18 +103,20 @@
             this.comboBoxProveedores.Font = new System.Drawing.Font("Arial", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProveedores.ForeColor = System.Drawing.Color.White;
             this.comboBoxProveedores.FormattingEnabled = true;
-            this.comboBoxProveedores.Location = new System.Drawing.Point(250, 130);
+            this.comboBoxProveedores.Location = new System.Drawing.Point(20, 42);
+            this.comboBoxProveedores.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxProveedores.Name = "comboBoxProveedores";
-            this.comboBoxProveedores.Size = new System.Drawing.Size(214, 35);
+            this.comboBoxProveedores.Size = new System.Drawing.Size(158, 29);
             this.comboBoxProveedores.TabIndex = 8;
             this.comboBoxProveedores.SelectedIndexChanged += new System.EventHandler(this.comboBoxProveedores_SelectedIndexChanged);
             // 
             // btnRegistrarInventario
             // 
             this.btnRegistrarInventario.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRegistrarInventario.Location = new System.Drawing.Point(269, 574);
+            this.btnRegistrarInventario.Location = new System.Drawing.Point(33, 431);
+            this.btnRegistrarInventario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRegistrarInventario.Name = "btnRegistrarInventario";
-            this.btnRegistrarInventario.Size = new System.Drawing.Size(173, 50);
+            this.btnRegistrarInventario.Size = new System.Drawing.Size(130, 41);
             this.btnRegistrarInventario.TabIndex = 9;
             this.btnRegistrarInventario.Text = "REGISTRAR INVENTARIO";
             this.btnRegistrarInventario.UseVisualStyleBackColor = true;
@@ -120,28 +125,31 @@
             // txtObservaciones
             // 
             this.txtObservaciones.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtObservaciones.Location = new System.Drawing.Point(250, 196);
+            this.txtObservaciones.Location = new System.Drawing.Point(20, 108);
+            this.txtObservaciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtObservaciones.Multiline = true;
             this.txtObservaciones.Name = "txtObservaciones";
-            this.txtObservaciones.Size = new System.Drawing.Size(210, 87);
+            this.txtObservaciones.Size = new System.Drawing.Size(158, 71);
             this.txtObservaciones.TabIndex = 15;
             // 
             // txtTotal
             // 
             this.txtTotal.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTotal.Location = new System.Drawing.Point(203, 173);
+            this.txtTotal.Location = new System.Drawing.Point(152, 141);
+            this.txtTotal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(117, 33);
+            this.txtTotal.Size = new System.Drawing.Size(89, 28);
             this.txtTotal.TabIndex = 20;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(61, 227);
+            this.label3.Location = new System.Drawing.Point(30, 84);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(159, 26);
+            this.label3.Size = new System.Drawing.Size(133, 22);
             this.label3.TabIndex = 24;
             this.label3.Text = "Observaciones";
             // 
@@ -149,9 +157,10 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(100, 135);
+            this.label5.Location = new System.Drawing.Point(58, 18);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(111, 26);
+            this.label5.Size = new System.Drawing.Size(93, 22);
             this.label5.TabIndex = 26;
             this.label5.Text = "Proveedor";
             // 
@@ -159,28 +168,31 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(113, 180);
+            this.label7.Location = new System.Drawing.Point(85, 146);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(62, 26);
+            this.label7.Size = new System.Drawing.Size(52, 22);
             this.label7.TabIndex = 28;
             this.label7.Text = "Total";
             // 
             // txtIVA
             // 
             this.txtIVA.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIVA.Location = new System.Drawing.Point(203, 102);
+            this.txtIVA.Location = new System.Drawing.Point(152, 83);
+            this.txtIVA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtIVA.Name = "txtIVA";
             this.txtIVA.ReadOnly = true;
-            this.txtIVA.Size = new System.Drawing.Size(117, 33);
+            this.txtIVA.Size = new System.Drawing.Size(89, 28);
             this.txtIVA.TabIndex = 29;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(134, 105);
+            this.label6.Location = new System.Drawing.Point(100, 85);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(41, 26);
+            this.label6.Size = new System.Drawing.Size(34, 22);
             this.label6.TabIndex = 27;
             this.label6.Text = "iva";
             // 
@@ -190,9 +202,10 @@
             this.comboBoxProductos.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBoxProductos.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProductos.FormattingEnabled = true;
-            this.comboBoxProductos.Location = new System.Drawing.Point(250, 327);
+            this.comboBoxProductos.Location = new System.Drawing.Point(20, 221);
+            this.comboBoxProductos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxProductos.Name = "comboBoxProductos";
-            this.comboBoxProductos.Size = new System.Drawing.Size(210, 32);
+            this.comboBoxProductos.Size = new System.Drawing.Size(158, 27);
             this.comboBoxProductos.TabIndex = 31;
             this.comboBoxProductos.SelectedIndexChanged += new System.EventHandler(this.comboBoxProductos_SelectedIndexChanged);
             // 
@@ -200,9 +213,10 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(123, 330);
+            this.label8.Location = new System.Drawing.Point(58, 200);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(97, 24);
+            this.label8.Size = new System.Drawing.Size(80, 19);
             this.label8.TabIndex = 30;
             this.label8.Text = "Producto";
             // 
@@ -210,9 +224,10 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(49, 404);
+            this.label9.Location = new System.Drawing.Point(30, 272);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(181, 24);
+            this.label9.Size = new System.Drawing.Size(147, 19);
             this.label9.TabIndex = 35;
             this.label9.Text = "Cantidad Entrante";
             // 
@@ -220,27 +235,30 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(150, 478);
+            this.label10.Location = new System.Drawing.Point(58, 348);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 24);
+            this.label10.Size = new System.Drawing.Size(58, 19);
             this.label10.TabIndex = 34;
             this.label10.Text = "Precio";
             // 
             // textBoxPrecio
             // 
             this.textBoxPrecio.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPrecio.Location = new System.Drawing.Point(250, 475);
+            this.textBoxPrecio.Location = new System.Drawing.Point(20, 369);
+            this.textBoxPrecio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxPrecio.Name = "textBoxPrecio";
             this.textBoxPrecio.ReadOnly = true;
-            this.textBoxPrecio.Size = new System.Drawing.Size(210, 30);
+            this.textBoxPrecio.Size = new System.Drawing.Size(158, 26);
             this.textBoxPrecio.TabIndex = 33;
             // 
             // txtCantidadEntrante
             // 
             this.txtCantidadEntrante.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCantidadEntrante.Location = new System.Drawing.Point(250, 401);
+            this.txtCantidadEntrante.Location = new System.Drawing.Point(20, 303);
+            this.txtCantidadEntrante.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtCantidadEntrante.Name = "txtCantidadEntrante";
-            this.txtCantidadEntrante.Size = new System.Drawing.Size(210, 30);
+            this.txtCantidadEntrante.Size = new System.Drawing.Size(157, 26);
             this.txtCantidadEntrante.TabIndex = 32;
             // 
             // tablaInventario
@@ -248,6 +266,7 @@
             this.tablaInventario.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.tablaInventario.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.tablaInventario.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            this.tablaInventario.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tablaInventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablaInventario.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID_Inventario,
@@ -257,15 +276,16 @@
             this.IVA,
             this.TOTAL,
             this.ID_Proveedor});
-            this.tablaInventario.Location = new System.Drawing.Point(558, 136);
+            this.tablaInventario.Location = new System.Drawing.Point(198, 102);
+            this.tablaInventario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tablaInventario.Name = "tablaInventario";
             this.tablaInventario.RowHeadersWidth = 51;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            this.tablaInventario.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            this.tablaInventario.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.tablaInventario.RowTemplate.Height = 24;
-            this.tablaInventario.Size = new System.Drawing.Size(1166, 326);
+            this.tablaInventario.Size = new System.Drawing.Size(856, 265);
             this.tablaInventario.TabIndex = 36;
             // 
             // ID_Inventario
@@ -273,48 +293,49 @@
             this.ID_Inventario.HeaderText = "ID Inventario";
             this.ID_Inventario.MinimumWidth = 6;
             this.ID_Inventario.Name = "ID_Inventario";
-            this.ID_Inventario.Width = 110;
+            this.ID_Inventario.Width = 93;
             // 
             // fecha_Registro
             // 
             this.fecha_Registro.HeaderText = "fecha Registro";
             this.fecha_Registro.MinimumWidth = 6;
             this.fecha_Registro.Name = "fecha_Registro";
-            this.fecha_Registro.Width = 123;
+            this.fecha_Registro.Width = 101;
             // 
             // Obeservaciones
             // 
             this.Obeservaciones.HeaderText = "Obeservaciones";
             this.Obeservaciones.MinimumWidth = 6;
             this.Obeservaciones.Name = "Obeservaciones";
-            this.Obeservaciones.Width = 136;
+            this.Obeservaciones.Width = 109;
             // 
             // Importe
             // 
             this.Importe.HeaderText = "Importe";
             this.Importe.MinimumWidth = 6;
             this.Importe.Name = "Importe";
-            this.Importe.Width = 81;
+            this.Importe.Width = 67;
             // 
             // IVA
             // 
             this.IVA.HeaderText = "IVA";
             this.IVA.MinimumWidth = 6;
             this.IVA.Name = "IVA";
-            this.IVA.Width = 57;
+            this.IVA.Width = 49;
             // 
             // TOTAL
             // 
             this.TOTAL.HeaderText = "TOTAL";
             this.TOTAL.MinimumWidth = 6;
             this.TOTAL.Name = "TOTAL";
-            this.TOTAL.Width = 80;
+            this.TOTAL.Width = 67;
             // 
             // ID_Proveedor
             // 
             this.ID_Proveedor.HeaderText = "Proveedor";
             this.ID_Proveedor.MinimumWidth = 6;
             this.ID_Proveedor.Name = "ID_Proveedor";
+            this.ID_Proveedor.Width = 81;
             // 
             // dgvProductos
             // 
@@ -322,6 +343,7 @@
             this.dgvProductos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvProductos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvProductos.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            this.dgvProductos.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProductos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID_Producto,
@@ -329,15 +351,16 @@
             this.Cantidad,
             this.Precio,
             this.SubTotal});
-            this.dgvProductos.Location = new System.Drawing.Point(558, 135);
+            this.dgvProductos.Location = new System.Drawing.Point(198, 102);
+            this.dgvProductos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvProductos.Name = "dgvProductos";
             this.dgvProductos.RowHeadersWidth = 51;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            this.dgvProductos.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            this.dgvProductos.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvProductos.RowTemplate.Height = 24;
-            this.dgvProductos.Size = new System.Drawing.Size(1166, 327);
+            this.dgvProductos.Size = new System.Drawing.Size(856, 266);
             this.dgvProductos.TabIndex = 37;
             this.dgvProductos.Visible = false;
             this.dgvProductos.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellValueChanged);
@@ -356,35 +379,36 @@
             this.nombreProducto.HeaderText = "nombre";
             this.nombreProducto.MinimumWidth = 6;
             this.nombreProducto.Name = "nombreProducto";
-            this.nombreProducto.Width = 82;
+            this.nombreProducto.Width = 67;
             // 
             // Cantidad
             // 
             this.Cantidad.HeaderText = "Cantidad";
             this.Cantidad.MinimumWidth = 6;
             this.Cantidad.Name = "Cantidad";
-            this.Cantidad.Width = 90;
+            this.Cantidad.Width = 74;
             // 
             // Precio
             // 
             this.Precio.HeaderText = "Precio";
             this.Precio.MinimumWidth = 6;
             this.Precio.Name = "Precio";
-            this.Precio.Width = 75;
+            this.Precio.Width = 62;
             // 
             // SubTotal
             // 
             this.SubTotal.HeaderText = "SubTotal";
             this.SubTotal.MinimumWidth = 6;
             this.SubTotal.Name = "SubTotal";
-            this.SubTotal.Width = 91;
+            this.SubTotal.Width = 75;
             // 
             // btnAgregarProductoATabla
             // 
             this.btnAgregarProductoATabla.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAgregarProductoATabla.Location = new System.Drawing.Point(269, 699);
+            this.btnAgregarProductoATabla.Location = new System.Drawing.Point(33, 510);
+            this.btnAgregarProductoATabla.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAgregarProductoATabla.Name = "btnAgregarProductoATabla";
-            this.btnAgregarProductoATabla.Size = new System.Drawing.Size(173, 50);
+            this.btnAgregarProductoATabla.Size = new System.Drawing.Size(130, 41);
             this.btnAgregarProductoATabla.TabIndex = 38;
             this.btnAgregarProductoATabla.Text = "agregar a tabla";
             this.btnAgregarProductoATabla.UseVisualStyleBackColor = true;
@@ -393,19 +417,21 @@
             // textBoxSubtotal
             // 
             this.textBoxSubtotal.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxSubtotal.Location = new System.Drawing.Point(203, 31);
+            this.textBoxSubtotal.Location = new System.Drawing.Point(152, 25);
+            this.textBoxSubtotal.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxSubtotal.Name = "textBoxSubtotal";
             this.textBoxSubtotal.ReadOnly = true;
-            this.textBoxSubtotal.Size = new System.Drawing.Size(117, 33);
+            this.textBoxSubtotal.Size = new System.Drawing.Size(89, 28);
             this.textBoxSubtotal.TabIndex = 39;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial Black", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(87, 38);
+            this.label2.Location = new System.Drawing.Point(65, 31);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 26);
+            this.label2.Size = new System.Drawing.Size(80, 22);
             this.label2.TabIndex = 40;
             this.label2.Text = "Subtotal";
             // 
@@ -417,9 +443,10 @@
             this.panel1.Controls.Add(this.textBoxSubtotal);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label7);
-            this.panel1.Location = new System.Drawing.Point(763, 502);
+            this.panel1.Location = new System.Drawing.Point(569, 383);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(380, 247);
+            this.panel1.Size = new System.Drawing.Size(266, 201);
             this.panel1.TabIndex = 41;
             this.panel1.Visible = false;
             // 
@@ -429,21 +456,21 @@
             this.SubMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.eliminarProductoToolStripMenuItem});
             this.SubMenu.Name = "SubMenu";
-            this.SubMenu.Size = new System.Drawing.Size(197, 28);
+            this.SubMenu.Size = new System.Drawing.Size(170, 26);
             // 
             // eliminarProductoToolStripMenuItem
             // 
             this.eliminarProductoToolStripMenuItem.Name = "eliminarProductoToolStripMenuItem";
-            this.eliminarProductoToolStripMenuItem.Size = new System.Drawing.Size(196, 24);
+            this.eliminarProductoToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.eliminarProductoToolStripMenuItem.Text = "Eliminar Producto";
             this.eliminarProductoToolStripMenuItem.Click += new System.EventHandler(this.eliminarProductoToolStripMenuItem_Click);
             // 
             // FormInventario
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
-            this.ClientSize = new System.Drawing.Size(1855, 860);
+            this.ClientSize = new System.Drawing.Size(1077, 699);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnAgregarProductoATabla);
             this.Controls.Add(this.dgvProductos);
@@ -462,6 +489,7 @@
             this.Controls.Add(this.dtpFechaRegistro);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormInventario";
             this.Text = "FormInventario";
             this.Load += new System.EventHandler(this.FormInventario_Load);

@@ -1,9 +1,7 @@
-﻿using System.Data;
+﻿using PuntoDeVenta;
 using System;
-using System.Windows.Forms;
-
 using System.Collections.Generic;
-using PuntoDeVenta;
+using System.Windows.Forms;
 namespace ABARROTES
 {
     public partial class FormReporteVentas : Form
@@ -20,7 +18,7 @@ namespace ABARROTES
             // función ObtenerClientes para obtener el diccionario de clientes
             Dictionary<int, string> clientes = Conexion.ObtenerClientes();
 
-           
+
             if (clientes.Count > 0)
             {
                 // Asignamos el diccionario como fuente de datos del ComboBox
@@ -46,27 +44,27 @@ namespace ABARROTES
             DateTime? fechaFin = null;
             int? idCliente = null;
 
-            if (checkBoxFechaInicio.Checked) // Asumiendo que tienes un checkbox para la fecha de inicio
+            if (checkBoxFechaInicio.Checked)
             {
                 fechaInicio = dateTimePickerInicio.Value;
             }
 
-            // Verificar si se debe filtrar por fecha de fin
-            if (checkBoxFechaFin.Checked) // Asumiendo que tienes un checkbox para la fecha de fin
+
+            if (checkBoxFechaFin.Checked)
             {
                 fechaFin = dateTimePickerFin.Value;
             }
 
-            // Obtener el ID del cliente seleccionado
+
             if (comboBoxClientes.SelectedValue != null)
             {
                 idCliente = (int?)comboBoxClientes.SelectedValue;
             }
 
-            // Llamar al método FiltrarVentas con las fechas y el ID del cliente
+
             bool resultado = Conexion.FiltrarVentas(dataGridViewVentas, fechaInicio, fechaFin, idCliente);
 
-            // Mostrar mensaje si hubo un error
+
             if (!resultado)
             {
                 MessageBox.Show("Error al filtrar las ventas.");
@@ -76,5 +74,5 @@ namespace ABARROTES
 
 
 
-    }
+}
 
