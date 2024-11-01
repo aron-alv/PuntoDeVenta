@@ -97,7 +97,7 @@ namespace ABARROTES
             int siguienteID = Conexion.ObtenerSiguienteIDCliente();
             if (siguienteID != -1)
             {
-                IDCliente.Text = siguienteID.ToString(); 
+                IDCliente.Text = siguienteID.ToString();
             }
         }
 

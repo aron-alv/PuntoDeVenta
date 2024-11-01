@@ -12,9 +12,24 @@ namespace ABARROTES
         {
             InitializeComponent();
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                BtnIniciarSesion_Click(this, new EventArgs());
 
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        public static class UsuarioActual
+        {
+            public static string Usuario { get; set; }
+        }
         private void BtnIniciarSesion_Click(object sender, EventArgs e)
         {
+            UsuarioActual.Usuario = txtUsuario.Text;
             string usuario = txtUsuario.Text;
             string contraseña = txtContraseña.Text;
             string Database = "AbarrotesBD";
@@ -66,10 +81,7 @@ namespace ABARROTES
             }
         }
 
-        private void txtContraseña_TextChanged(object sender, EventArgs e)
-        {
-            // Este método está vacío, puedes eliminarlo si no lo necesitas.
-        }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -77,9 +89,9 @@ namespace ABARROTES
             txtContraseña.TabStop = false;
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // Este método está vacío, puedes eliminarlo si no lo necesitas.
+            Application.Exit();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace ABARROTES
             }
             else
             {
-               
+
             }
 
             Conexion.BuscarProductosEnTabla(TablaProductos);
@@ -109,7 +109,7 @@ namespace ABARROTES
 
         private void BtnAgregarProducto_Click(object sender, EventArgs e)
         {
-            if(TablaProductos.SelectedRows.Count > 0)
+            if (TablaProductos.SelectedRows.Count > 0)
             {
                 if (IDProducto.Text == "ID" || NombreProducto.Text == "NOMBRE" || PrecioProducto.Text == "PRECIO" || DescripcionProducto.Text == "DESCRIPCION" || IDProveedor.Text == "ID PROVEEDOR")
                 {
@@ -164,24 +164,24 @@ namespace ABARROTES
                     return;
                 }
                 int idProveedor = selectedValue.Value;
-              try
-                { 
-                if (Conexion.AgregarProducto(id, nombre, precio, descripcion, idProveedor))
+                try
                 {
-                    MessageBox.Show("Producto agregado correctamente");
-                    Conexion.BuscarProductosEnTabla(TablaProductos);
-                }
-                else
-                {
-                    MessageBox.Show("Error al agregar producto");
-                }
+                    if (Conexion.AgregarProducto(id, nombre, precio, descripcion, idProveedor))
+                    {
+                        MessageBox.Show("Producto agregado correctamente");
+                        Conexion.BuscarProductosEnTabla(TablaProductos);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al agregar producto");
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Ocurrió un error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-           
+
         }
 
         private void IDProveedor_Enter_1(object sender, EventArgs e)
@@ -190,13 +190,13 @@ namespace ABARROTES
             {
                 IDProveedor.Text = "";
             }
-           
-            
+
+
         }
 
         private void BtnEliminarProducto_Click(object sender, EventArgs e)
         {
-            if(TablaProductos.SelectedRows.Count > 0)
+            if (TablaProductos.SelectedRows.Count > 0)
             {
                 try
                 {
@@ -225,7 +225,7 @@ namespace ABARROTES
 
         private void TablaProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(TablaProductos.SelectedRows.Count > 0)
+            if (TablaProductos.SelectedRows.Count > 0)
             {
                 IDProducto.ReadOnly = true;
                 IDProducto.Text = TablaProductos.SelectedRows[0].Cells[0].Value.ToString();
@@ -243,13 +243,14 @@ namespace ABARROTES
             PrecioProducto.Text = "PRECIO";
             DescripcionProducto.Text = "DESCRIPCION";
             IDProveedor.Text = "ID PROVEEDOR";
-       
+
         }
 
         private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
         {
             string busqueda = txtBuscarProducto.Text.Trim();
-          
+
+            Conexion.BuscarProducto(busqueda, TablaProductos);
         }
 
         private void txtBuscarProducto_Enter(object sender, EventArgs e)
@@ -275,15 +276,15 @@ namespace ABARROTES
             TablaProductos.ClearSelection();
         }
 
-        
 
-       
+
+
 
         private void FormProductos_Enter(object sender, EventArgs e)
         {
-           
+
         }
 
-      
+
     }
 }

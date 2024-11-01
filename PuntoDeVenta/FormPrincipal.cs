@@ -1,7 +1,9 @@
 ﻿
 using PuntoDeVenta;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
+using static ABARROTES.Form1;
 namespace ABARROTES
 {
     public partial class FormPrincipal : Form
@@ -13,9 +15,11 @@ namespace ABARROTES
             InitializeComponent();
             PanelMostrarReportes.Visible = false;
             Conexion = conexion;
+            labelUsuario.Text = UsuarioActual.Usuario;
+            this.MinimumSize = new Size(this.Width, 745);
         }
 
-       
+
         private void BtnReportes_Click(object sender, EventArgs e)
         {
             if (PanelMostrarReportes.Visible == true)
@@ -28,6 +32,7 @@ namespace ABARROTES
             }
 
         }
+
         private void BtnReportesVentas_Click(object sender, EventArgs e)
         {
 
@@ -46,7 +51,7 @@ namespace ABARROTES
             AbrirFormHija(new FormReporteSaldos(Conexion));
         }
 
-        
+
         private void AbrirFormHija(object formHija)
         {
             if (this.PanelContenedor.Controls.Count > 0)
@@ -54,6 +59,9 @@ namespace ABARROTES
                 var control = this.PanelContenedor.Controls[0];
                 this.PanelContenedor.Controls.RemoveAt(0);
                 control.Dispose();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
             }
             Form fh = formHija as Form;
             fh.TopLevel = false;
@@ -121,8 +129,16 @@ namespace ABARROTES
 
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
-         
+
             Application.Exit();
+        }
+
+        private void BtnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            FormPrincipal.ActiveForm.Hide();
+            Form1 form = new Form1();
+            form.Show();
+
         }
     }
 }
