@@ -30,6 +30,7 @@ namespace ABARROTES
             }
 
             Conexion.BuscarProductosEnTabla(TablaProductos);
+            TablaProductos.ClearSelection();
         }
 
       
@@ -100,6 +101,7 @@ namespace ABARROTES
                         MessageBox.Show("Producto agregado correctamente");
                         Conexion.BuscarProductosEnTabla(TablaProductos);
                         LimpiarCampos();
+                        TablaProductos.ClearSelection();
                     }
                     else
                     {
@@ -114,15 +116,7 @@ namespace ABARROTES
 
         }
 
-        private void IDProveedor_Enter_1(object sender, EventArgs e)
-        {
-            if (IDProveedor.Text == "PROVEEDOR")
-            {
-                IDProveedor.Text = "";
-            }
-
-
-        }
+      
 
         private void BtnEliminarProducto_Click(object sender, EventArgs e)
         {

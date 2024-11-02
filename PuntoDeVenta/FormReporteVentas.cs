@@ -21,7 +21,7 @@ namespace ABARROTES
 
             if (clientes.Count > 0)
             {
-                // Asignamos el diccionario como fuente de datos del ComboBox
+                // Asignamos el diccionario 
                 comboBoxClientes.DataSource = new BindingSource(clientes, null);
                 comboBoxClientes.DisplayMember = "Value"; // Mostrar los nombres 
                 comboBoxClientes.ValueMember = "Key"; //  ID del cliente 

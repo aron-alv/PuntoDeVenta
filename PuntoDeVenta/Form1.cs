@@ -6,12 +6,15 @@ namespace ABARROTES
 {
     public partial class Form1 : Form
     {
+       
         private OperacionesBD Conexion = new OperacionesBD();
 
         public Form1()
         {
             InitializeComponent();
+            txtUsuario.Focus();
         }
+      
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Enter)
@@ -37,6 +40,7 @@ namespace ABARROTES
 
             if (Conexion.AbrirConexion(servidor, "SQL", usuario, contraseña, Database))
             {
+               
                 FormPrincipal formPrincipal = new FormPrincipal(Conexion);
                 formPrincipal.Show();
                 this.Hide();
@@ -85,13 +89,18 @@ namespace ABARROTES
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtUsuario.TabStop = false;
-            txtContraseña.TabStop = false;
+            txtUsuario.Focus();
+
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

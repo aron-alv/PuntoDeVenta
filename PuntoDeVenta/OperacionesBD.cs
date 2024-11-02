@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Windows.Forms;
 namespace PuntoDeVenta
@@ -26,9 +27,19 @@ namespace PuntoDeVenta
             {
                 return false;
             }
+            finally
+            {
+                cerrarConexion();
+            }
 
         }
-
+        public void cerrarConexion()
+        {
+            if (connection.State == ConnectionState.Open)
+            {
+                connection.Close();
+            }
+        }
 
         //////                                                      /////////////
         //////ss                     PRODUCTOS                      /////////////
@@ -185,6 +196,14 @@ namespace PuntoDeVenta
             catch
             {
                 return false;
+            }
+            finally
+            {
+
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
         public bool BuscarProducto(string busqueda, DataGridView tablaProductos)
@@ -477,6 +496,13 @@ namespace PuntoDeVenta
             {
                 throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
         public Dictionary<int, string> ObtenerProveedores()
         {
@@ -510,6 +536,13 @@ namespace PuntoDeVenta
             {
                 return proveedores;
             }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
         public bool ObtenerProveedoresEnTabla(DataGridView tablaProveedores)
         {
@@ -540,6 +573,14 @@ namespace PuntoDeVenta
             catch
             {
                 return false;
+            }
+            finally
+            {
+
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
         public bool EliminarProveedor(int ID_Proveedor)
@@ -729,6 +770,13 @@ namespace PuntoDeVenta
                 MessageBox.Show("Error al agregar cliente: " + ex.Message);
                 return false;
             }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
         public int ObtenerSiguienteIDCliente()
         {
@@ -750,6 +798,13 @@ namespace PuntoDeVenta
             {
 
                 return -1;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -833,6 +888,14 @@ namespace PuntoDeVenta
             catch
             {
                 return false;
+            }
+            finally
+            {
+
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -1026,6 +1089,13 @@ namespace PuntoDeVenta
             {
                 return false;
             }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
 
         public bool BuscarSaldosEnTabla(DataGridView tablaSaldos)
@@ -1064,6 +1134,12 @@ namespace PuntoDeVenta
             catch
             {
                 return false;
+            }
+            finally {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -1310,6 +1386,13 @@ namespace PuntoDeVenta
 
                 throw new Exception($"Error al agregar el inventario: {ex.Message}");
             }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
         }
 
 
@@ -1391,6 +1474,14 @@ namespace PuntoDeVenta
                         Console.WriteLine($"Error al agregar detalles de inventario: {ex.Message}");
                         return false;
                     }
+
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1467,6 +1558,13 @@ namespace PuntoDeVenta
             {
                 MessageBox.Show("Error al filtrar inventario: " + ex.Message);
                 return false;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
 
@@ -1587,6 +1685,13 @@ namespace PuntoDeVenta
             catch
             {
                 return false;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
 

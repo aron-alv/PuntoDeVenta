@@ -222,7 +222,7 @@ namespace ABARROTES
                     var cantidad = txtCantidadEntrante.Text;
                     var precio = textBoxPrecio.Text;
 
-                    // Validar que los campos no estén vacíos
+                
                     if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
                     {
                         MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
@@ -316,6 +316,11 @@ namespace ABARROTES
                     dgvProductos.ContextMenuStrip = SubMenu;
                 }
             }
+        }
+
+        private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

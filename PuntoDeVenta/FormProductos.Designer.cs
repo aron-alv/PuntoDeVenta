@@ -142,7 +142,7 @@
             this.IDProveedor.Name = "IDProveedor";
             this.IDProveedor.Size = new System.Drawing.Size(231, 35);
             this.IDProveedor.TabIndex = 7;
-            this.IDProveedor.Enter += new System.EventHandler(this.IDProveedor_Enter_1);
+          
             // 
             // txtBuscarProducto
             // 

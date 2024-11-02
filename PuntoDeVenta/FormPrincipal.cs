@@ -124,20 +124,45 @@ namespace ABARROTES
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-
+            // Busca si ya hay una instancia de Form2 abierta
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form is FormPrincipal && form != this)
+                {
+                    form.Close();
+                    break;
+                }
+            }
         }
 
         private void FormPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
-
             Application.Exit();
+
         }
 
         private void BtnCerrarSesion_Click(object sender, EventArgs e)
         {
-            FormPrincipal.ActiveForm.Hide();
-            Form1 form = new Form1();
-            form.Show();
+            if (MessageBox.Show("¿Desea cerrar sesión?", "Cerrar sesión", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                Application.Restart();
+            }
+           
+
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                BtnCerrarSesion_Click(this, new EventArgs());
+
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        private void labelUsuario_Click(object sender, EventArgs e)
+        {
 
         }
     }

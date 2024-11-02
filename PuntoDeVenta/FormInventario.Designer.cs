@@ -378,6 +378,7 @@
             this.dgvProductos.Size = new System.Drawing.Size(1141, 327);
             this.dgvProductos.TabIndex = 37;
             this.dgvProductos.Visible = false;
+            this.dgvProductos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellContentClick);
             this.dgvProductos.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellValueChanged);
             this.dgvProductos.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvProductos_MouseClick);
             // 
