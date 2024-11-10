@@ -284,7 +284,12 @@ namespace ABARROTES
             }
         }
 
+        private void BtnDashBoards_Click(object sender, EventArgs e)
+        {
+            ReportesVistas reportesVistas = new ReportesVistas(Conexion);
+            reportesVistas.Show();
 
+        }
     }
 
 }

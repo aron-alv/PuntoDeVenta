@@ -72,6 +72,11 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.BtnProductos = new System.Windows.Forms.Button();
             this.PanelContenedor = new System.Windows.Forms.Panel();
+            this.panel26 = new System.Windows.Forms.Panel();
+            this.panel27 = new System.Windows.Forms.Panel();
+            this.panel28 = new System.Windows.Forms.Panel();
+            this.panel29 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.PanelMostrarReportes.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -87,6 +92,8 @@
             this.panel7.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel26.SuspendLayout();
+            this.panel28.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -127,16 +134,20 @@
             this.BtnCerrarSesion.ForeColor = System.Drawing.Color.White;
             this.BtnCerrarSesion.Image = ((System.Drawing.Image)(resources.GetObject("BtnCerrarSesion.Image")));
             this.BtnCerrarSesion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCerrarSesion.Location = new System.Drawing.Point(3, 802);
+            this.BtnCerrarSesion.Location = new System.Drawing.Point(3, 814);
             this.BtnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnCerrarSesion.Name = "BtnCerrarSesion";
             this.BtnCerrarSesion.Size = new System.Drawing.Size(91, 53);
             this.BtnCerrarSesion.TabIndex = 16;
             this.BtnCerrarSesion.UseVisualStyleBackColor = false;
+            this.BtnCerrarSesion.Visible = false;
             this.BtnCerrarSesion.Click += new System.EventHandler(this.BtnCerrarSesion_Click);
             // 
             // PanelMostrarReportes
             // 
+            this.PanelMostrarReportes.Controls.Add(this.panel28);
+            this.PanelMostrarReportes.Controls.Add(this.panel26);
+            this.PanelMostrarReportes.Controls.Add(this.button4);
             this.PanelMostrarReportes.Controls.Add(this.panel2);
             this.PanelMostrarReportes.Controls.Add(this.panel22);
             this.PanelMostrarReportes.Controls.Add(this.button3);
@@ -149,10 +160,10 @@
             this.PanelMostrarReportes.Controls.Add(this.panel16);
             this.PanelMostrarReportes.Controls.Add(this.BtnReportesInventario);
             this.PanelMostrarReportes.Controls.Add(this.BtnReportesVentas);
-            this.PanelMostrarReportes.Location = new System.Drawing.Point(52, 539);
+            this.PanelMostrarReportes.Location = new System.Drawing.Point(30, 539);
             this.PanelMostrarReportes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PanelMostrarReportes.Name = "PanelMostrarReportes";
-            this.PanelMostrarReportes.Size = new System.Drawing.Size(195, 254);
+            this.PanelMostrarReportes.Size = new System.Drawing.Size(217, 304);
             this.PanelMostrarReportes.TabIndex = 13;
             // 
             // panel2
@@ -656,6 +667,63 @@
             this.PanelContenedor.TabIndex = 1;
             this.PanelContenedor.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelContenedor_Paint);
             // 
+            // panel26
+            // 
+            this.panel26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.panel26.Controls.Add(this.panel27);
+            this.panel26.Location = new System.Drawing.Point(-52, 6);
+            this.panel26.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel26.Name = "panel26";
+            this.panel26.Size = new System.Drawing.Size(11, 53);
+            this.panel26.TabIndex = 17;
+            // 
+            // panel27
+            // 
+            this.panel27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.panel27.Location = new System.Drawing.Point(-92, 0);
+            this.panel27.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel27.Name = "panel27";
+            this.panel27.Size = new System.Drawing.Size(11, 53);
+            this.panel27.TabIndex = 3;
+            // 
+            // panel28
+            // 
+            this.panel28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.panel28.Controls.Add(this.panel29);
+            this.panel28.Location = new System.Drawing.Point(2, 250);
+            this.panel28.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel28.Name = "panel28";
+            this.panel28.Size = new System.Drawing.Size(10, 53);
+            this.panel28.TabIndex = 24;
+            // 
+            // panel29
+            // 
+            this.panel29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.panel29.Location = new System.Drawing.Point(-92, 0);
+            this.panel29.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel29.Name = "panel29";
+            this.panel29.Size = new System.Drawing.Size(11, 53);
+            this.panel29.TabIndex = 3;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
+            this.button4.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button4.Location = new System.Drawing.Point(11, 250);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(180, 53);
+            this.button4.TabIndex = 25;
+            this.button4.Text = "   Graficas";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // FormPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -684,6 +752,8 @@
             this.panel7.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel26.ResumeLayout(false);
+            this.panel28.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -733,5 +803,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelUsuario;
         private System.Windows.Forms.Button BtnCerrarSesion;
+        private System.Windows.Forms.Panel panel26;
+        private System.Windows.Forms.Panel panel27;
+        private System.Windows.Forms.Panel panel28;
+        private System.Windows.Forms.Panel panel29;
+        private System.Windows.Forms.Button button4;
     }
 }

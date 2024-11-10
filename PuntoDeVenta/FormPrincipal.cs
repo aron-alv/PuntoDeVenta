@@ -165,5 +165,10 @@ namespace ABARROTES
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+           AbrirFormHija(new ReportesVistas(Conexion));
+        }
     }
 }

@@ -26,6 +26,8 @@ namespace ABARROTES
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
+     
+       
         public static class UsuarioActual
         {
             public static string Usuario { get; set; }

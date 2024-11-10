@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 namespace PuntoDeVenta
 {
 
@@ -746,20 +748,25 @@ namespace PuntoDeVenta
         {
             nuevoID = 0;
 
+
             try
             {
 
                 string query = "INSERT INTO Cliente (Nombre, Telefono, Direccion) " +
                                "VALUES (@Nombre, @Telefono, @Direccion); " +
-                               "SELECT SCOPE_IDENTITY();"; // Obtener el último ID insertado
+                               "SELECT SCOPE_IDENTITY();"; 
 
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Nombre", Nombre);
                     command.Parameters.AddWithValue("@Telefono", Telefono);
                     command.Parameters.AddWithValue("@Direccion", Direccion);
 
-                    // Ejecutar el comando y obtener el nuevo ID
+                    
                     nuevoID = Convert.ToInt32(command.ExecuteScalar());
 
                     return nuevoID > 0;
@@ -1175,20 +1182,18 @@ namespace PuntoDeVenta
                     cmdStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
 
                     object result = cmdStock.ExecuteScalar();
-                    if (result == null)
-                    {
-                        Console.WriteLine($"No se encontró información de stock para el producto con ID {ID_Producto}");
-                        transaction.Rollback();
-                        return false;
-                    }
+                   
 
                     decimal stockActual = Convert.ToDecimal(result);
+
+                   
 
                     // Obtener el nombre del producto
                     string queryNombre = "SELECT Nombre FROM Producto WHERE ID_Producto = @ID_Producto";
                     SqlCommand cmdNombre = new SqlCommand(queryNombre, connection, transaction);
                     cmdNombre.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     string nombreProducto = cmdNombre.ExecuteScalar() as string;
+
 
                     if (stockActual < cantidadVendida)
                     {
@@ -1655,6 +1660,10 @@ namespace PuntoDeVenta
             }
         }
 
+        //////                                                      /////////////
+        //////ss                 VISTAS                               /////////////
+        //////s                                                      /
+        /////////ss
         public bool BuscarInventarioEnTabla(DataGridView tablaInventario)
         {
             tablaInventario.Rows.Clear();
@@ -1695,5 +1704,226 @@ namespace PuntoDeVenta
             }
         }
 
+        public bool TotalDeProductosVendidos(Chart chartTotalProductoVendido, Label lblProductosVendidosenTotal )
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                string query = "Select * from [Total De Productos Vendidos]; ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                       
+                        var series = chartTotalProductoVendido.Series["Series1"];
+
+                        // Borra los puntos actuales y agrega los nuevos datos
+                        series.Points.Clear();
+                        int contarProductosVendidos = 0;
+                        while (reader.Read())
+                        {
+                       
+                            var nombre = reader["Producto"].ToString();
+                            var total = Convert.ToDouble(reader["TOTAL"]);
+                            contarProductosVendidos += Convert.ToInt32(reader["TOTAL"]);
+                            series.Points.AddXY(nombre, total);
+
+                        }
+                        lblProductosVendidosenTotal.Text = $"TOTAL DE PRODUCTOS VENDIDOS: {contarProductosVendidos.ToString()}";
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener el total de productos vendidos: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+        }
+
+        //metodo para mostrar lo que a comprado en total cada cliente
+        public bool VentasTotalPorCliente(Chart chartVentasTotalPorCliente, Label lblProductosVendidosenTotal)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                // selecciona todos los datos de la vista de ventas total por cliente
+                string query = "Select * from [Ventas Total Por Cliente]";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var series = chartVentasTotalPorCliente.Series["Series1"];
+
+                       
+                        series.Points.Clear();
+                        //muestra los datos de la vista en una grafica
+                        double VentaTotalDetodosLosClientes = 0;
+                        while (reader.Read())
+                        {
+                            var nombre = reader["Cliente"].ToString();
+                            var total = Convert.ToDouble(reader["TOTAL"]);
+                            VentaTotalDetodosLosClientes += Convert.ToDouble(reader["TOTAL"]);
+                            series.Points.AddXY(nombre, total);
+                           
+                        }
+                        lblProductosVendidosenTotal.Text = $"VENTA TOTAL: ${VentaTotalDetodosLosClientes.ToString()}";
+                    }
+                  
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al obtener ventas: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+        }
+        //metodo para mostrar las ventas solamente por mes de inicio y mes fin
+        public bool VentasMensualesPorFecha(Chart chartVentasMensuales, DateTime fechaInicio, DateTime fechaFin, Label lblProductosVendidosenTotal)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                // consulta para obtener las ventas mensuales por fecha de inicio y fecha de fin
+                string query = @"SELECT * FROM [Cantidad Ventas Mensuales] 
+                        WHERE (DATEFROMPARTS(Año, 
+                              CASE Nombre_Mes 
+                                WHEN 'January' THEN 1 
+                                WHEN 'February' THEN 2
+                                WHEN 'March' THEN 3
+                                WHEN 'April' THEN 4
+                                WHEN 'May' THEN 5
+                                WHEN 'June' THEN 6
+                                WHEN 'July' THEN 7
+                                WHEN 'August' THEN 8
+                                WHEN 'September' THEN 9
+                                WHEN 'October' THEN 10
+                                WHEN 'November' THEN 11
+                                WHEN 'December' THEN 12
+                              END, 1)) 
+                        BETWEEN @FechaInicio AND @FechaFin
+                        ORDER BY Año, 
+                                CASE Nombre_Mes 
+                                    WHEN 'January' THEN 1 
+                                    WHEN 'February' THEN 2
+                                    WHEN 'March' THEN 3
+                                    WHEN 'April' THEN 4
+                                    WHEN 'May' THEN 5
+                                    WHEN 'June' THEN 6
+                                    WHEN 'July' THEN 7
+                                    WHEN 'August' THEN 8
+                                    WHEN 'September' THEN 9
+                                    WHEN 'October' THEN 10
+                                    WHEN 'November' THEN 11
+                                    WHEN 'December' THEN 12
+                                END";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@FechaInicio", fechaInicio);
+                    command.Parameters.AddWithValue("@FechaFin", fechaFin);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var series = chartVentasMensuales.Series["Series1"];
+                        series.Points.Clear();
+                        //muestra los datos filtrados de la vista en una grafica
+                        int CantidadDeventasEntotal = 0;
+                        while (reader.Read())
+                        {
+                            string mes = $"{reader["Nombre_Mes"]} {reader["Año"]}";
+                            double totalVentas = Convert.ToDouble(reader["Cantidad_Ventas"]);
+                            CantidadDeventasEntotal += Convert.ToInt32(reader["Cantidad_Ventas"]);
+                            series.Points.AddXY(mes, totalVentas);
+                        }
+                        lblProductosVendidosenTotal.Text = $"TOTAL  DE VENTAS: {CantidadDeventasEntotal.ToString()}";
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar las ventas mensuales: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        //metodo para mostrar lo que se vendio en productos en dias especificos
+        public bool IngresoGeneradoAlDia(Chart charIngresoGeneradoAlDia, DateTime fechaInicio, DateTime fechaFin, Label lblProductosVendidosenTotal)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                // selecciona toda la vista y la filtra por fecha de inicio y fecha fin
+                string query = "SELECT * FROM [Ingreso Generado Al Dia] WHERE Fecha BETWEEN @FechaInicio AND @FechaFin";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@FechaInicio", fechaInicio.Date);
+                    command.Parameters.AddWithValue("@FechaFin", fechaFin.Date);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var series = charIngresoGeneradoAlDia.Series["Series1"];
+                        series.Points.Clear();
+
+                       
+                        double IngresoTotal = 0;
+                        //muestra los datos filtrados de la vista en una grafica
+                        while (reader.Read())
+                        {
+                            DateTime fecha = Convert.ToDateTime(reader["Fecha"]);
+                            double total = Convert.ToDouble(reader["Total_Ventas"]);
+                            IngresoTotal += Convert.ToDouble(reader["Total_Ventas"]);
+                            series.Points.AddXY(fecha.ToString("yyyy-MM-dd"), total); 
+                        }
+                        lblProductosVendidosenTotal.Text = $"INGRESO TOTAL: ${IngresoTotal.ToString()}";
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                
+                return false;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+     
     }
 }
