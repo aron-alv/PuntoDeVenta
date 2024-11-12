@@ -18,6 +18,7 @@ namespace PuntoDeVenta
         {
             InitializeComponent();
             Conexion = conexion;
+          
         }
 
         private void BtnTotalProductoVendido_Click(object sender, EventArgs e)
@@ -58,6 +59,7 @@ namespace PuntoDeVenta
             DateTime FechaIncio = DtpInicio.Value;
             DateTime FechaFin = DtpFin.Value;
             bool resultado = Conexion.VentasMensualesPorFecha(chartVentasMensuales, FechaIncio, FechaFin, lblProductosVendidosenTotal);
+            lblProductosVendidosenTotal.Visible = true;
         }
 
         private void DtpInicio_ValueChanged(object sender, EventArgs e)
@@ -75,6 +77,7 @@ namespace PuntoDeVenta
             DateTime fechaInicio = DtpDiaInicio.Value.Date; 
             DateTime fechaFin = DtpDiaFin.Value.Date;
             bool resultado = Conexion.IngresoGeneradoAlDia(charIngresoGeneradoAlDia, fechaInicio, fechaFin, lblProductosVendidosenTotal);
+            lblProductosVendidosenTotal.Visible = true;
         }
 
      
@@ -87,6 +90,7 @@ namespace PuntoDeVenta
             chartVentasTotalPorCliente.Visible = false;
             chartTotalProductoVendido.Visible = false;
             charIngresoGeneradoAlDia.Visible = false;
+            lblProductosVendidosenTotal.Visible = false;
         }
 
         private void BtnIngresoDiario_Click(object sender, EventArgs e)
@@ -97,7 +101,18 @@ namespace PuntoDeVenta
             chartVentasMensuales.Visible = false;
             chartVentasTotalPorCliente.Visible = false;
             chartTotalProductoVendido.Visible = false;
+            lblProductosVendidosenTotal.Visible = false;
+
+        }
+
+        private void ReportesVistas_Load(object sender, EventArgs e)
+        {
             
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+          
         }
     }
 }

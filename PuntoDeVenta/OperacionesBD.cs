@@ -1585,7 +1585,8 @@ namespace PuntoDeVenta
               c.Nombre AS Nombre_Cliente 
         FROM Venta v
         JOIN Cliente c ON v.ID_Cliente = c.ID_Cliente
-        WHERE 1=1");
+        WHERE 1=1;
+                    ");
 
                 if (fechaInicio.HasValue)
                 {
@@ -1660,10 +1661,7 @@ namespace PuntoDeVenta
             }
         }
 
-        //////                                                      /////////////
-        //////ss                 VISTAS                               /////////////
-        //////s                                                      /
-        /////////ss
+     
         public bool BuscarInventarioEnTabla(DataGridView tablaInventario)
         {
             tablaInventario.Rows.Clear();
@@ -1704,6 +1702,11 @@ namespace PuntoDeVenta
             }
         }
 
+
+        //////                        VISTAS         VISTAS                       /////////////
+        //////ss                 VISTAS           VISTAS     VISTAS                 /////////////
+        //////s                   VISTAS                  VISTAS                   /
+        /////////ss
         public bool TotalDeProductosVendidos(Chart chartTotalProductoVendido, Label lblProductosVendidosenTotal )
         {
             try
@@ -1854,15 +1857,15 @@ namespace PuntoDeVenta
                         var series = chartVentasMensuales.Series["Series1"];
                         series.Points.Clear();
                         //muestra los datos filtrados de la vista en una grafica
-                        int CantidadDeventasEntotal = 0;
+                        double CantidadDeventasEntotal = 0;
                         while (reader.Read())
                         {
                             string mes = $"{reader["Nombre_Mes"]} {reader["Año"]}";
-                            double totalVentas = Convert.ToDouble(reader["Cantidad_Ventas"]);
-                            CantidadDeventasEntotal += Convert.ToInt32(reader["Cantidad_Ventas"]);
+                            double totalVentas = Convert.ToDouble(reader["Total_Ventas"]);
+                            CantidadDeventasEntotal += Convert.ToDouble(reader["Total_Ventas"]);
                             series.Points.AddXY(mes, totalVentas);
                         }
-                        lblProductosVendidosenTotal.Text = $"TOTAL  DE VENTAS: {CantidadDeventasEntotal.ToString()}";
+                        lblProductosVendidosenTotal.Text = $"TOTAL  DE VENTAS: ${CantidadDeventasEntotal.ToString()}";
                     }
                 }
                 return true;
