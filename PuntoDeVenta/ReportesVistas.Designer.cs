@@ -213,7 +213,7 @@
             // 
             this.DtpDiaInicio.CustomFormat = "MM/dd/yyyy";
             this.DtpDiaInicio.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DtpDiaInicio.Location = new System.Drawing.Point(10, 18);
+            this.DtpDiaInicio.Location = new System.Drawing.Point(40, 25);
             this.DtpDiaInicio.Name = "DtpDiaInicio";
             this.DtpDiaInicio.Size = new System.Drawing.Size(200, 22);
             this.DtpDiaInicio.TabIndex = 3;

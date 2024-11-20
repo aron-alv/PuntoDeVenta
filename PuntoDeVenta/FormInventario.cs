@@ -134,27 +134,20 @@ namespace ABARROTES
 
 
 
-                int idInventario = Conexion.AgregarInventario(fechaRegistro, observaciones, importe, iva, total, idProveedor);
+                int idInventario = Conexion.AgregarInventario(fechaRegistro, observaciones, importe, iva, total, idProveedor,productos);
 
                 if (idInventario > 0)
                 {
-                    MessageBox.Show("Inventario registrado con éxito.");
+                    MessageBox.Show("Inventario registrado con exito.");
                     Conexion.BuscarInventarioEnTabla(tablaInventario);
                     comboBoxProveedores.SelectedIndex = -1;
-                    bool resultadoDetalle = Conexion.AgregarDetalleInventario(idInventario, productos);
+                    dgvProductos.Rows.Clear();
+                    dgvProductos.Visible = false;
+                    panel1.Visible = false;
+                    comboBoxProveedores.Enabled = true;
+                    limpiarCampos();
 
-                    if (resultadoDetalle)
-                    {
-                        dgvProductos.Rows.Clear();
-                        dgvProductos.Visible = false;
-                        panel1.Visible = false;
-                        comboBoxProveedores.Enabled = true;
-                        limpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error al agregar el detalle del inventario.");
-                    }
+                    
                 }
                 else
                 {

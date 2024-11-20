@@ -31,17 +31,14 @@ namespace PuntoDeVenta
             }
             finally
             {
-                cerrarConexion();
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
 
         }
-        public void cerrarConexion()
-        {
-            if (connection.State == ConnectionState.Open)
-            {
-                connection.Close();
-            }
-        }
+     
 
         //////                                                      /////////////
         //////ss                     PRODUCTOS                      /////////////
@@ -49,6 +46,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarProducto(int ID_Producto, string Nombre, double Precio, string Descripcion, int ID_Proveedor)
         {
+            SqlTransaction transaction = null;
             try
             {
                 string query = "INSERT INTO Producto (ID_Producto, Nombre, Precio, Descripcion, ID_Proveedor) " +
@@ -57,8 +55,8 @@ namespace PuntoDeVenta
                 {
                     connection.Open();
                 }
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection,transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -67,13 +65,24 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
 
                     int rowsAffected = command.ExecuteNonQuery();
-
+                    transaction.Commit();
                     return rowsAffected > 0;
                 }
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
                 throw new Exception($"Error al agregar el Producto: {ex.Message}");
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
             }
         }
         public bool EliminarProducto(int ID_Producto)
@@ -466,6 +475,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarProveedor(int ID_Proveedor, string Nombre, string Telefono, string Direccion)
         {
+            SqlTransaction transaction = null;
             try
             {
                 if (connection.State != ConnectionState.Open)
@@ -474,8 +484,8 @@ namespace PuntoDeVenta
                 }
                 string query = "INSERT INTO Proveedor (ID_Proveedor, Nombre, Telefono, Direccion) " +
                     "VALUES (@ID_Proveedor, @Nombre, @Telefono, @Direccion)";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection,transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -483,19 +493,16 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@Direccion", Direccion);
 
                     int rowsAffected = command.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    transaction.Commit();
+                    return rowsAffected > 0;
                 }
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
                 throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
             finally
@@ -746,6 +753,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarCliente(string Nombre, string Telefono, string Direccion, out int nuevoID)
         {
+            SqlTransaction transaction = null;
             nuevoID = 0;
 
 
@@ -760,7 +768,8 @@ namespace PuntoDeVenta
                 {
                     connection.Open();
                 }
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@Nombre", Nombre);
                     command.Parameters.AddWithValue("@Telefono", Telefono);
@@ -768,12 +777,16 @@ namespace PuntoDeVenta
 
                     
                     nuevoID = Convert.ToInt32(command.ExecuteScalar());
-
+                    transaction.Commit();
                     return nuevoID > 0;
                 }
             }
             catch (Exception ex)
             {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
                 MessageBox.Show("Error al agregar cliente: " + ex.Message);
                 return false;
             }
@@ -1154,8 +1167,8 @@ namespace PuntoDeVenta
 
         //////                                                      /////////////
         //////ss                     VENTAS                     /////////////
-        //////s                                                      /
-        /////////ss
+        //////s                        y                           /////// /
+        /////////ss                DETALLE VENTA                  /////////////
         public bool RegistrarVenta(DateTime Fecha, decimal Importe, decimal IVA, decimal Total, string Metodo_Pago, int ID_Cliente, List<Tuple<int, decimal, decimal>> detallesVenta)
         {
             SqlTransaction transaction = null;
@@ -1213,10 +1226,12 @@ namespace PuntoDeVenta
                 cmdVenta.Parameters.AddWithValue("@Metodo_Pago", Metodo_Pago);
                 cmdVenta.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
 
+
                 // Obtener el ID Venta recien agregsdo
                 int ID_Venta = Convert.ToInt32(cmdVenta.ExecuteScalar());
 
-                // Registrar los detalles de la venta en la tabla Detalle Venta
+
+                // Registrar la tabla Detalle Venta
                 foreach (var detalle in detallesVenta)
                 {
                     int ID_Producto = detalle.Item1;
@@ -1357,12 +1372,13 @@ namespace PuntoDeVenta
 
         //////                                                      /////////////
         //////ss                   INVENTARIO                /////////////
-        //////s                                                      /
-        /////////ss
+        //////s                          y              /
+        /////////ss             DETALLE INVENTARIO    /////////////
 
 
-        public int AgregarInventario(DateTime fechaRegistro, string observaciones, decimal importe, decimal iva, decimal total, int idProveedor)
+        public int AgregarInventario(DateTime fechaRegistro, string observaciones, decimal importe, decimal iva, decimal total, int idProveedor, List<Tuple<int, decimal, decimal>> productos)
         {
+            SqlTransaction transaction = null;
             try
             {
                 string query = "INSERT INTO Inventario (Fecha_Registro, Observaciones, Importe, IVA, Total, ID_Proveedor) " +
@@ -1373,7 +1389,10 @@ namespace PuntoDeVenta
                 {
                     connection.Open();
                 }
-                using (SqlCommand command = new SqlCommand(query, connection))
+                
+                
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@FechaRegistro", fechaRegistro);
                     command.Parameters.AddWithValue("@Observaciones", observaciones);
@@ -1383,12 +1402,73 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@ID_Proveedor", idProveedor);
 
                     int idInventario = (int)command.ExecuteScalar();
+                    foreach (var producto in productos)
+                    {
+                        int ID_Producto = producto.Item1;
+                        decimal Cantidad_Entrante = producto.Item2;
+                        decimal Costo_Unitario = producto.Item3;
+
+                        decimal Subtotal = Cantidad_Entrante * Costo_Unitario; // Calculo correcto del subtotal para cada producto
+
+                        // Verificar si el producto ya existe en la tabla Saldos
+                        string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
+                        using (SqlCommand commandExistencia = new SqlCommand(queryExistencia, connection, transaction))
+                        {
+                            commandExistencia.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                            int count = (int)commandExistencia.ExecuteScalar();
+
+                            if (count > 0)
+                            {
+                                // Si existe se actualiza la cantidad
+                                string queryActualizar = "UPDATE Saldos SET Cantidad_Entrante = Cantidad_Entrante + @Cantidad_Entrante WHERE ID_Producto = @ID_Producto";
+                                using (SqlCommand commandActualizar = new SqlCommand(queryActualizar, connection, transaction))
+                                {
+                                    commandActualizar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
+                                    commandActualizar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                                    commandActualizar.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                // Si no existe, se inserta un nuevo registro en Saldos
+                                string queryInsertar = "INSERT INTO Saldos (ID_Producto, Cantidad_Entrante, Cantidad_Salida) " +
+                                                       "VALUES (@ID_Producto, @Cantidad_Entrante, 0)";
+                                using (SqlCommand commandInsertar = new SqlCommand(queryInsertar, connection, transaction))
+                                {
+                                    commandInsertar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                                    commandInsertar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
+                                    commandInsertar.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        //selecciona el id del inventario para agregarlo a la tabla DetalleInventario
+                        int Id_Inventario =idInventario;
+
+                        // Insertar los detalles en la tabla DetalleInventario
+                        string queryDetallInventario = "INSERT INTO DetalleInventario (Id_Inventario,ID_Producto, Cantidad_Entrante, Costo_Unitario, Subtotal) " +
+                                       "VALUES (@Id_Inventario,@ID_Producto, @Cantidad_Entrante, @Costo_Unitario, @Subtotal)";
+
+                        using (SqlCommand commando = new SqlCommand(queryDetallInventario, connection, transaction))
+                        {
+                            commando.Parameters.AddWithValue("@Id_Inventario", Id_Inventario);
+                            commando.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                            commando.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
+                            commando.Parameters.AddWithValue("@Costo_Unitario", Costo_Unitario);
+                            commando.Parameters.AddWithValue("@Subtotal", Subtotal);
+
+                            commando.ExecuteNonQuery();
+                        }
+                    }
+                    transaction.Commit();
                     return idInventario;
                 }
             }
             catch (Exception ex)
             {
-
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
                 throw new Exception($"Error al agregar el inventario: {ex.Message}");
             }
             finally
@@ -1399,114 +1479,6 @@ namespace PuntoDeVenta
                 }
             }
         }
-
-
-
-        public bool AgregarDetalleInventario(int ID_Inventario, List<Tuple<int, decimal, decimal>> productos)
-        {
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                }
-
-                using (SqlTransaction transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        foreach (var producto in productos)
-                        {
-                            int ID_Producto = producto.Item1;
-                            decimal Cantidad_Entrante = producto.Item2;
-                            decimal Costo_Unitario = producto.Item3;
-
-                            decimal Subtotal = Cantidad_Entrante * Costo_Unitario; // Calculo correcto del subtotal para cada producto
-
-                            // Verificar si el producto ya existe en la tabla Saldos
-                            string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
-                            using (SqlCommand commandExistencia = new SqlCommand(queryExistencia, connection, transaction))
-                            {
-                                commandExistencia.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                int count = (int)commandExistencia.ExecuteScalar();
-
-                                if (count > 0)
-                                {
-                                    // Si existe se actualiza la cantidad
-                                    string queryActualizar = "UPDATE Saldos SET Cantidad_Entrante = Cantidad_Entrante + @Cantidad_Entrante WHERE ID_Producto = @ID_Producto";
-                                    using (SqlCommand commandActualizar = new SqlCommand(queryActualizar, connection, transaction))
-                                    {
-                                        commandActualizar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                                        commandActualizar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                        commandActualizar.ExecuteNonQuery();
-                                    }
-                                }
-                                else
-                                {
-                                    // Si no existe, se inserta un nuevo registro en Saldos
-                                    string queryInsertar = "INSERT INTO Saldos (ID_Producto, Cantidad_Entrante, Cantidad_Salida) " +
-                                                           "VALUES (@ID_Producto, @Cantidad_Entrante, 0)";
-                                    using (SqlCommand commandInsertar = new SqlCommand(queryInsertar, connection, transaction))
-                                    {
-                                        commandInsertar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                        commandInsertar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                                        commandInsertar.ExecuteNonQuery();
-                                    }
-                                }
-                            }
-
-                            string query = "INSERT INTO DetalleInventario (ID_Inventario, ID_Producto, Cantidad_Entrante, Costo_Unitario, Subtotal) " +
-                                           "VALUES (@ID_Inventario, @ID_Producto, @Cantidad_Entrante, @Costo_Unitario, @Subtotal)";
-
-                            using (SqlCommand command = new SqlCommand(query, connection, transaction))
-                            {
-                                command.Parameters.AddWithValue("@ID_Inventario", ID_Inventario);
-                                command.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                command.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                                command.Parameters.AddWithValue("@Costo_Unitario", Costo_Unitario);
-                                command.Parameters.AddWithValue("@Subtotal", Subtotal);
-
-                                command.ExecuteNonQuery();
-                            }
-                        }
-
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        Console.WriteLine($"Error al agregar detalles de inventario: {ex.Message}");
-                        return false;
-                    }
-
-                    finally
-                    {
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            connection.Close();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al abrir la conexión: {ex.Message}");
-                return false;
-            }
-            finally
-            {
-                if (connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-        }
-
-
-
-
-
 
 
         //////////////////////////////////                         FILTRAR                   //////////////////////////////////   
