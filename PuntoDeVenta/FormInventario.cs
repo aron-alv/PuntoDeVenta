@@ -215,8 +215,8 @@ namespace ABARROTES
                     var cantidad = txtCantidadEntrante.Text;
                     var precio = textBoxPrecio.Text;
 
-                
-                    if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+                   
+                        if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
                     {
                         MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
                         return;

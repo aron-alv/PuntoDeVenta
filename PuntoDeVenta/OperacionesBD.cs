@@ -14,7 +14,7 @@ namespace PuntoDeVenta
     public class OperacionesBD
     {
         private SqlConnection connection;
-
+        public SqlTransaction transaction = null;
         public bool AbrirConexion(string Server, string ModoAuth, string User, string Password, string Database)
         {
             try
@@ -46,7 +46,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarProducto(int ID_Producto, string Nombre, double Precio, string Descripcion, int ID_Proveedor)
         {
-            SqlTransaction transaction = null;
+          
             try
             {
                 string query = "INSERT INTO Producto (ID_Producto, Nombre, Precio, Descripcion, ID_Proveedor) " +
@@ -71,10 +71,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
+                transaction?.Rollback();
                 throw new Exception($"Error al agregar el Producto: {ex.Message}");
             }
             finally
@@ -87,6 +84,7 @@ namespace PuntoDeVenta
         }
         public bool EliminarProducto(int ID_Producto)
         {
+           
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -96,7 +94,8 @@ namespace PuntoDeVenta
 
                 // Eliminar registros relacionados en la tabla DetalleVenta
                 string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection, transaction))
                 {
                     deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     deleteDetalleVentaCommand.ExecuteNonQuery();
@@ -104,15 +103,14 @@ namespace PuntoDeVenta
 
                 // Eliminar registros relacionados en la tabla Saldos
                 string deleteSaldosQuery = "DELETE FROM Saldos WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection))
+                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection, transaction))
                 {
                     deleteSaldosCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     deleteSaldosCommand.ExecuteNonQuery();
                 }
-
                 // Eliminar registros relacionados en la tabla DetalleInventario
                 string deleteDetailsQuery = "DELETE FROM DetalleInventario WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteDetailsCommand = new SqlCommand(deleteDetailsQuery, connection))
+                using (SqlCommand deleteDetailsCommand = new SqlCommand(deleteDetailsQuery, connection, transaction))
                 {
                     deleteDetailsCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     deleteDetailsCommand.ExecuteNonQuery();
@@ -120,15 +118,17 @@ namespace PuntoDeVenta
 
                 // Eliminar el producto
                 string deleteProductQuery = "DELETE FROM Producto WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteProductCommand = new SqlCommand(deleteProductQuery, connection))
+                using (SqlCommand deleteProductCommand = new SqlCommand(deleteProductQuery, connection, transaction))
                 {
                     deleteProductCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     int rowsAffected = deleteProductCommand.ExecuteNonQuery();
+                    transaction.Commit();
                     return rowsAffected > 0;
-                }
+                }        
             }
             catch (SqlException ex)
             {
+                transaction?.Rollback();
                 throw new Exception($"Error al eliminar producto: {ex.Message}");
             }
             finally
@@ -143,6 +143,7 @@ namespace PuntoDeVenta
 
         public bool ModificarProducto(int ID_Producto, string Nombre, double Precio, string Descripcion, int ID_Proveedor)
         {
+         
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -151,8 +152,8 @@ namespace PuntoDeVenta
                 }
 
                 string query = "UPDATE Producto SET Nombre = @Nombre, Precio = @Precio, Descripcion = @Descripcion, ID_Proveedor = @ID_Proveedor WHERE ID_Producto = @ID_Producto";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -161,12 +162,14 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
 
                     int rowsAffected = command.ExecuteNonQuery();
-
+                    transaction.Commit();
                     return rowsAffected > 0;
+                   
                 }
             }
             catch (SqlException ex)
             {
+               transaction?.Rollback();
                 throw new Exception($"Error al modificar el Producto: {ex.Message}");
             }
             finally
@@ -475,7 +478,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarProveedor(int ID_Proveedor, string Nombre, string Telefono, string Direccion)
         {
-            SqlTransaction transaction = null;
+       
             try
             {
                 if (connection.State != ConnectionState.Open)
@@ -499,10 +502,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
+              transaction?.Rollback();
                 throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
             finally
@@ -594,6 +594,7 @@ namespace PuntoDeVenta
         }
         public bool EliminarProveedor(int ID_Proveedor)
         {
+        
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -602,7 +603,8 @@ namespace PuntoDeVenta
                 }
                 // Eliminar registros relacionados en la tabla DetalleVenta
                 string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Producto IN (SELECT ID_Producto FROM Producto WHERE ID_Proveedor = @ID_Proveedor)";
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection,transaction))
                 {
                     deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteDetalleVentaCommand.ExecuteNonQuery();
@@ -610,7 +612,7 @@ namespace PuntoDeVenta
 
                 // Eliminar registros relacionados en la tabla DetalleInventario
                 string deleteDetalleInventarioQuery = "DELETE FROM DetalleInventario WHERE ID_Inventario IN (SELECT ID_Inventario FROM Inventario WHERE ID_Proveedor = @ID_Proveedor)";
-                using (SqlCommand deleteDetalleInventarioCommand = new SqlCommand(deleteDetalleInventarioQuery, connection))
+                using (SqlCommand deleteDetalleInventarioCommand = new SqlCommand(deleteDetalleInventarioQuery, connection, transaction))
                 {
                     deleteDetalleInventarioCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteDetalleInventarioCommand.ExecuteNonQuery();
@@ -618,14 +620,14 @@ namespace PuntoDeVenta
 
                 // Eliminar registros relacionados en la tabla Inventario
                 string deleteInventarioQuery = "DELETE FROM Inventario WHERE ID_Proveedor = @ID_Proveedor";
-                using (SqlCommand deleteInventarioCommand = new SqlCommand(deleteInventarioQuery, connection))
+                using (SqlCommand deleteInventarioCommand = new SqlCommand(deleteInventarioQuery, connection, transaction))
                 {
                     deleteInventarioCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteInventarioCommand.ExecuteNonQuery();
                 }
                 // Eliminar registros relacionados en la tabla Saldos
                 string deleteSaldosQuery = "DELETE FROM Saldos WHERE ID_Producto IN (SELECT ID_Producto FROM Producto WHERE ID_Proveedor = @ID_Proveedor)";
-                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection))
+                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection,transaction))
                 {
                     deleteSaldosCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteSaldosCommand.ExecuteNonQuery();
@@ -633,7 +635,7 @@ namespace PuntoDeVenta
 
                 // Eliminar registros relacionados en la tabla Producto
                 string deleteProductoQuery = "DELETE FROM Producto WHERE ID_Proveedor = @ID_Proveedor";
-                using (SqlCommand deleteProductoCommand = new SqlCommand(deleteProductoQuery, connection))
+                using (SqlCommand deleteProductoCommand = new SqlCommand(deleteProductoQuery, connection, transaction))
                 {
                     deleteProductoCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteProductoCommand.ExecuteNonQuery();
@@ -642,15 +644,17 @@ namespace PuntoDeVenta
 
                 // Eliminar el proveedor
                 string deleteProveedorQuery = "DELETE FROM Proveedor WHERE ID_Proveedor = @ID_Proveedor";
-                using (SqlCommand deleteProveedorCommand = new SqlCommand(deleteProveedorQuery, connection))
+                using (SqlCommand deleteProveedorCommand = new SqlCommand(deleteProveedorQuery, connection,transaction))
                 {
                     deleteProveedorCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     int rowsAffected = deleteProveedorCommand.ExecuteNonQuery();
+                    transaction.Commit();
                     return rowsAffected > 0;
                 }
             }
             catch (SqlException ex)
             {
+                transaction?.Rollback();
                 throw new Exception($"Error al eliminar el Proveedor: {ex.Message}");
             }
             finally
@@ -707,6 +711,7 @@ namespace PuntoDeVenta
 
         public bool ModificarProveedor(int ID_Proveedor, string Nombre, string Telefono, string Direccion)
         {
+           
             try
             {
 
@@ -716,8 +721,8 @@ namespace PuntoDeVenta
                 }
 
                 string query = "UPDATE Proveedor SET Nombre = @Nombre, Telefono = @Telefono, Direccion = @Direccion WHERE ID_Proveedor = @ID_Proveedor";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -727,13 +732,13 @@ namespace PuntoDeVenta
 
                     int rowsAffected = command.ExecuteNonQuery();
 
-
+                    transaction.Commit();
                     return rowsAffected > 0;
                 }
             }
             catch (Exception ex)
             {
-
+                transaction?.Rollback();
                 throw new Exception($"Error al modificar el Proveedor: {ex.Message}");
             }
             finally
@@ -753,7 +758,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarCliente(string Nombre, string Telefono, string Direccion, out int nuevoID)
         {
-            SqlTransaction transaction = null;
+          
             nuevoID = 0;
 
 
@@ -783,10 +788,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
+                transaction?.Rollback();
                 MessageBox.Show("Error al agregar cliente: " + ex.Message);
                 return false;
             }
@@ -921,6 +923,7 @@ namespace PuntoDeVenta
 
         public bool EliminarCliente(int ID_Cliente)
         {
+        
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -930,7 +933,8 @@ namespace PuntoDeVenta
 
                 // Eliminar primero los registros relacionados en DetalleVenta
                 string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Venta IN (SELECT ID_Venta FROM Venta WHERE ID_Cliente = @ID_Cliente)";
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection,transaction))
                 {
                     deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     deleteDetalleVentaCommand.ExecuteNonQuery();
@@ -938,7 +942,7 @@ namespace PuntoDeVenta
 
                 // Eliminar los registros relacionados en Venta
                 string deleteVentaQuery = "DELETE FROM Venta WHERE ID_Cliente = @ID_Cliente";
-                using (SqlCommand deleteVentaCommand = new SqlCommand(deleteVentaQuery, connection))
+                using (SqlCommand deleteVentaCommand = new SqlCommand(deleteVentaQuery, connection, transaction))
                 {
                     deleteVentaCommand.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     deleteVentaCommand.ExecuteNonQuery();
@@ -946,16 +950,17 @@ namespace PuntoDeVenta
 
                 // Ahora eliminar el registro de Cliente
                 string deleteClienteQuery = "DELETE FROM Cliente WHERE ID_Cliente = @ID_Cliente";
-                using (SqlCommand deleteClienteCommand = new SqlCommand(deleteClienteQuery, connection))
+                using (SqlCommand deleteClienteCommand = new SqlCommand(deleteClienteQuery, connection,transaction))
                 {
                     deleteClienteCommand.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     int rowsAffected = deleteClienteCommand.ExecuteNonQuery();
+                    transaction.Commit();
                     return rowsAffected > 0;
                 }
             }
             catch (SqlException ex)
             {
-
+                transaction?.Rollback();
                 throw new Exception($"Error al eliminar al cliente: {ex.Message}");
 
             }
@@ -971,6 +976,7 @@ namespace PuntoDeVenta
 
         public bool ModificarCliente(int ID_Cliente, string Nombre, string Telefono, string Direccion)
         {
+    
             try
             {
 
@@ -980,8 +986,8 @@ namespace PuntoDeVenta
                 }
 
                 string query = "UPDATE Cliente SET Nombre = @Nombre, Telefono = @Telefono, Direccion = @Direccion WHERE ID_Cliente = @ID_Cliente";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
+                transaction = connection.BeginTransaction();
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -991,13 +997,13 @@ namespace PuntoDeVenta
 
                     int rowsAffected = command.ExecuteNonQuery();
 
-
+                    transaction.Commit();
                     return rowsAffected > 0;
                 }
             }
             catch (SqlException ex)
             {
-
+                transaction?.Rollback();
                 Console.WriteLine($"Error modificando el cliente: {ex.Message}");
                 return false;
             }
@@ -1060,63 +1066,7 @@ namespace PuntoDeVenta
         /////////ss
 
         // Métodos para la tabla Saldos
-        public bool AgregarSaldo(int ID_Producto, double Cantidad_Entrante, double Cantidad_Salida)
-        {
-            try
-            {
-                if (connection.State == ConnectionState.Closed)
-                {
-                    connection.Open();
-                }
-
-                // Verificar si el producto ya existe en la tabla Saldos
-                string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand commandExistencia = new SqlCommand(queryExistencia, connection))
-                {
-                    commandExistencia.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    int count = (int)commandExistencia.ExecuteScalar();
-
-                    if (count > 0)
-                    {
-                        // Si existe, actualizamos la cantidad entrante sumando la nueva cantidad
-                        string queryActualizar = "UPDATE Saldos SET Cantidad_Entrante = Cantidad_Entrante + @Cantidad_Entrante WHERE ID_Producto = @ID_Producto";
-                        using (SqlCommand commandActualizar = new SqlCommand(queryActualizar, connection))
-                        {
-                            commandActualizar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                            commandActualizar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                            int rowsAffected = commandActualizar.ExecuteNonQuery();
-                            return rowsAffected > 0;
-                        }
-                    }
-                    else
-                    {
-                        // Si no existe, insertamos un nuevo registro en Saldos
-                        string queryInsertar = "INSERT INTO Saldos (ID_Producto, Cantidad_Entrante, Cantidad_Salida) " +
-                                               "VALUES (@ID_Producto, @Cantidad_Entrante, @Cantidad_Salida)";
-                        using (SqlCommand commandInsertar = new SqlCommand(queryInsertar, connection))
-                        {
-                            commandInsertar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                            commandInsertar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                            commandInsertar.Parameters.AddWithValue("@Cantidad_Salida", Cantidad_Salida);
-
-                            int rowsAffected = commandInsertar.ExecuteNonQuery();
-                            return rowsAffected > 0;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                if (connection.State == ConnectionState.Open)
-                {
-                    connection.Close();
-                }
-            }
-        }
+        
 
         public bool BuscarSaldosEnTabla(DataGridView tablaSaldos)
         {
@@ -1171,7 +1121,7 @@ namespace PuntoDeVenta
         /////////ss                DETALLE VENTA                  /////////////
         public bool RegistrarVenta(DateTime Fecha, decimal Importe, decimal IVA, decimal Total, string Metodo_Pago, int ID_Cliente, List<Tuple<int, decimal, decimal>> detallesVenta)
         {
-            SqlTransaction transaction = null;
+           
 
             try
             {
@@ -1183,7 +1133,7 @@ namespace PuntoDeVenta
 
                 transaction = connection.BeginTransaction();
 
-                // Verificar la existencia del producto y su stock
+               
                 foreach (var detalle in detallesVenta)
                 {
                     int ID_Producto = detalle.Item1;
@@ -1251,11 +1201,11 @@ namespace PuntoDeVenta
                     cmdDetalleVenta.ExecuteNonQuery();
 
                     // Actualizar el stock de Saldos
-                    string queryUpdateStock = "UPDATE Saldos SET Cantidad_Salida = Cantidad_Salida + @Cantidad WHERE ID_Producto = @ID_Producto";
-                    SqlCommand cmdUpdateStock = new SqlCommand(queryUpdateStock, connection, transaction);
-                    cmdUpdateStock.Parameters.AddWithValue("@Cantidad", cantidadVendida);
-                    cmdUpdateStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    cmdUpdateStock.ExecuteNonQuery();
+                    //string queryUpdateStock = "UPDATE Saldos SET Cantidad_Salida = Cantidad_Salida + @Cantidad WHERE ID_Producto = @ID_Producto";
+                    //SqlCommand cmdUpdateStock = new SqlCommand(queryUpdateStock, connection, transaction);
+                    //cmdUpdateStock.Parameters.AddWithValue("@Cantidad", cantidadVendida);
+                    //cmdUpdateStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                    //cmdUpdateStock.ExecuteNonQuery();
                 }
 
 
@@ -1266,10 +1216,7 @@ namespace PuntoDeVenta
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
+                transaction?.Rollback();
                 throw new Exception($"Error al registrar la venta: {ex.Message}");
             }
             finally
@@ -1372,13 +1319,13 @@ namespace PuntoDeVenta
 
         //////                                                      /////////////
         //////ss                   INVENTARIO                /////////////
-        //////s                          y              /
-        /////////ss             DETALLE INVENTARIO    /////////////
-
+        //////s                DETALLE INVENTARIO              /
+        /////////ss                  y                /////////////
+        /////////ss               SALDOS               /////////////
 
         public int AgregarInventario(DateTime fechaRegistro, string observaciones, decimal importe, decimal iva, decimal total, int idProveedor, List<Tuple<int, decimal, decimal>> productos)
         {
-            SqlTransaction transaction = null;
+           
             try
             {
                 string query = "INSERT INTO Inventario (Fecha_Registro, Observaciones, Importe, IVA, Total, ID_Proveedor) " +
@@ -1408,9 +1355,9 @@ namespace PuntoDeVenta
                         decimal Cantidad_Entrante = producto.Item2;
                         decimal Costo_Unitario = producto.Item3;
 
-                        decimal Subtotal = Cantidad_Entrante * Costo_Unitario; // Calculo correcto del subtotal para cada producto
+                        decimal Subtotal = Cantidad_Entrante * Costo_Unitario;
 
-                        // Verificar si el producto ya existe en la tabla Saldos
+                        // Verificaa si el producto ya existe en la tabla Saldos
                         string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
                         using (SqlCommand commandExistencia = new SqlCommand(queryExistencia, connection, transaction))
                         {
@@ -1430,7 +1377,7 @@ namespace PuntoDeVenta
                             }
                             else
                             {
-                                // Si no existe, se inserta un nuevo registro en Saldos
+                                // Si no existe se inserta un nuevo registro en Saldos
                                 string queryInsertar = "INSERT INTO Saldos (ID_Producto, Cantidad_Entrante, Cantidad_Salida) " +
                                                        "VALUES (@ID_Producto, @Cantidad_Entrante, 0)";
                                 using (SqlCommand commandInsertar = new SqlCommand(queryInsertar, connection, transaction))
@@ -1465,10 +1412,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-                if (transaction != null)
-                {
-                    transaction.Rollback();
-                }
+               transaction?.Rollback();
                 throw new Exception($"Error al agregar el inventario: {ex.Message}");
             }
             finally
