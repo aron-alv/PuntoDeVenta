@@ -2,8 +2,14 @@
 using PuntoDeVenta;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Printing;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Windows.Forms;
+using static ABARROTES.Form1;
+using static PuntoDeVenta.OperacionesBD;
 
 
 namespace ABARROTES
@@ -12,11 +18,15 @@ namespace ABARROTES
     {
         private OperacionesBD Conexion = new OperacionesBD();
         private List<Tuple<int, string, decimal>> productos;
+
+        private PrintPreviewDialog printPreviewDialog1;
+
         public FormVentas(OperacionesBD conexion)
         {
             InitializeComponent();
             Conexion = conexion;
             this.KeyPreview = true;
+           string Usuario=UsuarioActual.Usuario;
 
         }
         private void CargarClientes()
@@ -65,6 +75,7 @@ namespace ABARROTES
             txtIDVenta.Text = proximoIDVenta.ToString();
 
 
+          BtnImprimirTicket.Visible = false;
             productos = new List<Tuple<int, string, decimal>>();
             var productosIds = Conexion.ObtenerProductos().Keys;
 
@@ -124,6 +135,8 @@ namespace ABARROTES
                     }
                 }
                 dataGridViewProductos.Rows.Add(productId, nombre, cantidad, precio, importe);
+                panelDatosVenta.Visible = true;
+               BtnImprimirTicket.Visible = false;
             }
             UpdateTotals();
             txtCantidad.Text = "";
@@ -210,9 +223,33 @@ namespace ABARROTES
 
                 if (ventaRegistrada)
                 {
-                    MessageBox.Show("Venta realizada con exito.");
+                  
+                    int idVenta = Conexion.ObtenerProximoIDVenta() - 1;
+
+                 
+                    Venta venta = Conexion.ObtenerVentaPorID(idVenta);
+
+               
+                    contenidoTicket = GenerarContenidoTicket(venta);
+
+                   
+                    printDocument1.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
+
+                    // Configurar el PrintPreviewDialog
+                    PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog
+                    {
+                        Document = printDocument1,
+                        WindowState = FormWindowState.Maximized
+                    };
+
+                    // muestra la vista preliminar
+                    printPreviewDialog.ShowDialog();
+
                     dataGridViewProductos.Rows.Clear();
                     LimpiarCampos();
+                    MessageBox.Show("Venta realizada con éxito.");
+
+
                 }
                 else
                 {
@@ -275,6 +312,8 @@ namespace ABARROTES
                 {
                     Conexion.BuscarIDVenta(idVenta, tablaFolios);
                     tablaFolios.Visible = true;
+                    panelDatosVenta.Visible = false;
+                    BtnImprimirTicket.Visible = true;
                 }
                 catch (Exception ex)
                 {
@@ -289,6 +328,78 @@ namespace ABARROTES
             ReportesVistas reportesVistas = new ReportesVistas(Conexion);
             reportesVistas.Show();
 
+        }
+        private string GenerarContenidoTicket(Venta venta)
+        {
+            decimal totalProductos = 0;
+            StringBuilder ticket = new StringBuilder();
+
+            ticket.AppendLine("ABARROTES");
+            ticket.AppendLine("================================");
+            ticket.AppendLine($"Numero de Ticket: {venta.NumeroTicket}");
+            ticket.AppendLine($"Fecha: {venta.FechaVenta}");
+            ticket.AppendLine($"Cliente: {venta.Cliente}");
+            ticket.AppendLine($"Vendedor: {UsuarioActual.Usuario}");
+            ticket.AppendLine($"Metodo de Pago:{venta.FormaPago}");
+            ticket.AppendLine("----------------------------------------------------");
+
+            ticket.AppendLine("PRODUCTO".PadRight(20) + "CANTIDAD".PadRight(11) + "PRECIO".PadRight(12) + "SUBTOTAL".PadRight(8));
+            ticket.AppendLine("====================================================");
+
+            foreach (var producto in venta.Productos)
+            {
+                string nombreProducto = producto.Nombre.PadRight(20).Substring(0, 20);
+                string cantidad = producto.Cantidad.ToString().PadLeft(5); 
+                string precioUnitario = $"${producto.PrecioUnitario:F2}".PadLeft(12); 
+                string subtotal = $"${producto.Subtotal:F2}".PadLeft(14); 
+
+                ticket.AppendLine($"{nombreProducto}{cantidad}{precioUnitario}{subtotal}");
+                totalProductos += producto.Subtotal;
+            }
+       
+            ticket.AppendLine("====================================================");
+            ticket.AppendLine($"{"Subtotal:".PadLeft(44)}{totalProductos:F2}".PadLeft(15));
+            ticket.AppendLine($"{"IVA:".PadLeft(44)}{venta.IVA:F2}".PadLeft(15));
+            ticket.AppendLine($"{"Total:".PadLeft(44)}{venta.TotalVenta:F2}".PadLeft(15));
+            ticket.AppendLine("====================================================");
+            ticket.AppendLine("¡Gracias por su compra!".PadLeft(30));
+
+            return ticket.ToString();
+        }
+
+
+
+        private string contenidoTicket;
+
+      
+
+        private void printPreviewDialog1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+          
+            e.Graphics.DrawString(contenidoTicket, new Font("Courier New", 10), Brushes.Black, new PointF(10, 10));
+        }
+
+        private void BtnImprimirTicket_Click(object sender, EventArgs e)
+        {
+            int idventa = int.Parse(txtIDVenta.Text);
+            Venta venta = Conexion.ObtenerVentaPorID(idventa);
+            contenidoTicket = GenerarContenidoTicket(venta);
+            printDocument1.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
+
+
+            PrintPreviewDialog printPreviewDialog = new PrintPreviewDialog
+            {
+                Document = printDocument1,
+                WindowState = FormWindowState.Maximized
+            };
+
+            
+            printPreviewDialog.ShowDialog();
         }
     }
 

@@ -7,6 +7,8 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO; // Add this line at the top of your file
+using System.Diagnostics;
 namespace PuntoDeVenta
 {
 
@@ -38,26 +40,26 @@ namespace PuntoDeVenta
             }
 
         }
-     
+
 
         //////                                                      /////////////
         //////ss                     PRODUCTOS                      /////////////
-        //////s                                                      /
-        /////////ss
+        //////s                                                      ////////
+        /////////ss                                                ///////////////
         public bool AgregarProducto(int ID_Producto, string Nombre, double Precio, string Descripcion, int ID_Proveedor)
         {
-          
+
             try
             {
-                string query = "INSERT INTO Producto (ID_Producto, Nombre, Precio, Descripcion, ID_Proveedor) " +
-                    "VALUES (@ID_Producto, @Nombre, @Precio, @Descripcion, @ID_Proveedor)";
+             
                 if (connection.State == ConnectionState.Closed)
                 {
                     connection.Open();
                 }
                 transaction = connection.BeginTransaction();
-                using (SqlCommand command = new SqlCommand(query, connection,transaction))
+                using (SqlCommand command = new SqlCommand("AltaProducto", connection, transaction))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
                     command.Parameters.AddWithValue("@Precio", Precio);
@@ -84,7 +86,7 @@ namespace PuntoDeVenta
         }
         public bool EliminarProducto(int ID_Producto)
         {
-           
+
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -92,39 +94,18 @@ namespace PuntoDeVenta
                     connection.Open();
                 }
 
-                // Eliminar registros relacionados en la tabla DetalleVenta
-                string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Producto = @ID_Producto";
+
                 transaction = connection.BeginTransaction();
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection, transaction))
-                {
-                    deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    deleteDetalleVentaCommand.ExecuteNonQuery();
-                }
-
-                // Eliminar registros relacionados en la tabla Saldos
-                string deleteSaldosQuery = "DELETE FROM Saldos WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection, transaction))
-                {
-                    deleteSaldosCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    deleteSaldosCommand.ExecuteNonQuery();
-                }
-                // Eliminar registros relacionados en la tabla DetalleInventario
-                string deleteDetailsQuery = "DELETE FROM DetalleInventario WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteDetailsCommand = new SqlCommand(deleteDetailsQuery, connection, transaction))
-                {
-                    deleteDetailsCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    deleteDetailsCommand.ExecuteNonQuery();
-                }
-
                 // Eliminar el producto
-                string deleteProductQuery = "DELETE FROM Producto WHERE ID_Producto = @ID_Producto";
-                using (SqlCommand deleteProductCommand = new SqlCommand(deleteProductQuery, connection, transaction))
+
+                using (SqlCommand deleteProductCommand = new SqlCommand("BajaProducto", connection, transaction))
                 {
+                    deleteProductCommand.CommandType = CommandType.StoredProcedure;
                     deleteProductCommand.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     int rowsAffected = deleteProductCommand.ExecuteNonQuery();
                     transaction.Commit();
                     return rowsAffected > 0;
-                }        
+                }
             }
             catch (SqlException ex)
             {
@@ -143,7 +124,7 @@ namespace PuntoDeVenta
 
         public bool ModificarProducto(int ID_Producto, string Nombre, double Precio, string Descripcion, int ID_Proveedor)
         {
-         
+
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -151,10 +132,11 @@ namespace PuntoDeVenta
                     connection.Open();
                 }
 
-                string query = "UPDATE Producto SET Nombre = @Nombre, Precio = @Precio, Descripcion = @Descripcion, ID_Proveedor = @ID_Proveedor WHERE ID_Producto = @ID_Producto";
+               
                 transaction = connection.BeginTransaction();
-                using (SqlCommand command = new SqlCommand(query, connection, transaction))
+                using (SqlCommand command = new SqlCommand("ModificarProducto", connection, transaction))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
                     command.Parameters.AddWithValue("@Precio", Precio);
@@ -164,12 +146,12 @@ namespace PuntoDeVenta
                     int rowsAffected = command.ExecuteNonQuery();
                     transaction.Commit();
                     return rowsAffected > 0;
-                   
+
                 }
             }
             catch (SqlException ex)
             {
-               transaction?.Rollback();
+                transaction?.Rollback();
                 throw new Exception($"Error al modificar el Producto: {ex.Message}");
             }
             finally
@@ -478,7 +460,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarProveedor(int ID_Proveedor, string Nombre, string Telefono, string Direccion)
         {
-       
+
             try
             {
                 if (connection.State != ConnectionState.Open)
@@ -488,7 +470,7 @@ namespace PuntoDeVenta
                 string query = "INSERT INTO Proveedor (ID_Proveedor, Nombre, Telefono, Direccion) " +
                     "VALUES (@ID_Proveedor, @Nombre, @Telefono, @Direccion)";
                 transaction = connection.BeginTransaction();
-                using (SqlCommand command = new SqlCommand(query, connection,transaction))
+                using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
                     command.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     command.Parameters.AddWithValue("@Nombre", Nombre);
@@ -502,7 +484,7 @@ namespace PuntoDeVenta
             }
             catch (Exception ex)
             {
-              transaction?.Rollback();
+                transaction?.Rollback();
                 throw new Exception($"Error al agregar el Proveedor: {ex.Message}");
             }
             finally
@@ -594,7 +576,7 @@ namespace PuntoDeVenta
         }
         public bool EliminarProveedor(int ID_Proveedor)
         {
-        
+
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -604,7 +586,7 @@ namespace PuntoDeVenta
                 // Eliminar registros relacionados en la tabla DetalleVenta
                 string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Producto IN (SELECT ID_Producto FROM Producto WHERE ID_Proveedor = @ID_Proveedor)";
                 transaction = connection.BeginTransaction();
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection,transaction))
+                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection, transaction))
                 {
                     deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteDetalleVentaCommand.ExecuteNonQuery();
@@ -627,7 +609,7 @@ namespace PuntoDeVenta
                 }
                 // Eliminar registros relacionados en la tabla Saldos
                 string deleteSaldosQuery = "DELETE FROM Saldos WHERE ID_Producto IN (SELECT ID_Producto FROM Producto WHERE ID_Proveedor = @ID_Proveedor)";
-                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection,transaction))
+                using (SqlCommand deleteSaldosCommand = new SqlCommand(deleteSaldosQuery, connection, transaction))
                 {
                     deleteSaldosCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     deleteSaldosCommand.ExecuteNonQuery();
@@ -644,7 +626,7 @@ namespace PuntoDeVenta
 
                 // Eliminar el proveedor
                 string deleteProveedorQuery = "DELETE FROM Proveedor WHERE ID_Proveedor = @ID_Proveedor";
-                using (SqlCommand deleteProveedorCommand = new SqlCommand(deleteProveedorQuery, connection,transaction))
+                using (SqlCommand deleteProveedorCommand = new SqlCommand(deleteProveedorQuery, connection, transaction))
                 {
                     deleteProveedorCommand.Parameters.AddWithValue("@ID_Proveedor", ID_Proveedor);
                     int rowsAffected = deleteProveedorCommand.ExecuteNonQuery();
@@ -711,7 +693,7 @@ namespace PuntoDeVenta
 
         public bool ModificarProveedor(int ID_Proveedor, string Nombre, string Telefono, string Direccion)
         {
-           
+
             try
             {
 
@@ -758,7 +740,7 @@ namespace PuntoDeVenta
         /////////ss
         public bool AgregarCliente(string Nombre, string Telefono, string Direccion, out int nuevoID)
         {
-          
+
             nuevoID = 0;
 
 
@@ -767,7 +749,7 @@ namespace PuntoDeVenta
 
                 string query = "INSERT INTO Cliente (Nombre, Telefono, Direccion) " +
                                "VALUES (@Nombre, @Telefono, @Direccion); " +
-                               "SELECT SCOPE_IDENTITY();"; 
+                               "SELECT SCOPE_IDENTITY();";
 
                 if (connection.State == ConnectionState.Closed)
                 {
@@ -780,7 +762,7 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@Telefono", Telefono);
                     command.Parameters.AddWithValue("@Direccion", Direccion);
 
-                    
+
                     nuevoID = Convert.ToInt32(command.ExecuteScalar());
                     transaction.Commit();
                     return nuevoID > 0;
@@ -923,7 +905,7 @@ namespace PuntoDeVenta
 
         public bool EliminarCliente(int ID_Cliente)
         {
-        
+
             try
             {
                 if (connection.State == ConnectionState.Closed)
@@ -934,7 +916,7 @@ namespace PuntoDeVenta
                 // Eliminar primero los registros relacionados en DetalleVenta
                 string deleteDetalleVentaQuery = "DELETE FROM DetalleVenta WHERE ID_Venta IN (SELECT ID_Venta FROM Venta WHERE ID_Cliente = @ID_Cliente)";
                 transaction = connection.BeginTransaction();
-                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection,transaction))
+                using (SqlCommand deleteDetalleVentaCommand = new SqlCommand(deleteDetalleVentaQuery, connection, transaction))
                 {
                     deleteDetalleVentaCommand.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     deleteDetalleVentaCommand.ExecuteNonQuery();
@@ -950,7 +932,7 @@ namespace PuntoDeVenta
 
                 // Ahora eliminar el registro de Cliente
                 string deleteClienteQuery = "DELETE FROM Cliente WHERE ID_Cliente = @ID_Cliente";
-                using (SqlCommand deleteClienteCommand = new SqlCommand(deleteClienteQuery, connection,transaction))
+                using (SqlCommand deleteClienteCommand = new SqlCommand(deleteClienteQuery, connection, transaction))
                 {
                     deleteClienteCommand.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
                     int rowsAffected = deleteClienteCommand.ExecuteNonQuery();
@@ -976,7 +958,7 @@ namespace PuntoDeVenta
 
         public bool ModificarCliente(int ID_Cliente, string Nombre, string Telefono, string Direccion)
         {
-    
+
             try
             {
 
@@ -1066,7 +1048,7 @@ namespace PuntoDeVenta
         /////////ss
 
         // Métodos para la tabla Saldos
-        
+
 
         public bool BuscarSaldosEnTabla(DataGridView tablaSaldos)
         {
@@ -1119,13 +1101,11 @@ namespace PuntoDeVenta
         //////ss                     VENTAS                     /////////////
         //////s                        y                           /////// /
         /////////ss                DETALLE VENTA                  /////////////
-        public bool RegistrarVenta(DateTime Fecha, decimal Importe, decimal IVA, decimal Total, string Metodo_Pago, int ID_Cliente, List<Tuple<int, decimal, decimal>> detallesVenta)
+        public bool RegistrarVenta(DateTime Fecha, decimal Importe, decimal IVA, decimal Total,
+     string Metodo_Pago, int ID_Cliente, List<Tuple<int, decimal, decimal>> detallesVenta)
         {
-           
-
             try
             {
-
                 if (connection.State == ConnectionState.Closed)
                 {
                     connection.Open();
@@ -1133,95 +1113,71 @@ namespace PuntoDeVenta
 
                 transaction = connection.BeginTransaction();
 
-               
+                // Verificar stock antes de proceder
                 foreach (var detalle in detallesVenta)
                 {
                     int ID_Producto = detalle.Item1;
                     decimal cantidadVendida = detalle.Item2;
 
-                    // Obtener el stock del producto
-                    string queryStock = "SELECT Cantidad_Disponible FROM Saldos WHERE ID_Producto = @ID_Producto";
-                    SqlCommand cmdStock = new SqlCommand(queryStock, connection, transaction);
-                    cmdStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-
-                    object result = cmdStock.ExecuteScalar();
-                   
-
-                    decimal stockActual = Convert.ToDecimal(result);
-
-                   
-
-                    // Obtener el nombre del producto
-                    string queryNombre = "SELECT Nombre FROM Producto WHERE ID_Producto = @ID_Producto";
-                    SqlCommand cmdNombre = new SqlCommand(queryNombre, connection, transaction);
-                    cmdNombre.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    string nombreProducto = cmdNombre.ExecuteScalar() as string;
-
-
-                    if (stockActual < cantidadVendida)
+                    string queryStock = "SELECT Cantidad_Entrante - Cantidad_Salida FROM Saldos WHERE ID_Producto = @ID_Producto";
+                    using (SqlCommand cmdStock = new SqlCommand(queryStock, connection, transaction))
                     {
-                        throw new Exception($"Stock insuficiente para el producto '{nombreProducto}'. Stock actual: {stockActual}");
+                        cmdStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
+                        decimal stockDisponible = Convert.ToDecimal(cmdStock.ExecuteScalar());
+
+                        if (stockDisponible < cantidadVendida)
+                        {
+                            throw new Exception($"Stock insuficiente para el producto ID: {ID_Producto}. Disponible: {stockDisponible}");
+                        }
                     }
                 }
 
-                // Registrar la venta 
-                string queryVenta = "INSERT INTO Venta (Fecha, Importe, IVA, Total, Metodo_Pago, ID_Cliente) " +
-                                    "VALUES (@Fecha, @Importe, @IVA, @Total, @Metodo_Pago, @ID_Cliente); " +
-                                    "SELECT SCOPE_IDENTITY();";
-                SqlCommand cmdVenta = new SqlCommand(queryVenta, connection, transaction);
-                cmdVenta.Parameters.AddWithValue("@Fecha", Fecha);
-                cmdVenta.Parameters.AddWithValue("@Importe", Importe);
-                cmdVenta.Parameters.AddWithValue("@IVA", IVA);
-                cmdVenta.Parameters.AddWithValue("@Total", Total);
-                cmdVenta.Parameters.AddWithValue("@Metodo_Pago", Metodo_Pago);
-                cmdVenta.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
+                // Registrar la venta principal
+                string queryVenta = @"INSERT INTO Venta (Fecha, Importe, IVA, Total, Metodo_Pago, ID_Cliente) 
+                            VALUES (@Fecha, @Importe, @IVA, @Total, @Metodo_Pago, @ID_Cliente); 
+                            SELECT SCOPE_IDENTITY();";
 
-
-                // Obtener el ID Venta recien agregsdo
-                int ID_Venta = Convert.ToInt32(cmdVenta.ExecuteScalar());
-
-
-                // Registrar la tabla Detalle Venta
-                foreach (var detalle in detallesVenta)
+                int ID_Venta;
+                using (SqlCommand cmdVenta = new SqlCommand(queryVenta, connection, transaction))
                 {
-                    int ID_Producto = detalle.Item1;
-                    decimal cantidadVendida = detalle.Item2;
-                    decimal precioUnitario = detalle.Item3;
-                    decimal subtotal = cantidadVendida * precioUnitario;
-
-                    // Insertar los detalles en la tabla Detalle Venta 
-                    string queryDetalleVenta = "INSERT INTO DetalleVenta (ID_Venta, ID_Producto, Cantidad, Precio_Unitario, Subtotal) " +
-                                               "VALUES (@ID_Venta, @ID_Producto, @Cantidad, @Precio_Unitario, @Subtotal)";
-                    SqlCommand cmdDetalleVenta = new SqlCommand(queryDetalleVenta, connection, transaction);
-                    cmdDetalleVenta.Parameters.AddWithValue("@ID_Venta", ID_Venta);
-                    cmdDetalleVenta.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    cmdDetalleVenta.Parameters.AddWithValue("@Cantidad", cantidadVendida);
-                    cmdDetalleVenta.Parameters.AddWithValue("@Precio_Unitario", precioUnitario);
-                    cmdDetalleVenta.Parameters.AddWithValue("@Subtotal", subtotal);
-                    cmdDetalleVenta.ExecuteNonQuery();
-
-                    // Actualizar el stock de Saldos
-                    //string queryUpdateStock = "UPDATE Saldos SET Cantidad_Salida = Cantidad_Salida + @Cantidad WHERE ID_Producto = @ID_Producto";
-                    //SqlCommand cmdUpdateStock = new SqlCommand(queryUpdateStock, connection, transaction);
-                    //cmdUpdateStock.Parameters.AddWithValue("@Cantidad", cantidadVendida);
-                    //cmdUpdateStock.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                    //cmdUpdateStock.ExecuteNonQuery();
+                    cmdVenta.Parameters.AddWithValue("@Fecha", Fecha);
+                    cmdVenta.Parameters.AddWithValue("@Importe", Importe);
+                    cmdVenta.Parameters.AddWithValue("@IVA", IVA);
+                    cmdVenta.Parameters.AddWithValue("@Total", Total);
+                    cmdVenta.Parameters.AddWithValue("@Metodo_Pago", Metodo_Pago);
+                    cmdVenta.Parameters.AddWithValue("@ID_Cliente", ID_Cliente);
+                    ID_Venta = Convert.ToInt32(cmdVenta.ExecuteScalar());
                 }
 
+                // Registrar detalles de venta
+                foreach (var detalle in detallesVenta)
+                {
+                    string queryDetalleVenta = @"INSERT INTO DetalleVenta (ID_Venta, ID_Producto, Cantidad, 
+                                        Precio_Unitario, Subtotal) 
+                                        VALUES (@ID_Venta, @ID_Producto, @Cantidad, 
+                                        @Precio_Unitario, @Subtotal)";
+
+                    using (SqlCommand cmdDetalleVenta = new SqlCommand(queryDetalleVenta, connection, transaction))
+                    {
+                        cmdDetalleVenta.Parameters.AddWithValue("@ID_Venta", ID_Venta);
+                        cmdDetalleVenta.Parameters.AddWithValue("@ID_Producto", detalle.Item1);
+                        cmdDetalleVenta.Parameters.AddWithValue("@Cantidad", detalle.Item2);
+                        cmdDetalleVenta.Parameters.AddWithValue("@Precio_Unitario", detalle.Item3);
+                        cmdDetalleVenta.Parameters.AddWithValue("@Subtotal", detalle.Item2 * detalle.Item3);
+                        cmdDetalleVenta.ExecuteNonQuery();
+                    }
+                }
 
                 transaction.Commit();
-
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
                 transaction?.Rollback();
                 throw new Exception($"Error al registrar la venta: {ex.Message}");
             }
             finally
             {
-
                 if (connection.State == ConnectionState.Open)
                 {
                     connection.Close();
@@ -1323,9 +1279,9 @@ namespace PuntoDeVenta
         /////////ss                  y                /////////////
         /////////ss               SALDOS               /////////////
 
-        public int AgregarInventario(DateTime fechaRegistro, string observaciones, decimal importe, decimal iva, decimal total, int idProveedor, List<Tuple<int, decimal, decimal>> productos)
+        public int AgregarInventario(DateTime fechaRegistro, string observaciones, decimal importe,
+      decimal iva, decimal total, int idProveedor, List<Tuple<int, decimal, decimal>> productos)
         {
-           
             try
             {
                 string query = "INSERT INTO Inventario (Fecha_Registro, Observaciones, Importe, IVA, Total, ID_Proveedor) " +
@@ -1336,8 +1292,7 @@ namespace PuntoDeVenta
                 {
                     connection.Open();
                 }
-                
-                
+
                 transaction = connection.BeginTransaction();
                 using (SqlCommand command = new SqlCommand(query, connection, transaction))
                 {
@@ -1349,70 +1304,36 @@ namespace PuntoDeVenta
                     command.Parameters.AddWithValue("@ID_Proveedor", idProveedor);
 
                     int idInventario = (int)command.ExecuteScalar();
+
                     foreach (var producto in productos)
                     {
                         int ID_Producto = producto.Item1;
                         decimal Cantidad_Entrante = producto.Item2;
                         decimal Costo_Unitario = producto.Item3;
-
                         decimal Subtotal = Cantidad_Entrante * Costo_Unitario;
 
-                        // Verificaa si el producto ya existe en la tabla Saldos
-                        string queryExistencia = "SELECT COUNT(*) FROM Saldos WHERE ID_Producto = @ID_Producto";
-                        using (SqlCommand commandExistencia = new SqlCommand(queryExistencia, connection, transaction))
+                    
+                        string queryDetalleInventario = "INSERT INTO DetalleInventario (Id_Inventario, ID_Producto, Cantidad_Entrante, Costo_Unitario, Subtotal) " +
+                                     "VALUES (@Id_Inventario, @ID_Producto, @Cantidad_Entrante, @Costo_Unitario, @Subtotal)";
+
+                        using (SqlCommand commando = new SqlCommand(queryDetalleInventario, connection, transaction))
                         {
-                            commandExistencia.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                            int count = (int)commandExistencia.ExecuteScalar();
-
-                            if (count > 0)
-                            {
-                                // Si existe se actualiza la cantidad
-                                string queryActualizar = "UPDATE Saldos SET Cantidad_Entrante = Cantidad_Entrante + @Cantidad_Entrante WHERE ID_Producto = @ID_Producto";
-                                using (SqlCommand commandActualizar = new SqlCommand(queryActualizar, connection, transaction))
-                                {
-                                    commandActualizar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                                    commandActualizar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                    commandActualizar.ExecuteNonQuery();
-                                }
-                            }
-                            else
-                            {
-                                // Si no existe se inserta un nuevo registro en Saldos
-                                string queryInsertar = "INSERT INTO Saldos (ID_Producto, Cantidad_Entrante, Cantidad_Salida) " +
-                                                       "VALUES (@ID_Producto, @Cantidad_Entrante, 0)";
-                                using (SqlCommand commandInsertar = new SqlCommand(queryInsertar, connection, transaction))
-                                {
-                                    commandInsertar.Parameters.AddWithValue("@ID_Producto", ID_Producto);
-                                    commandInsertar.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
-                                    commandInsertar.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                        //selecciona el id del inventario para agregarlo a la tabla DetalleInventario
-                        int Id_Inventario =idInventario;
-
-                        // Insertar los detalles en la tabla DetalleInventario
-                        string queryDetallInventario = "INSERT INTO DetalleInventario (Id_Inventario,ID_Producto, Cantidad_Entrante, Costo_Unitario, Subtotal) " +
-                                       "VALUES (@Id_Inventario,@ID_Producto, @Cantidad_Entrante, @Costo_Unitario, @Subtotal)";
-
-                        using (SqlCommand commando = new SqlCommand(queryDetallInventario, connection, transaction))
-                        {
-                            commando.Parameters.AddWithValue("@Id_Inventario", Id_Inventario);
+                            commando.Parameters.AddWithValue("@Id_Inventario", idInventario);
                             commando.Parameters.AddWithValue("@ID_Producto", ID_Producto);
                             commando.Parameters.AddWithValue("@Cantidad_Entrante", Cantidad_Entrante);
                             commando.Parameters.AddWithValue("@Costo_Unitario", Costo_Unitario);
                             commando.Parameters.AddWithValue("@Subtotal", Subtotal);
-
                             commando.ExecuteNonQuery();
                         }
                     }
+
                     transaction.Commit();
                     return idInventario;
                 }
             }
             catch (Exception ex)
             {
-               transaction?.Rollback();
+                transaction?.Rollback();
                 throw new Exception($"Error al agregar el inventario: {ex.Message}");
             }
             finally
@@ -1488,8 +1409,8 @@ namespace PuntoDeVenta
                 }
             }
         }
-
-
+        
+        
         public bool FiltrarVentas(DataGridView tablaVentas, DateTime? fechaInicio = null, DateTime? fechaFin = null, int? idCliente = null)
         {
             tablaVentas.Rows.Clear();
@@ -1671,6 +1592,62 @@ namespace PuntoDeVenta
                 }
             }
         }
+        public bool BuscarTicket(int ID_Venta)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                string query = "SELECT * FROM [Ticket] WHERE NumeroTicket = @ID_Venta";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID_Venta", ID_Venta);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                // Aquí puedes procesar los datos del ticket
+                                Console.WriteLine("Número de Ticket: " + reader["NumeroTicket"]);
+                                Console.WriteLine("Fecha de Venta: " + reader["FechaVenta"]);
+                                Console.WriteLine("Cliente: " + reader["Cliente"]);
+                                Console.WriteLine("Producto: " + reader["Producto"]);
+                                Console.WriteLine("Cantidad: " + reader["Cantidad"]);
+                                Console.WriteLine("Precio Unitario: " + reader["PrecioUnitario"]);
+                                Console.WriteLine("Subtotal: " + reader["SubtotalVenta"]);
+                                Console.WriteLine("IVA: " + reader["IVA"]);
+                                Console.WriteLine("Total: " + reader["TotalVenta"]);
+                                Console.WriteLine("Forma de Pago: " + reader["FormaPago"]);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No se encontró el ticket con el ID especificado.");
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al buscar el ticket: " + ex.Message);
+                return false;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+        }
+
 
         //metodo para mostrar lo que a comprado en total cada cliente
         public bool VentasTotalPorCliente(Chart chartVentasTotalPorCliente, Label lblProductosVendidosenTotal)
@@ -1843,6 +1820,97 @@ namespace PuntoDeVenta
                 connection.Close();
             }
         }
-     
+
+        public Venta ObtenerVentaPorID(int idVenta)
+        {
+            Venta venta = null;
+
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                string query = "SELECT * FROM [Ticket] WHERE NumeroTicket = @NumeroTicket";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@NumeroTicket", idVenta);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (venta == null)
+                            {
+                                // Crear la instancia de venta si aún no se ha creado
+                                venta = new Venta
+                                {
+                                    NumeroTicket = Convert.ToInt32(reader["NumeroTicket"]),
+                                    FechaVenta = Convert.ToDateTime(reader["FechaVenta"]),
+                                    Cliente = reader["Cliente"].ToString(),
+                                    SubtotalVenta = Convert.ToDecimal(reader["SubtotalVenta"]),
+                                    IVA = Convert.ToDecimal(reader["IVA"]),
+                                    TotalVenta = Convert.ToDecimal(reader["TotalVenta"]),
+                                    FormaPago = reader["FormaPago"].ToString()
+                                };
+                               
+
+
+                            }
+
+                            // Agregar el producto a la lista de productos de la venta
+                            ProductoVenta producto = new ProductoVenta
+                            {
+                                Nombre = reader["Producto"].ToString(),
+                                Cantidad = Convert.ToDecimal(reader["Cantidad"]),
+                                PrecioUnitario = Convert.ToDecimal(reader["PrecioUnitario"]),
+                                Subtotal = Convert.ToDecimal(reader["SubtotalVenta"])
+                            };
+
+                            venta.Productos.Add(producto);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los datos de la venta: " + ex.Message);
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+
+            return venta;
+        }
+
+        public class Venta
+        {
+            public int NumeroTicket { get; set; }
+            public DateTime FechaVenta { get; set; }
+            public string Cliente { get; set; }
+            public List<ProductoVenta> Productos { get; set; } = new List<ProductoVenta>();
+            public decimal SubtotalVenta { get; set; }
+            public decimal IVA { get; set; }
+            public decimal TotalVenta { get; set; }
+            public string FormaPago { get; set; }
+        }
+
+        public class ProductoVenta
+        {
+            public string Nombre { get; set; }
+            public decimal Cantidad { get; set; }
+            public decimal PrecioUnitario { get; set; }
+            public decimal Subtotal { get; set; }
+        }
+
+
+
     }
+
 }
+
