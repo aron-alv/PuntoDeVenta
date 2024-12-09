@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dtpFechaRegistro = new System.Windows.Forms.DateTimePicker();
             this.comboBoxProveedores = new System.Windows.Forms.ComboBox();
@@ -68,10 +69,23 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.SubMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.eliminarProductoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BtnEliminarInventario = new System.Windows.Forms.Button();
+            this.txtBuscarDetalleInventario = new System.Windows.Forms.TextBox();
+            this.BtnBuscarDetalleInventario = new System.Windows.Forms.Button();
+            this.TablaDetalleInventario = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BtnActualizarInventario = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInventario)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProductos)).BeginInit();
             this.panel1.SuspendLayout();
             this.SubMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaDetalleInventario)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -292,7 +306,7 @@
             this.IVA,
             this.TOTAL,
             this.ID_Proveedor});
-            this.tablaInventario.Location = new System.Drawing.Point(264, 126);
+            this.tablaInventario.Location = new System.Drawing.Point(321, 246);
             this.tablaInventario.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tablaInventario.Name = "tablaInventario";
             this.tablaInventario.RowHeadersWidth = 51;
@@ -303,6 +317,7 @@
             this.tablaInventario.RowTemplate.Height = 24;
             this.tablaInventario.Size = new System.Drawing.Size(1141, 326);
             this.tablaInventario.TabIndex = 36;
+            this.tablaInventario.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablaInventario_CellContentClick);
             // 
             // ID_Inventario
             // 
@@ -366,7 +381,7 @@
             this.Cantidad,
             this.Precio,
             this.SubTotal});
-            this.dgvProductos.Location = new System.Drawing.Point(264, 126);
+            this.dgvProductos.Location = new System.Drawing.Point(321, 246);
             this.dgvProductos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvProductos.Name = "dgvProductos";
             this.dgvProductos.RowHeadersWidth = 51;
@@ -461,7 +476,7 @@
             this.panel1.Controls.Add(this.textBoxSubtotal);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label7);
-            this.panel1.Location = new System.Drawing.Point(759, 471);
+            this.panel1.Location = new System.Drawing.Point(952, 602);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(355, 247);
@@ -483,16 +498,136 @@
             this.eliminarProductoToolStripMenuItem.Text = "Eliminar Producto";
             this.eliminarProductoToolStripMenuItem.Click += new System.EventHandler(this.eliminarProductoToolStripMenuItem_Click);
             // 
+            // BtnEliminarInventario
+            // 
+            this.BtnEliminarInventario.Location = new System.Drawing.Point(359, 678);
+            this.BtnEliminarInventario.Name = "BtnEliminarInventario";
+            this.BtnEliminarInventario.Size = new System.Drawing.Size(128, 52);
+            this.BtnEliminarInventario.TabIndex = 42;
+            this.BtnEliminarInventario.Text = "Eliminar";
+            this.BtnEliminarInventario.UseVisualStyleBackColor = true;
+            this.BtnEliminarInventario.Click += new System.EventHandler(this.BtnEliminarInventario_Click);
+            // 
+            // txtBuscarDetalleInventario
+            // 
+            this.txtBuscarDetalleInventario.Location = new System.Drawing.Point(539, 133);
+            this.txtBuscarDetalleInventario.Multiline = true;
+            this.txtBuscarDetalleInventario.Name = "txtBuscarDetalleInventario";
+            this.txtBuscarDetalleInventario.Size = new System.Drawing.Size(160, 30);
+            this.txtBuscarDetalleInventario.TabIndex = 43;
+            // 
+            // BtnBuscarDetalleInventario
+            // 
+            this.BtnBuscarDetalleInventario.Location = new System.Drawing.Point(758, 133);
+            this.BtnBuscarDetalleInventario.Name = "BtnBuscarDetalleInventario";
+            this.BtnBuscarDetalleInventario.Size = new System.Drawing.Size(210, 30);
+            this.BtnBuscarDetalleInventario.TabIndex = 44;
+            this.BtnBuscarDetalleInventario.Text = "Buscar Detalle Inventario";
+            this.BtnBuscarDetalleInventario.UseVisualStyleBackColor = true;
+            this.BtnBuscarDetalleInventario.Click += new System.EventHandler(this.BtnBuscarDetalleInventario_Click);
+            // 
+            // TablaDetalleInventario
+            // 
+            this.TablaDetalleInventario.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.TablaDetalleInventario.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.TablaDetalleInventario.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            this.TablaDetalleInventario.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TablaDetalleInventario.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaDetalleInventario.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7});
+            this.TablaDetalleInventario.Location = new System.Drawing.Point(321, 247);
+            this.TablaDetalleInventario.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.TablaDetalleInventario.Name = "TablaDetalleInventario";
+            this.TablaDetalleInventario.RowHeadersWidth = 51;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            this.TablaDetalleInventario.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.TablaDetalleInventario.RowTemplate.Height = 24;
+            this.TablaDetalleInventario.Size = new System.Drawing.Size(1141, 326);
+            this.TablaDetalleInventario.TabIndex = 45;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID Detalle Inventario";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            this.dataGridViewTextBoxColumn1.Width = 156;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "ID Inventario";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Visible = false;
+            this.dataGridViewTextBoxColumn2.Width = 110;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Producto";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 90;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.HeaderText = "Cantidad entrante";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 129;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "costo Unitario";
+            this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.Width = 109;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Subtotal";
+            this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.Width = 85;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.HeaderText = "Proveedor";
+            this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.Visible = false;
+            this.dataGridViewTextBoxColumn7.Width = 125;
+            // 
+            // BtnActualizarInventario
+            // 
+            this.BtnActualizarInventario.Location = new System.Drawing.Point(593, 678);
+            this.BtnActualizarInventario.Name = "BtnActualizarInventario";
+            this.BtnActualizarInventario.Size = new System.Drawing.Size(92, 55);
+            this.BtnActualizarInventario.TabIndex = 46;
+            this.BtnActualizarInventario.Text = "Actualizar";
+            this.BtnActualizarInventario.UseVisualStyleBackColor = true;
+            this.BtnActualizarInventario.Click += new System.EventHandler(this.BtnActualizarInventario_Click);
+            // 
             // FormInventario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(62)))), ((int)(((byte)(82)))));
-            this.ClientSize = new System.Drawing.Size(1436, 860);
+            this.ClientSize = new System.Drawing.Size(1660, 860);
+            this.Controls.Add(this.BtnActualizarInventario);
+            this.Controls.Add(this.tablaInventario);
+            this.Controls.Add(this.BtnBuscarDetalleInventario);
+            this.Controls.Add(this.txtBuscarDetalleInventario);
+            this.Controls.Add(this.BtnEliminarInventario);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnAgregarProductoATabla);
-            this.Controls.Add(this.dgvProductos);
-            this.Controls.Add(this.tablaInventario);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.textBoxPrecio);
@@ -506,6 +641,8 @@
             this.Controls.Add(this.comboBoxProveedores);
             this.Controls.Add(this.dtpFechaRegistro);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.TablaDetalleInventario);
+            this.Controls.Add(this.dgvProductos);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormInventario";
@@ -516,6 +653,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.SubMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaDetalleInventario)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -560,5 +698,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SubTotal;
         private System.Windows.Forms.ContextMenuStrip SubMenu;
         private System.Windows.Forms.ToolStripMenuItem eliminarProductoToolStripMenuItem;
+        private System.Windows.Forms.Button BtnEliminarInventario;
+        private System.Windows.Forms.TextBox txtBuscarDetalleInventario;
+        private System.Windows.Forms.Button BtnBuscarDetalleInventario;
+        private System.Windows.Forms.DataGridView TablaDetalleInventario;
+        private System.Windows.Forms.Button BtnActualizarInventario;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
     }
 }

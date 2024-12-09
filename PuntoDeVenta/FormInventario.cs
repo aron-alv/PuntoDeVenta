@@ -215,8 +215,8 @@ namespace ABARROTES
                     var cantidad = txtCantidadEntrante.Text;
                     var precio = textBoxPrecio.Text;
 
-                   
-                        if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
+
+                    if (string.IsNullOrEmpty(cantidad) || string.IsNullOrEmpty(precio))
                     {
                         MessageBox.Show("Por favor, ingrese la cantidad y el precio.");
                         return;
@@ -225,7 +225,7 @@ namespace ABARROTES
 
                     if (!decimal.TryParse(cantidad, out decimal cantidadDecimal) || !decimal.TryParse(precio, out decimal precioDecimal))
                     {
-                        MessageBox.Show("Por favor, ingrese valores numéricos vAlidos para la cantidad y el precio.");
+                        MessageBox.Show("Por favor, ingrese valores numericos vAlidos para la cantidad y el precio.");
                         return;
                     }
 
@@ -235,6 +235,8 @@ namespace ABARROTES
                     // Agregar el producto al DataGridView
                     dgvProductos.Rows.Add(idProducto, nombreProducto, cantidadDecimal, precioDecimal, SubTotal);
                     dgvProductos.Visible = true;
+                    TablaDetalleInventario.Visible = false;
+                tablaInventario.Visible = false;
                     panel1.Visible = true;
 
                     txtCantidadEntrante.Clear();
@@ -314,6 +316,67 @@ namespace ABARROTES
         private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void BtnEliminarInventario_Click(object sender, EventArgs e)
+        {
+            if(tablaInventario.SelectedRows.Count > 0)
+            {
+                int idInventario = Convert.ToInt32(tablaInventario.SelectedRows[0].Cells[0].Value.ToString());
+                if (Conexion.EliminarInventario(idInventario))
+                {
+                    MessageBox.Show("Inventario eliminado con exito.");
+                    Conexion.BuscarInventarioEnTabla(tablaInventario);
+                }
+                else
+                {
+                    Conexion.BuscarInventarioEnTabla(tablaInventario);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione un inventario.");
+            }
+        }
+
+        private void tablaInventario_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void BtnBuscarDetalleInventario_Click(object sender, EventArgs e)
+        {
+            int ID_Inventario = Convert.ToInt32(txtBuscarDetalleInventario.Text);
+            Conexion.BuscarDetalleInventarioEnTabla(TablaDetalleInventario, ID_Inventario);
+            TablaDetalleInventario.Visible = true;
+            tablaInventario.Visible = false;
+            dgvProductos.Visible = false;
+        }
+
+        private void BtnActualizarInventario_Click(object sender, EventArgs e)
+        {
+            if (TablaDetalleInventario.SelectedRows.Count > 0)
+            {
+                int idDetalleInventario = Convert.ToInt32(TablaDetalleInventario.SelectedRows[0].Cells[0].Value.ToString());
+                int Nueva_Cantidad = Convert.ToInt32(TablaDetalleInventario.SelectedRows[0].Cells[3].Value.ToString());
+
+                string cellValue = TablaDetalleInventario.SelectedRows[0].Cells[4].Value.ToString();
+                if (decimal.TryParse(cellValue, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal Costo_Unitario))
+                {
+                    if (Conexion.ModificarDetalleInventario(idDetalleInventario, Nueva_Cantidad, (decimal)Costo_Unitario))
+                    {
+                        MessageBox.Show("El inventario se ha actualizado correctamente.");
+                        Conexion.BuscarInventarioEnTabla(tablaInventario);
+                        tablaInventario.Visible = true;
+                        TablaDetalleInventario.Visible=false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al actualizar el inventario.");
+                    }
+                }
+                
+            }
         }
     }
 }

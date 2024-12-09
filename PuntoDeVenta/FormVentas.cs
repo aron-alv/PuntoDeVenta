@@ -336,7 +336,7 @@ namespace ABARROTES
 
             ticket.AppendLine("ABARROTES");
             ticket.AppendLine("================================");
-            ticket.AppendLine($"Numero de Ticket: {venta.NumeroTicket}");
+            ticket.AppendLine($"Folio: {venta.NumeroTicket}");
             ticket.AppendLine($"Fecha: {venta.FechaVenta}");
             ticket.AppendLine($"Cliente: {venta.Cliente}");
             ticket.AppendLine($"Vendedor: {UsuarioActual.Usuario}");
@@ -381,7 +381,7 @@ namespace ABARROTES
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
           
-            e.Graphics.DrawString(contenidoTicket, new Font("Courier New", 10), Brushes.Black, new PointF(10, 10));
+            e.Graphics.DrawString(contenidoTicket, new Font("Courier New", 5), Brushes.Black, new PointF(10, 10));
         }
 
         private void BtnImprimirTicket_Click(object sender, EventArgs e)
